@@ -8,6 +8,7 @@ use App\Http\Controllers\TeacherReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
+Route::view('/cara-ia-berfungsi', 'how-it-works')->name('how-it-works');
 
 // Study Deck Routes
 Route::prefix('decks')->name('decks.')->group(function (): void {

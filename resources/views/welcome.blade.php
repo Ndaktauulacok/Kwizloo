@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-6xl mx-auto">
     <!-- Hero -->
-    <section class="grid lg:grid-cols-[1fr_1.05fr] gap-8 lg:gap-4 items-center pt-2 lg:pt-6 pb-12">
+    <section class="grid lg:grid-cols-[1fr_1.05fr] gap-8 lg:gap-4 items-center lg:min-h-[calc(100svh-13rem)] pt-2 pb-6">
         <div class="order-2 lg:order-1 text-center lg:text-left">
             <span class="sticker bg-white text-ink -rotate-2">
                 <span class="w-2 h-2 rounded-full bg-tomato"></span>
@@ -24,7 +24,7 @@
                     <span>Mulakan Sekarang</span>
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                 </a>
-                <a href="#cara" class="text-sm font-bold text-slate-700 hover:text-ink underline decoration-2 decoration-sun underline-offset-4">
+                <a href="{{ route('how-it-works') }}" class="text-sm font-bold text-slate-700 hover:text-ink underline decoration-2 decoration-sun underline-offset-4">
                     Lihat cara ia berfungsi
                 </a>
             </div>
@@ -152,36 +152,6 @@
                     </g>
                 </g>
             </svg>
-        </div>
-    </section>
-
-    <!-- How it works -->
-    <section id="cara" class="scroll-mt-24 pb-6">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-ink text-center">Tiga langkah mudah</h2>
-        <p class="mt-2 text-center text-slate-600">Tidak perlu daftar akaun. Terus mula belajar.</p>
-
-        <ol class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
-            <li class="p-5 rounded-2xl bg-sky-pop/30 border-2 border-ink">
-                <div class="w-10 h-10 rounded-full bg-sky-pop border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">1</div>
-                <h3 class="mt-4 text-lg font-extrabold text-ink">Masukkan nota</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Tampal teks atau muat naik dokumen PDF. KwizLoo akan mengenal pasti topik-topik utama secara automatik.</p>
-            </li>
-            <li class="p-5 rounded-2xl bg-sun/30 border-2 border-ink">
-                <div class="w-10 h-10 rounded-full bg-sun border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">2</div>
-                <h3 class="mt-4 text-lg font-extrabold text-ink">Pilih mod pembelajaran</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Kuiz pantas, kad imbas, padanan konsep dan enam lagi mod — semuanya dijana daripada nota yang sama.</p>
-            </li>
-            <li class="p-5 rounded-2xl bg-mint/30 border-2 border-ink">
-                <div class="w-10 h-10 rounded-full bg-mint border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">3</div>
-                <h3 class="mt-4 text-lg font-extrabold text-ink">Pantau kemajuan</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Lihat penguasaan setiap topik dan dapatkan cadangan aktiviti seterusnya. Guru boleh mencetak laporan penuh.</p>
-            </li>
-        </ol>
-
-        <div class="mt-10 text-center">
-            <a href="{{ route('decks.create') }}" class="btn-pop bg-sun text-ink text-base px-7 py-3">
-                Mulakan Sekarang
-            </a>
         </div>
     </section>
 </div>
