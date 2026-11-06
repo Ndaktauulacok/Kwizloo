@@ -3,15 +3,15 @@
 @section('content')
 <div class="max-w-5xl mx-auto py-2 space-y-8">
     <!-- Header with Print / Export Controls -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-6 print:border-none">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b-2 border-dashed border-slate-300 pb-6 print:border-none">
         <div>
             <div class="flex items-center gap-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                <span class="sticker bg-sun text-ink -rotate-1">
                     Audit Pedagogi & Diagnostik
                 </span>
                 <span class="text-xs text-slate-400 font-mono">Dijana: {{ now()->format('d M Y, H:i') }}</span>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-ink">
                 Laporan Diagnostik Pembelajaran
             </h1>
             <p class="text-xs text-slate-500 mt-1">
@@ -23,14 +23,14 @@
             <button 
                 type="button" 
                 onclick="window.print()" 
-                class="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition flex items-center space-x-1.5"
+                class="btn-pop bg-white text-ink px-4 py-2 text-xs"
             >
                 <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                 <span>Cetak Laporan</span>
             </button>
             <a 
                 href="{{ route('decks.show', $deck) }}" 
-                class="px-4 py-2 rounded-xl bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold shadow-xs transition"
+                class="btn-pop bg-indigo-600 text-white px-4 py-2 text-xs"
             >
                 Kembali ke Hab
             </a>
@@ -39,48 +39,48 @@
 
     <!-- Aggregate Performance Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-sky-500 shadow-2xs">
-            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Jumlah Sesi Latihan</span>
-            <div class="text-2xl font-bold font-mono text-slate-900 mt-1">{{ $totalSessions }}</div>
-            <span class="text-[11px] text-slate-500 mt-0.5 block">Sesi interaktif direkodkan</span>
+        <div class="p-5 rounded-2xl border-2 border-ink shadow-pop bg-sky-pop/45">
+            <span class="text-[11px] uppercase font-bold text-ink/70 block tracking-wider">Jumlah Sesi Latihan</span>
+            <div class="text-4xl font-extrabold font-display text-slate-900 mt-1">{{ $totalSessions }}</div>
+            <span class="text-xs text-ink/70 mt-0.5 block">Sesi interaktif direkodkan</span>
         </div>
 
-        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-emerald-500 shadow-2xs">
-            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Kadar Penguasaan Purata</span>
-            <div class="text-2xl font-bold font-mono {{ $overallAccuracy >= 75 ? 'text-emerald-600' : ($overallAccuracy >= 50 ? 'text-indigo-600' : 'text-amber-600') }} mt-1">
+        <div class="p-5 rounded-2xl border-2 border-ink shadow-pop bg-mint/40">
+            <span class="text-[11px] uppercase font-bold text-ink/70 block tracking-wider">Kadar Penguasaan Purata</span>
+            <div class="text-4xl font-extrabold font-display {{ $overallAccuracy >= 75 ? 'text-emerald-600' : ($overallAccuracy >= 50 ? 'text-indigo-600' : 'text-amber-600') }} mt-1">
                 {{ $overallAccuracy }}%
             </div>
-            <span class="text-[11px] text-slate-500 mt-0.5 block">Daripada keseluruhan soalan</span>
+            <span class="text-xs text-ink/70 mt-0.5 block">Daripada keseluruhan soalan</span>
         </div>
 
-        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-amber-500 shadow-2xs">
-            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Status Jurang Penguasaan</span>
-            <div class="text-2xl font-bold font-mono text-slate-900 mt-1">
+        <div class="p-5 rounded-2xl border-2 border-ink shadow-pop bg-sun/50">
+            <span class="text-[11px] uppercase font-bold text-ink/70 block tracking-wider">Status Jurang Penguasaan</span>
+            <div class="text-4xl font-extrabold font-display text-slate-900 mt-1">
                 {{ $topics->filter(fn($t) => $t->status === 'boss')->count() }}
             </div>
-            <span class="text-[11px] text-slate-500 mt-0.5 block">Topik memerlukan fokus intensif</span>
+            <span class="text-xs text-ink/70 mt-0.5 block">Topik memerlukan fokus intensif</span>
         </div>
 
-        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-indigo-600 shadow-2xs">
-            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Intervensi Ejen</span>
-            <div class="text-2xl font-bold font-mono text-indigo-700 mt-1">
+        <div class="p-5 rounded-2xl border-2 border-ink shadow-pop bg-[#c3b1ff]/55">
+            <span class="text-[11px] uppercase font-bold text-ink/70 block tracking-wider">Intervensi Ejen</span>
+            <div class="text-4xl font-extrabold font-display text-indigo-700 mt-1">
                 {{ $logs->count() }}
             </div>
-            <span class="text-[11px] text-slate-500 mt-0.5 block">Pelarasan pedagogi automatik</span>
+            <span class="text-xs text-ink/70 mt-0.5 block">Pelarasan pedagogi automatik</span>
         </div>
     </div>
 
     <!-- Topic Diagnostic Table & Misconceptions -->
     <section class="space-y-4">
         <div>
-            <h2 class="text-xl font-bold text-slate-900">Analisis Topik & Rekod Jurang Pemahaman</h2>
+            <h2 class="text-2xl font-extrabold text-ink">Analisis Topik & Rekod Jurang Pemahaman</h2>
             <p class="text-xs text-slate-500">Pecahan prestasi mengikut unit sukatan bersama corak kesilapan murid</p>
         </div>
 
         <div class="academic-card overflow-hidden bg-white border border-slate-200">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
+                    <thead class="bg-ink text-paper uppercase tracking-wider font-bold text-[11px]">
                         <tr>
                             <th class="py-3 px-4">Topik & Ringkasan</th>
                             <th class="py-3 px-4 text-center">Ketepatan</th>
@@ -127,7 +127,7 @@
                                     <div class="text-[10px] text-slate-400">Jum: {{ $topic->attempts }}</div>
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
-                                    <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-semibold border {{ $statusBadge[0] }}">
+                                    <span class="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold border-2 {{ $statusBadge[0] }}">
                                         {{ $statusBadge[1] }}
                                     </span>
                                 </td>
@@ -150,7 +150,7 @@
     <!-- Prescribed Interventions & Teacher Recommendations -->
     <section class="space-y-4">
         <div>
-            <h2 class="text-xl font-bold text-slate-900">Pelan Tindakan Ejen & Cadangan Intervensi Guru</h2>
+            <h2 class="text-2xl font-extrabold text-ink">Pelan Tindakan Ejen & Cadangan Intervensi Guru</h2>
             <p class="text-xs text-slate-500">Garis panduan tindakan pedagogi untuk guru berdasarkan corak jawapan pelajar</p>
         </div>
 
@@ -210,14 +210,14 @@
     <!-- Recent Study Sessions Audit Log -->
     <section class="space-y-4">
         <div>
-            <h2 class="text-xl font-bold text-slate-900">Log Aktiviti Sesi Terkini</h2>
+            <h2 class="text-2xl font-extrabold text-ink">Log Aktiviti Sesi Terkini</h2>
             <p class="text-xs text-slate-500">Rekod sesi interaktif yang telah diselesaikan</p>
         </div>
 
         <div class="academic-card overflow-hidden bg-white border border-slate-200">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
+                    <thead class="bg-ink text-paper uppercase tracking-wider font-bold text-[11px]">
                         <tr>
                             <th class="py-2.5 px-4">Tarikh & Masa</th>
                             <th class="py-2.5 px-4">Jenis Aktiviti</th>

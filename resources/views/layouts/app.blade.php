@@ -4,159 +4,162 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#fff7ea">
 
-    <title>{{ $title ?? 'KwizLoo' }} — Platform Pembelajaran Adaptif</title>
+    <title>{{ $title ?? 'KwizLoo' }} — KwizLoo</title>
 
-    <!-- Academic Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="h-full flex flex-col bg-[#f1f5f9] text-slate-800" x-data="{ drawerOpen: false, soundEnabled: true }">
-    <!-- Top Accent Hairline -->
-    <div class="h-0.5 w-full bg-indigo-600/80"></div>
-
-    <!-- Top Academic Navigation -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-6">
-                <a href="{{ isset($deck) ? route('decks.show', $deck) : route('decks.create') }}" class="flex items-center space-x-2.5 text-slate-900 group">
-                    <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-700 text-white flex items-center justify-center font-bold text-lg shadow-sm group-hover:scale-105 transition-transform duration-150">
-                        <svg class="w-5 h-5 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
+<body class="h-full flex flex-col text-slate-800" x-data="{ drawerOpen: false, soundEnabled: true }">
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-40 bg-paper/90 backdrop-blur border-b-2 border-ink">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-5 min-w-0">
+                <a href="{{ isset($deck) ? route('decks.show', $deck) : route('decks.create') }}" class="flex items-center gap-2.5 group shrink-0">
+                    <span class="relative w-10 h-10 rounded-xl bg-sun border-2 border-ink shadow-pop-sm flex items-center justify-center -rotate-6 group-hover:rotate-6 transition-transform duration-200">
+                        <span class="font-display font-extrabold text-xl text-ink leading-none">K</span>
+                        <span class="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-tomato border-2 border-ink"></span>
                     </span>
-                    <div>
-                        <span class="text-base font-bold tracking-tight block leading-tight text-slate-900">KwizLoo</span>
-                        <span class="text-[11px] font-medium text-indigo-600/90 block leading-none">Akademik & Adaptif</span>
-                    </div>
+                    <span class="font-display text-xl font-extrabold tracking-tight text-ink">
+                        Kwiz<span class="text-indigo-600">loo</span>
+                    </span>
                 </a>
 
                 @if(isset($deck))
-                    <div class="hidden lg:flex items-center space-x-2 text-xs text-slate-400 border-l border-slate-200 pl-5">
-                        <span class="text-slate-600 font-medium truncate max-w-[220px]">{{ $deck->title }}</span>
+                    <div class="hidden lg:flex items-center gap-2 text-sm min-w-0">
+                        <span class="text-slate-300">/</span>
+                        <span class="text-slate-700 font-semibold truncate max-w-[260px]">{{ $deck->title }}</span>
                     </div>
                 @endif
             </div>
 
-            <nav class="flex items-center space-x-3">
+            <nav class="flex items-center gap-1.5 sm:gap-2">
                 @if(isset($deck))
-                    <a href="{{ route('decks.show', $deck) }}" class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg text-slate-600 hover:text-indigo-900 hover:bg-indigo-50/60 transition">
-                        Hab Pembelajaran
+                    <a href="{{ route('decks.show', $deck) }}"
+                       class="hidden sm:inline-flex text-sm font-semibold px-3 py-1.5 rounded-lg transition {{ request()->routeIs('decks.show') ? 'bg-ink text-paper' : 'text-slate-700 hover:bg-white hover:text-ink' }}">
+                        Hab
                     </a>
-                    <a href="{{ route('decks.report', $deck) }}" class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg text-slate-600 hover:text-indigo-900 hover:bg-indigo-50/60 transition">
+                    <a href="{{ route('decks.report', $deck) }}"
+                       class="hidden sm:inline-flex text-sm font-semibold px-3 py-1.5 rounded-lg transition {{ request()->routeIs('decks.report') ? 'bg-ink text-paper' : 'text-slate-700 hover:bg-white hover:text-ink' }}">
                         Laporan Guru
                     </a>
                 @endif
 
-                <a href="{{ route('decks.create') }}" class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs hover:shadow transition">
-                    + Nota Baharu
+                <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white px-3.5 py-1.5 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+                    <span>Nota Baharu</span>
                 </a>
 
-                <!-- Agent Decision Log Trigger -->
                 @if(isset($deck))
-                    <button 
-                        @click="drawerOpen = !drawerOpen" 
-                        type="button" 
-                        class="relative p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition" 
-                        title="Buka Log Keputusan Ejen"
+                    <button
+                        @click="drawerOpen = !drawerOpen"
+                        type="button"
+                        class="relative p-2 rounded-lg text-slate-700 hover:bg-white transition"
+                        title="Log Keputusan Ejen"
+                        aria-label="Buka log keputusan ejen"
                     >
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h7"/></svg>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-mint border-2 border-paper"></span>
                     </button>
                 @endif
 
-                <!-- Audio Toggle -->
-                <button 
-                    @click="soundEnabled = !soundEnabled; window.AcademicAudio.enabled = soundEnabled" 
-                    type="button" 
-                    class="p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition" 
-                    :title="soundEnabled ? 'Bunyi Aktif' : 'Bunyi Dimatikan'"
+                <button
+                    @click="soundEnabled = !soundEnabled; window.AcademicAudio.enabled = soundEnabled"
+                    type="button"
+                    class="p-2 rounded-lg text-slate-700 hover:bg-white transition"
+                    :title="soundEnabled ? 'Bunyi aktif' : 'Bunyi dimatikan'"
+                    :aria-label="soundEnabled ? 'Matikan bunyi' : 'Hidupkan bunyi'"
                 >
-                    <span x-show="soundEnabled" class="text-sm">♪</span>
-                    <span x-show="!soundEnabled" class="text-sm text-slate-400">×</span>
+                    <svg x-show="soundEnabled" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5 6 9H3v6h3l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+                    <svg x-show="!soundEnabled" class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5 6 9H3v6h3l5 4V5zM22 9l-6 6M16 9l6 6"/></svg>
                 </button>
             </nav>
         </div>
     </header>
 
-    <!-- Flash Status Messages -->
     @if(session('status'))
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-            <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm px-4 py-3 rounded-xl flex items-center justify-between">
+        <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+            <div class="bg-mint/20 border-2 border-ink shadow-pop-sm text-ink text-sm font-medium px-4 py-3 rounded-xl flex items-center justify-between">
                 <span>{{ session('status') }}</span>
-                <button type="button" onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-900 text-sm font-bold">×</button>
+                <button type="button" onclick="this.parentElement.remove()" class="text-ink/60 hover:text-ink text-lg font-bold leading-none" aria-label="Tutup">×</button>
             </div>
         </div>
     @endif
 
-    <!-- Main View Content -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {{ $slot ?? '' }}
         @yield('content')
     </main>
 
-    <!-- Discrete Agent Decision Log Drawer -->
     @if(isset($deck))
-        <aside 
-            x-show="drawerOpen" 
-            x-transition:enter="transform transition ease-in-out duration-300"
+        <div x-show="drawerOpen" @click="drawerOpen = false" x-transition.opacity class="fixed inset-0 z-40 bg-ink/30" style="display: none;"></div>
+        <aside
+            x-show="drawerOpen"
+            @keydown.escape.window="drawerOpen = false"
+            x-transition:enter="transform transition ease-out duration-250"
             x-transition:enter-start="translate-x-full"
             x-transition:enter-end="translate-x-0"
-            x-transition:leave="transform transition ease-in-out duration-200"
+            x-transition:leave="transform transition ease-in duration-200"
             x-transition:leave-start="translate-x-0"
             x-transition:leave-end="translate-x-full"
-            class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl border-l border-slate-200 z-50 overflow-y-auto p-6"
+            class="fixed inset-y-0 right-0 max-w-md w-full bg-paper border-l-2 border-ink z-50 overflow-y-auto p-6"
             style="display: none;"
         >
-            <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
+            <div class="flex items-start justify-between pb-4 border-b-2 border-dashed border-slate-300 mb-6">
                 <div>
-                    <h3 class="text-base font-semibold text-slate-900">Log Keputusan Ejen Pedagogi</h3>
-                    <p class="text-xs text-slate-500">Rekod penalaran adaptif berdasarkan pencapaian murid</p>
+                    <h3 class="text-lg font-extrabold text-ink">Diari Ejen</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Apa yang ejen fikir dan putuskan berdasarkan jawapan anda.</p>
                 </div>
-                <button @click="drawerOpen = false" type="button" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button @click="drawerOpen = false" type="button" class="text-slate-500 hover:text-ink p-1.5 rounded-lg hover:bg-white" aria-label="Tutup">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 18 18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
-            <div class="space-y-4">
+            @php
+                $logStyles = [
+                    'Keputusan' => 'bg-indigo-600 text-white',
+                    'Fikir' => 'bg-sun text-ink',
+                    'Semakan' => 'bg-mint text-ink',
+                    'Ralat' => 'bg-tomato text-white',
+                ];
+            @endphp
+
+            <ol class="relative space-y-4 border-l-2 border-ink/15 ml-2">
                 @forelse($deck->agentLogs->take(15) as $log)
-                    <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs">
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="font-semibold uppercase tracking-wider text-[10px] 
-                                {{ $log->kind === 'Keputusan' ? 'text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded' : '' }}
-                                {{ $log->kind === 'Fikir' ? 'text-slate-600 bg-slate-200 px-2 py-0.5 rounded' : '' }}
-                                {{ $log->kind === 'Semakan' ? 'text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded' : '' }}
-                                {{ $log->kind === 'Ralat' ? 'text-rose-700 bg-rose-50 px-2 py-0.5 rounded' : '' }}
-                            ">{{ $log->kind }}</span>
-                            <span class="text-slate-400 font-mono text-[10px]">{{ $log->created_at->diffForHumans() }}</span>
+                    <li class="pl-5 relative">
+                        <span class="absolute -left-[7px] top-4 w-3 h-3 rounded-full border-2 border-ink {{ $logStyles[$log->kind] ?? 'bg-white' }}"></span>
+                        <div class="p-3.5 rounded-xl border-2 border-ink bg-white text-sm">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md {{ $logStyles[$log->kind] ?? 'bg-slate-100 text-slate-700' }}">{{ $log->kind }}</span>
+                                <span class="text-slate-400 text-[11px]">{{ $log->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-slate-700 leading-relaxed text-[13px]">{{ $log->message }}</p>
+                            @if($log->topic)
+                                <div class="mt-2 text-[11px] text-slate-500 font-semibold">Topik: {{ $log->topic->name }}</div>
+                            @endif
                         </div>
-                        <p class="text-slate-700 leading-relaxed font-normal">{{ $log->message }}</p>
-                        @if($log->topic)
-                            <div class="mt-2 text-[11px] text-slate-500 font-medium">Topik: {{ $log->topic->name }}</div>
-                        @endif
-                    </div>
+                    </li>
                 @empty
-                    <p class="text-sm text-slate-400 text-center py-8">Tiada tindakan direkodkan lagi.</p>
+                    <li class="pl-5 text-sm text-slate-500 py-8">Belum ada apa-apa. Main satu aktiviti dulu!</li>
                 @endforelse
-            </div>
+            </ol>
         </aside>
     @endif
 
-    <!-- Academic Footer -->
-    <footer class="mt-auto border-t border-slate-200/80 bg-white py-6 text-center text-xs text-slate-400">
+    <footer class="mt-auto border-t-2 border-ink bg-ink text-paper/70 py-6 text-xs print:hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="flex items-center space-x-2">
-                <span class="font-semibold text-slate-700">KwizLoo Academic</span>
-                <span>— Pembelajaran Berasaskan Bukti & Nota Rujukan</span>
+            <div class="flex items-center gap-2">
+                <span class="font-display font-extrabold text-sm text-paper">Kwiz<span class="text-sun">loo</span></span>
+                <span>— belajar dari nota anda sendiri.</span>
             </div>
-            <div>
-                <span class="text-slate-400">Pematuhan Pedagogi &bull; Tiada Halusinasi &bull; Soalan Terikat Petikan Sumber</span>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-mint"></span>Setiap soalan ada petikan sumber</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sun"></span>Tiada fakta rekaan</span>
             </div>
         </div>
     </footer>

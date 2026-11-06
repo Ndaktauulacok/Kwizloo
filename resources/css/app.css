@@ -6,96 +6,172 @@
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Bricolage Grotesque', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
     --font-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', serif;
+
+    /* Brand tokens */
+    --color-paper: #fff7ea;
+    --color-ink: #1c1915;
+    --color-sun: #ffc83d;
+    --color-tomato: #ff6b4a;
+    --color-mint: #2ec4a0;
+    --color-sky-pop: #5aa9ff;
+    --color-bubblegum: #ff8fc7;
+
+    /* Primary accent: cobalt (replaces the default indigo everywhere) */
+    --color-indigo-50: #eef3ff;
+    --color-indigo-100: #dce6ff;
+    --color-indigo-200: #b9ccff;
+    --color-indigo-300: #8aa8ff;
+    --color-indigo-400: #5a82ff;
+    --color-indigo-500: #3461fa;
+    --color-indigo-600: #2148e8;
+    --color-indigo-700: #1a39c4;
+    --color-indigo-800: #172f9c;
+    --color-indigo-900: #15297a;
+    --color-indigo-950: #0e1a4c;
+
+    /* Neutrals: warm ink instead of cool slate */
+    --color-slate-50: #fbf8f3;
+    --color-slate-100: #f3eee5;
+    --color-slate-200: #e7dfd2;
+    --color-slate-300: #d3c8b7;
+    --color-slate-400: #a39886;
+    --color-slate-500: #7a6f61;
+    --color-slate-600: #5c5347;
+    --color-slate-700: #433c33;
+    --color-slate-800: #2d2822;
+    --color-slate-900: #1c1915;
+    --color-slate-950: #110f0c;
+
+    --shadow-pop-sm: 2px 2px 0 0 var(--color-ink);
+    --shadow-pop: 4px 4px 0 0 var(--color-ink);
+    --shadow-pop-lg: 6px 6px 0 0 var(--color-ink);
+
+    --animate-wiggle: wiggle 0.6s ease-in-out;
+    --animate-float: float 5s ease-in-out infinite;
+
+    @keyframes wiggle {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-6deg); }
+        75% { transform: rotate(6deg); }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+        50% { transform: translateY(-8px) rotate(var(--r, 0deg)); }
+    }
 }
 
 @layer base {
     body {
-        @apply bg-[#f4f6fb] text-slate-800 antialiased min-h-screen selection:bg-indigo-100 selection:text-indigo-900;
-        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        @apply text-slate-800 antialiased min-h-screen selection:bg-sun selection:text-ink;
+        background-color: var(--color-paper);
+        background-image: radial-gradient(rgba(28, 25, 21, 0.09) 1px, transparent 1px);
+        background-size: 22px 22px;
+    }
+
+    h1, h2, h3 {
+        font-family: var(--font-display);
+        letter-spacing: -0.02em;
+    }
+
+    :focus-visible {
+        outline: 3px solid var(--color-indigo-500);
+        outline-offset: 2px;
+    }
+
+    button:disabled {
+        cursor: not-allowed;
     }
 }
 
+/* ---------- Cards ---------- */
+
 .academic-card {
-    @apply bg-white/85 backdrop-blur-md border border-slate-200/80 rounded-2xl shadow-xs transition duration-150;
+    @apply bg-white rounded-2xl transition duration-150;
+    border: 2px solid var(--color-ink);
+    box-shadow: var(--shadow-pop);
 }
 
 .academic-card-hover {
-    @apply hover:shadow-md transition duration-200;
+    @apply transition duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5;
+}
+
+.academic-card-hover:hover {
+    box-shadow: var(--shadow-pop-lg);
 }
 
 .verbatim-quote {
-    @apply font-serif italic text-slate-700 bg-amber-50/50 border-l-3 border-amber-400 px-4 py-2.5 my-2.5 rounded-r-lg text-sm leading-relaxed;
+    @apply font-serif italic text-slate-700 bg-amber-50 px-4 py-2.5 my-2.5 rounded-r-lg text-sm leading-relaxed;
+    border-left: 4px solid var(--color-sun);
 }
 
-/* 21st.dev Refined Glass Folder & Spotlight Styles */
+/* Interactive tile: lifts on hover, presses on click */
 .spotlight-card {
     position: relative;
     border-radius: 1.25rem;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    box-shadow: 
-        inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
-        0 1px 2px 0 rgba(15, 23, 42, 0.02),
-        0 8px 20px -4px rgba(15, 23, 42, 0.04);
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+    background: #fff;
+    border: 2px solid var(--color-ink);
+    box-shadow: var(--shadow-pop);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.spotlight-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(203, 213, 225, 1);
-    box-shadow: 
-        inset 0 1px 1px 0 rgba(255, 255, 255, 1),
-        0 16px 28px -6px rgba(15, 23, 42, 0.07),
-        0 4px 8px -2px rgba(15, 23, 42, 0.03);
+a.spotlight-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-pop-lg);
 }
 
-.spotlight-glow {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    background: radial-gradient(
-        260px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
-        var(--spotlight-glow, rgba(99, 102, 241, 0.07)),
-        transparent 75%
-    );
+a.spotlight-card:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 0 var(--color-ink);
 }
 
-.spotlight-border {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    background: radial-gradient(
-        180px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
-        var(--spotlight-border-glow, rgba(99, 102, 241, 0.35)),
-        transparent 65%
-    );
+/* ---------- Buttons ---------- */
+
+.btn-pop {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition duration-100;
+    border: 2px solid var(--color-ink);
+    box-shadow: var(--shadow-pop-sm);
 }
 
-.spotlight-card:hover .spotlight-glow,
-.spotlight-card:hover .spotlight-border {
-    opacity: 1;
+.btn-pop:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 0 var(--color-ink);
 }
 
-.glass-folder-tab {
-    position: relative;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(0, 0, 0, 0.02);
+.btn-pop:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 var(--color-ink);
+}
+
+/* ---------- Decorative ---------- */
+
+.sticker {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold;
+    border: 2px solid var(--color-ink);
+    box-shadow: var(--shadow-pop-sm);
+}
+
+.marker-underline {
+    background-image: linear-gradient(transparent 62%, var(--color-sun) 62%, var(--color-sun) 90%, transparent 90%);
+    padding: 0 0.15em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media print {
+    body {
+        background: #fff;
+    }
+
+    .academic-card {
+        box-shadow: none;
+    }
 }

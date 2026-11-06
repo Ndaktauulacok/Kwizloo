@@ -66,7 +66,7 @@
                 <button 
                     type="button" 
                     @click="markCard(true)"
-                    class="py-3.5 px-4 rounded-xl bg-indigo-900 hover:bg-indigo-800 text-white font-bold text-xs sm:text-sm transition shadow-xs flex items-center justify-center space-x-2"
+                    class="py-3.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm transition shadow-xs flex items-center justify-center space-x-2"
                 >
                     <span>✓ Sudah Faham</span>
                 </button>

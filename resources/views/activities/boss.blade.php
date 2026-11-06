@@ -118,7 +118,7 @@
                         <button 
                             type="button" 
                             @click="nextQuestion()"
-                            class="px-5 py-2 rounded-lg bg-indigo-900 hover:bg-indigo-800 text-white font-semibold text-xs transition shadow-xs"
+                            class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs transition shadow-xs"
                         >
                             Teruskan &rarr;
                         </button>

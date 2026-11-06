@@ -34,20 +34,20 @@
                     type="button" 
                     @click="answer(false)"
                     :disabled="answered"
-                    class="py-4 px-6 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-base transition flex flex-col items-center justify-center space-y-1 shadow-2xs"
+                    class="btn-pop flex-col gap-0.5 py-5 px-6 bg-tomato text-white text-lg disabled:opacity-60"
                 >
                     <span>Salah</span>
-                    <span class="text-[11px] font-mono text-rose-500 font-normal">[1]</span>
+                    <span class="text-[11px] font-mono text-white/80 font-normal">[1]</span>
                 </button>
 
                 <button 
                     type="button" 
                     @click="answer(true)"
                     :disabled="answered"
-                    class="py-4 px-6 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-base transition flex flex-col items-center justify-center space-y-1 shadow-2xs"
+                    class="btn-pop flex-col gap-0.5 py-5 px-6 bg-mint text-ink text-lg disabled:opacity-60"
                 >
                     <span>Betul</span>
-                    <span class="text-[11px] font-mono text-emerald-500 font-normal">[2]</span>
+                    <span class="text-[11px] font-mono text-ink/60 font-normal">[2]</span>
                 </button>
             </div>
 
