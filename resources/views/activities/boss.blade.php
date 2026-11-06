@@ -22,7 +22,14 @@
     <div class="academic-card p-5 bg-white border border-slate-200 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-center space-x-3.5">
             <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xl shadow-xs">
-                ⚔️
+                <svg class="w-6 h-6 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline>
+                    <line x1="13" y1="19" x2="19" y2="13"></line>
+                    <line x1="16" y1="16" x2="20" y2="20"></line>
+                    <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"></polyline>
+                    <line x1="5" y1="14" x2="9" y2="18"></line>
+                    <line x1="7" y1="17" x2="4" y2="20"></line>
+                </svg>
             </div>
             <div>
                 <span class="text-xs font-semibold uppercase text-slate-400">Sasaran Penguasaan</span>

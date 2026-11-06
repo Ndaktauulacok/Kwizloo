@@ -21,8 +21,12 @@
                     :class="f === currentFloor ? 'bg-indigo-900 border-indigo-900 text-white shadow-xs' : (f < currentFloor ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-slate-50 border-slate-200 text-slate-400')"
                 >
                     <span x-text="'Tingkat ' + f"></span>
-                    <span x-show="f === currentFloor" class="text-xs">📍</span>
-                    <span x-show="f === 8" class="text-xs">🏆</span>
+                    <svg x-show="f === currentFloor" class="w-3.5 h-3.5 text-amber-300 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg x-show="f === 8" class="w-3.5 h-3.5 text-amber-400 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/>
+                    </svg>
                 </div>
             </template>
         </div>

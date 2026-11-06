@@ -39,30 +39,30 @@
 
     <!-- Aggregate Performance Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div class="academic-card p-5 bg-white border border-slate-200">
-            <span class="text-xs uppercase font-semibold text-slate-400 block">Jumlah Sesi Latihan</span>
+        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-sky-500 shadow-2xs">
+            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Jumlah Sesi Latihan</span>
             <div class="text-2xl font-bold font-mono text-slate-900 mt-1">{{ $totalSessions }}</div>
             <span class="text-[11px] text-slate-500 mt-0.5 block">Sesi interaktif direkodkan</span>
         </div>
 
-        <div class="academic-card p-5 bg-white border border-slate-200">
-            <span class="text-xs uppercase font-semibold text-slate-400 block">Kadar Penguasaan Purata</span>
+        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-emerald-500 shadow-2xs">
+            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Kadar Penguasaan Purata</span>
             <div class="text-2xl font-bold font-mono {{ $overallAccuracy >= 75 ? 'text-emerald-600' : ($overallAccuracy >= 50 ? 'text-indigo-600' : 'text-amber-600') }} mt-1">
                 {{ $overallAccuracy }}%
             </div>
             <span class="text-[11px] text-slate-500 mt-0.5 block">Daripada keseluruhan soalan</span>
         </div>
 
-        <div class="academic-card p-5 bg-white border border-slate-200">
-            <span class="text-xs uppercase font-semibold text-slate-400 block">Status Jurang Penguasaan</span>
+        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-amber-500 shadow-2xs">
+            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Status Jurang Penguasaan</span>
             <div class="text-2xl font-bold font-mono text-slate-900 mt-1">
                 {{ $topics->filter(fn($t) => $t->status === 'boss')->count() }}
             </div>
             <span class="text-[11px] text-slate-500 mt-0.5 block">Topik memerlukan fokus intensif</span>
         </div>
 
-        <div class="academic-card p-5 bg-white border border-slate-200">
-            <span class="text-xs uppercase font-semibold text-slate-400 block">Intervensi Ejen</span>
+        <div class="academic-card p-5 bg-white border border-slate-200/90 border-t-4 border-t-indigo-600 shadow-2xs">
+            <span class="text-xs uppercase font-semibold text-slate-400 block tracking-wider">Intervensi Ejen</span>
             <div class="text-2xl font-bold font-mono text-indigo-700 mt-1">
                 {{ $logs->count() }}
             </div>

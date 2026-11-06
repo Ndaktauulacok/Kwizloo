@@ -15,42 +15,44 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="h-full flex flex-col bg-slate-50 text-slate-800" x-data="{ drawerOpen: false, soundEnabled: true }">
+<body class="h-full flex flex-col bg-[#f1f5f9] text-slate-800" x-data="{ drawerOpen: false, soundEnabled: true }">
+    <!-- Top Accent Hairline -->
+    <div class="h-0.5 w-full bg-indigo-600/80"></div>
+
     <!-- Top Academic Navigation -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-6">
                 <a href="{{ isset($deck) ? route('decks.show', $deck) : route('decks.create') }}" class="flex items-center space-x-2.5 text-slate-900 group">
-                    <span class="w-9 h-9 rounded-xl bg-indigo-900 text-white flex items-center justify-center font-bold text-lg shadow-xs group-hover:bg-indigo-800 transition">
-                        <svg class="w-5 h-5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-700 text-white flex items-center justify-center font-bold text-lg shadow-sm group-hover:scale-105 transition-transform duration-150">
+                        <svg class="w-5 h-5 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
                     </span>
                     <div>
-                        <span class="text-base font-semibold tracking-tight block leading-tight">KwizLoo</span>
-                        <span class="text-xs font-medium text-slate-400 block leading-none">Akademik & Adaptif</span>
+                        <span class="text-base font-bold tracking-tight block leading-tight text-slate-900">KwizLoo</span>
+                        <span class="text-[11px] font-medium text-indigo-600/90 block leading-none">Akademik & Adaptif</span>
                     </div>
                 </a>
 
                 @if(isset($deck))
-                    <div class="hidden md:flex items-center space-x-2 text-sm text-slate-400 border-l border-slate-200 pl-6">
-                        <span class="text-slate-600 font-medium truncate max-w-xs">{{ $deck->title }}</span>
-                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-mono">{{ $deck->topics()->count() }} Topik</span>
+                    <div class="hidden lg:flex items-center space-x-2 text-xs text-slate-400 border-l border-slate-200 pl-5">
+                        <span class="text-slate-600 font-medium truncate max-w-[220px]">{{ $deck->title }}</span>
                     </div>
                 @endif
             </div>
 
             <nav class="flex items-center space-x-3">
                 @if(isset($deck))
-                    <a href="{{ route('decks.show', $deck) }}" class="text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg text-slate-600 hover:text-indigo-900 hover:bg-slate-100 transition">
+                    <a href="{{ route('decks.show', $deck) }}" class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg text-slate-600 hover:text-indigo-900 hover:bg-indigo-50/60 transition">
                         Hab Pembelajaran
                     </a>
-                    <a href="{{ route('decks.report', $deck) }}" class="text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg text-slate-600 hover:text-indigo-900 hover:bg-slate-100 transition">
+                    <a href="{{ route('decks.report', $deck) }}" class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg text-slate-600 hover:text-indigo-900 hover:bg-indigo-50/60 transition">
                         Laporan Guru
                     </a>
                 @endif
 
-                <a href="{{ route('decks.create') }}" class="text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition">
+                <a href="{{ route('decks.create') }}" class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs hover:shadow transition">
                     + Nota Baharu
                 </a>
 
