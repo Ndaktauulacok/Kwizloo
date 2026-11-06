@@ -7,16 +7,16 @@
         <div class="order-2 lg:order-1 text-center lg:text-left">
             <span class="sticker bg-white text-ink -rotate-2">
                 <span class="w-2 h-2 rounded-full bg-tomato"></span>
-                Selamat datang ke KwizLoo
+                Platform pembelajaran berkuasa AI
             </span>
 
             <h1 class="mt-5 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-ink leading-[1.05]">
-                Belajar dengan cara yang <span class="marker-underline">lebih menyeronokkan</span>.
+                Belajar lebih bijak dengan <span class="marker-underline">bantuan AI</span>.
             </h1>
 
             <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                KwizLoo mengubah nota, sukatan pelajaran atau dokumen PDF anda menjadi kuiz, kad imbas dan
-                aktiviti interaktif. Sesuai untuk murid, pelajar dan guru.
+                Muat naik nota atau dokumen PDF anda. AI KwizLoo akan membaca kandungannya, mengenal pasti topik penting
+                dan menjana kuiz, kad imbas serta aktiviti interaktif untuk anda. Sesuai untuk murid, pelajar dan guru.
             </p>
 
             <div class="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
@@ -41,9 +41,9 @@
                     <dd class="text-[11px] font-semibold text-slate-600">atau teks biasa</dd>
                 </div>
                 <div class="p-3 rounded-xl bg-white border-2 border-ink text-center">
-                    <dt class="sr-only">Laporan</dt>
-                    <dd class="font-display text-2xl font-extrabold text-ink">Guru</dd>
-                    <dd class="text-[11px] font-semibold text-slate-600">laporan prestasi</dd>
+                    <dt class="sr-only">Dijana oleh AI</dt>
+                    <dd class="font-display text-2xl font-extrabold text-ink">AI</dd>
+                    <dd class="text-[11px] font-semibold text-slate-600">jana soalan automatik</dd>
                 </div>
             </dl>
         </div>
@@ -51,7 +51,7 @@
         <!-- Mascot holding floating study cards -->
         <div class="order-1 lg:order-2 mascot w-full max-w-[560px] mx-auto">
             <svg viewBox="0 0 560 540" class="w-full h-auto overflow-visible" role="img" aria-labelledby="mascot-title">
-                <title id="mascot-title">Maskot KwizLoo menghulurkan tangan sambil memegang kad pembelajaran yang terapung</title>
+                <title id="mascot-title">Maskot KwizLoo, pembantu AI, menghulurkan tangan sambil memegang kad pembelajaran yang terapung</title>
 
                 <!-- Sparkles -->
                 <g fill="#ffc83d" stroke="#1c1915" stroke-width="2.5" stroke-linejoin="round">

@@ -68,7 +68,7 @@
             <!-- Scaffolding Hint -->
             <template x-if="hintActive && currentQ.quote">
                 <div class="verbatim-quote">
-                    <strong class="font-sans font-semibold not-italic text-indigo-900 text-xs block mb-0.5">Petunjuk Ejen:</strong>
+                    <strong class="font-sans font-semibold not-italic text-indigo-900 text-xs block mb-0.5">Petunjuk Ejen AI:</strong>
                     "<span x-text="currentQ.quote"></span>"
                 </div>
             </template>
@@ -136,7 +136,7 @@
             </div>
             <h3 class="text-xl font-bold text-slate-900">Penilaian Belum Berjaya Kali Ini</h3>
             <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                Ejen pedagogi telah merendahkan aras soalan dan menyediakan petunjuk rujukan untuk percubaan seterusnya. Anda disyorkan menyemak flashcard terlebih dahulu.
+                Ejen AI telah merendahkan aras soalan dan menyediakan petunjuk rujukan untuk percubaan seterusnya. Anda disyorkan menyemak flashcard terlebih dahulu.
             </p>
             <div class="flex items-center justify-center gap-3 pt-2">
                 <a href="{{ route('decks.activities.show', [$deck, 'cards', 'topic_id' => $topic ? $topic->id : null]) }}" class="px-5 py-2.5 rounded-xl bg-indigo-900 text-white text-xs font-semibold hover:bg-indigo-800 transition">

@@ -64,8 +64,8 @@
                         @click="drawerOpen = !drawerOpen"
                         type="button"
                         class="relative p-2 rounded-lg text-slate-700 hover:bg-white transition"
-                        title="Log Keputusan Ejen"
-                        aria-label="Buka log keputusan ejen"
+                        title="Log Keputusan Ejen AI"
+                        aria-label="Buka log keputusan ejen AI"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h7"/></svg>
                         <span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-mint border-2 border-paper"></span>
@@ -116,8 +116,8 @@
         >
             <div class="flex items-start justify-between pb-4 border-b-2 border-dashed border-slate-300 mb-6">
                 <div>
-                    <h3 class="text-lg font-extrabold text-ink">Log Keputusan Ejen</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Rekod penilaian dan keputusan ejen berdasarkan prestasi anda.</p>
+                    <h3 class="text-lg font-extrabold text-ink">Log Keputusan Ejen AI</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Rekod analisis dan keputusan ejen AI berdasarkan prestasi anda.</p>
                 </div>
                 <button @click="drawerOpen = false" type="button" class="text-slate-500 hover:text-ink p-1.5 rounded-lg hover:bg-white" aria-label="Tutup">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 18 18 6M6 6l12 12"/></svg>
@@ -159,11 +159,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2">
                 <span class="font-display font-extrabold text-sm text-paper">Kwiz<span class="text-sun">loo</span></span>
-                <span>— Pembelajaran interaktif berasaskan nota anda.</span>
+                <span>— Pembelajaran interaktif berkuasa AI, berasaskan nota anda.</span>
             </div>
             <div class="flex items-center gap-3">
-                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-mint"></span>Setiap soalan disokong petikan sumber</span>
-                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sun"></span>Kandungan disahkan daripada nota</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-mint"></span>Soalan dijana AI daripada nota anda</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sun"></span>Setiap jawapan disokong petikan sumber</span>
             </div>
         </div>
     </footer>

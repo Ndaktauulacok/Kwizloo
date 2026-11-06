@@ -11,13 +11,13 @@
     <header class="mt-6 text-center">
         <span class="sticker bg-white text-ink -rotate-2">
             <span class="w-2 h-2 rounded-full bg-mint"></span>
-            Tidak perlu daftar akaun
+            Dikuasakan oleh AI
         </span>
         <h1 class="mt-5 text-3xl sm:text-5xl font-extrabold text-ink leading-tight">
             Cara KwizLoo <span class="marker-underline">berfungsi</span>
         </h1>
         <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Daripada nota biasa kepada sesi ulang kaji yang interaktif, dalam tiga langkah mudah.
+            Anda hanya perlu menyediakan nota. AI KwizLoo akan melakukan selebihnya, dalam tiga langkah mudah.
         </p>
     </header>
 
@@ -27,24 +27,69 @@
             <div class="w-12 h-12 rounded-full bg-sky-pop border-2 border-ink shadow-pop-sm flex items-center justify-center font-display font-extrabold text-xl">1</div>
             <h2 class="mt-5 text-xl font-extrabold text-ink">Masukkan nota</h2>
             <p class="mt-2 text-sm text-slate-700 leading-relaxed">
-                Tampal teks atau muat naik dokumen PDF. KwizLoo akan mengenal pasti topik-topik utama dalam nota anda secara automatik.
+                Tampal teks atau muat naik dokumen PDF. AI akan membaca keseluruhan kandungan dan mengenal pasti topik-topik utama.
             </p>
         </li>
         <li class="relative p-6 rounded-2xl bg-sun/30 border-2 border-ink">
             <div class="w-12 h-12 rounded-full bg-sun border-2 border-ink shadow-pop-sm flex items-center justify-center font-display font-extrabold text-xl">2</div>
-            <h2 class="mt-5 text-xl font-extrabold text-ink">Pilih mod pembelajaran</h2>
+            <h2 class="mt-5 text-xl font-extrabold text-ink">AI menjana bahan latihan</h2>
             <p class="mt-2 text-sm text-slate-700 leading-relaxed">
-                Setiap soalan, kad imbas dan aktiviti dijana daripada nota yang sama, dan setiap jawapan disertakan petikan sumbernya.
+                AI menyediakan soalan, pilihan jawapan, kad imbas dan penjelasan berdasarkan nota anda, lengkap dengan petikan sumber.
             </p>
         </li>
         <li class="relative p-6 rounded-2xl bg-mint/30 border-2 border-ink">
             <div class="w-12 h-12 rounded-full bg-mint border-2 border-ink shadow-pop-sm flex items-center justify-center font-display font-extrabold text-xl">3</div>
-            <h2 class="mt-5 text-xl font-extrabold text-ink">Pantau kemajuan</h2>
+            <h2 class="mt-5 text-xl font-extrabold text-ink">Belajar bersama ejen AI</h2>
             <p class="mt-2 text-sm text-slate-700 leading-relaxed">
-                Lihat tahap penguasaan setiap topik. Topik yang sering dijawab salah akan dijadikan cabaran pengukuhan secara automatik.
+                Ejen AI menganalisis jawapan anda, mengesan topik yang masih lemah dan mencadangkan aktiviti seterusnya yang paling sesuai.
             </p>
         </li>
     </ol>
+
+    <!-- What the AI does -->
+    <section class="mt-16 grid lg:grid-cols-[1fr_1.2fr] gap-8 items-center">
+        <div>
+            <span class="sticker bg-sun text-ink rotate-1">Di sebalik tabir</span>
+            <h2 class="mt-4 text-2xl sm:text-3xl font-extrabold text-ink">Apa yang AI lakukan untuk anda?</h2>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+                Kerja yang biasanya mengambil masa berjam-jam, seperti membaca semula nota, menyediakan soalan dan menyemak
+                jawapan, kini dilakukan oleh AI dalam beberapa saat. Anda boleh terus fokus untuk belajar.
+            </p>
+            <p class="mt-4 text-sm text-slate-500 leading-relaxed">
+                Setiap soalan disertakan petikan daripada nota asal supaya anda sentiasa boleh menyemak ketepatannya.
+            </p>
+        </div>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <li class="p-4 rounded-xl bg-white border-2 border-ink shadow-pop-sm">
+                <span class="inline-flex w-9 h-9 rounded-lg bg-sky-pop border-2 border-ink items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.25v13m0-13C10.8 5.5 9.2 5 7.5 5S4.2 5.5 3 6.25v13C4.2 18.5 5.8 18 7.5 18s3.3.5 4.5 1.25m0-13C13.2 5.5 14.8 5 16.5 5s3.3.5 4.5 1.25v13C19.8 18.5 18.2 18 16.5 18s-3.3.5-4.5 1.25"/></svg>
+                </span>
+                <h3 class="mt-3 text-sm font-extrabold text-ink">Membaca dan memahami nota</h3>
+                <p class="mt-1 text-sm text-slate-600 leading-snug">Teks dan PDF dianalisis untuk mencari idea serta fakta penting.</p>
+            </li>
+            <li class="p-4 rounded-xl bg-white border-2 border-ink shadow-pop-sm">
+                <span class="inline-flex w-9 h-9 rounded-lg bg-bubblegum border-2 border-ink items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h7"/></svg>
+                </span>
+                <h3 class="mt-3 text-sm font-extrabold text-ink">Menyusun topik</h3>
+                <p class="mt-1 text-sm text-slate-600 leading-snug">Kandungan dipecahkan kepada topik yang mudah diulang kaji.</p>
+            </li>
+            <li class="p-4 rounded-xl bg-white border-2 border-ink shadow-pop-sm">
+                <span class="inline-flex w-9 h-9 rounded-lg bg-sun border-2 border-ink items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.2 9a4 4 0 0 1 7.6 1.5c0 2-3 3-3 3M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                </span>
+                <h3 class="mt-3 text-sm font-extrabold text-ink">Menjana soalan dan penjelasan</h3>
+                <p class="mt-1 text-sm text-slate-600 leading-snug">Kuiz, kad imbas dan penjelasan disediakan untuk setiap topik.</p>
+            </li>
+            <li class="p-4 rounded-xl bg-white border-2 border-ink shadow-pop-sm">
+                <span class="inline-flex w-9 h-9 rounded-lg bg-mint border-2 border-ink items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8M14 7h7v7"/></svg>
+                </span>
+                <h3 class="mt-3 text-sm font-extrabold text-ink">Menyesuaikan latihan</h3>
+                <p class="mt-1 text-sm text-slate-600 leading-snug">Aktiviti seterusnya dipilih mengikut prestasi dan kelemahan anda.</p>
+            </li>
+        </ul>
+    </section>
 
     <!-- Modes -->
     @php
@@ -63,7 +108,7 @@
 
     <section class="mt-16">
         <h2 class="text-2xl sm:text-3xl font-extrabold text-ink text-center">9 mod pembelajaran</h2>
-        <p class="mt-2 text-center text-slate-600">Pilih cara yang paling sesuai dengan gaya belajar anda.</p>
+        <p class="mt-2 text-center text-slate-600">Semua bahan dijana oleh AI daripada nota yang sama. Pilih cara yang paling sesuai dengan gaya belajar anda.</p>
 
         <ul class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             @foreach($modes as $mode)
@@ -83,8 +128,8 @@
         <div>
             <h2 class="text-2xl font-extrabold">Untuk guru</h2>
             <p class="mt-2 text-paper/75 leading-relaxed max-w-2xl">
-                Setiap modul disertakan laporan diagnostik: ketepatan mengikut topik, soalan yang sering dijawab salah dan cadangan
-                intervensi. Laporan ini boleh dicetak terus untuk perbincangan di bilik darjah.
+                Ejen AI menyediakan laporan diagnostik bagi setiap modul: ketepatan mengikut topik, soalan yang sering dijawab
+                salah dan cadangan intervensi. Laporan ini boleh dicetak terus untuk perbincangan di bilik darjah.
             </p>
         </div>
         <div class="flex md:flex-col gap-2 text-sm font-bold">

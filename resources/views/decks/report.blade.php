@@ -62,7 +62,7 @@
         </div>
 
         <div class="p-5 rounded-2xl border-2 border-ink shadow-pop bg-[#c3b1ff]/55">
-            <span class="text-[11px] uppercase font-bold text-ink/70 block tracking-wider">Intervensi Ejen</span>
+            <span class="text-[11px] uppercase font-bold text-ink/70 block tracking-wider">Intervensi Ejen AI</span>
             <div class="text-4xl font-extrabold font-display text-indigo-700 mt-1">
                 {{ $logs->count() }}
             </div>
@@ -86,7 +86,7 @@
                             <th class="py-3 px-4 text-center">Ketepatan</th>
                             <th class="py-3 px-4 text-center">Cubaan (B / S)</th>
                             <th class="py-3 px-4 text-center">Status</th>
-                            <th class="py-3 px-4">Pelan Tindakan Ejen & Pelarasan Aras</th>
+                            <th class="py-3 px-4">Pelan Tindakan Ejen AI & Pelarasan Aras</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -150,7 +150,7 @@
     <!-- Prescribed Interventions & Teacher Recommendations -->
     <section class="space-y-4">
         <div>
-            <h2 class="text-2xl font-extrabold text-ink">Pelan Tindakan Ejen & Cadangan Intervensi Guru</h2>
+            <h2 class="text-2xl font-extrabold text-ink">Pelan Tindakan Ejen AI & Cadangan Intervensi Guru</h2>
             <p class="text-xs text-slate-500">Garis panduan tindakan pedagogi untuk guru berdasarkan corak jawapan pelajar</p>
         </div>
 

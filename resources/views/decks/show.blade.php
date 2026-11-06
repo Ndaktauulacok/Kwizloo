@@ -21,7 +21,7 @@
                 title="{{ $nextMission['rationale'] }}"
             >
                 <span class="flex flex-col items-start leading-tight">
-                    <span class="text-[10px] uppercase tracking-wider font-bold text-ink/60">Misi Cadangan</span>
+                    <span class="text-[10px] uppercase tracking-wider font-bold text-ink/60">Misi Cadangan AI</span>
                     <span class="text-base font-extrabold">{{ $nextMission['activity_name'] }}</span>
                 </span>
                 <span class="ml-2 w-8 h-8 rounded-full bg-ink text-sun flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
@@ -43,7 +43,7 @@
                 </span>
                 <div>
                     <h2 class="text-lg font-extrabold">Topik Memerlukan Pengukuhan</h2>
-                    <p class="text-sm text-paper/70">Topik berikut masih sering dijawab salah. Selesaikan penilaian penguasaan untuk mengukuhkan kefahaman anda.</p>
+                    <p class="text-sm text-paper/70">Ejen AI mengesan topik berikut masih sering dijawab salah. Selesaikan penilaian penguasaan untuk mengukuhkan kefahaman anda.</p>
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
         <div class="flex items-end justify-between gap-4 mb-5">
             <div>
                 <h2 class="text-2xl font-extrabold text-ink">Pilih Mod Pembelajaran</h2>
-                <p class="text-sm text-slate-600 mt-0.5">Sembilan cara berbeza untuk mengulang kaji kandungan yang sama.</p>
+                <p class="text-sm text-slate-600 mt-0.5">Sembilan cara berbeza untuk mengulang kaji bahan yang dijana oleh AI.</p>
             </div>
         </div>
 
@@ -128,7 +128,7 @@
                         @if($isRecommended)
                             <span class="sticker bg-ink text-sun rotate-3">
                                 <span class="w-1.5 h-1.5 rounded-full bg-sun animate-pulse"></span>
-                                Cadangan ejen
+                                Cadangan AI
                             </span>
                         @else
                             <span class="text-[11px] font-bold uppercase tracking-wider text-ink/70 bg-white/50 px-2 py-0.5 rounded-md border border-ink/20">
@@ -160,7 +160,7 @@
         <div class="flex items-end justify-between gap-4 mb-5">
             <div>
                 <h2 class="text-2xl font-extrabold text-ink">Penguasaan Topik</h2>
-                <p class="text-sm text-slate-600 mt-0.5">{{ $topics->count() }} topik dikesan daripada nota anda.</p>
+                <p class="text-sm text-slate-600 mt-0.5">{{ $topics->count() }} topik dikenal pasti oleh AI daripada nota anda.</p>
             </div>
             <a href="{{ route('decks.report', $deck) }}" class="text-sm font-bold text-indigo-700 hover:text-ink underline decoration-2 underline-offset-4 shrink-0">
                 Lihat laporan guru &rarr;

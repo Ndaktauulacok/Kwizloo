@@ -7,16 +7,16 @@
         <div>
             <span class="sticker bg-white text-ink -rotate-2">
                 <span class="w-2 h-2 rounded-full bg-tomato"></span>
-                9 mod pembelajaran interaktif
+                Dikuasakan oleh AI
             </span>
 
             <h1 class="mt-5 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-ink leading-[1.05]">
-                Ubah nota anda menjadi <span class="marker-underline">sesi pembelajaran</span> yang interaktif.
+                Biar AI ubah nota anda menjadi <span class="marker-underline">sesi pembelajaran</span> yang interaktif.
             </h1>
 
             <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
-                Tampal teks atau muat naik dokumen PDF. KwizLoo mengenal pasti topik utama, menjana kuiz,
-                kad imbas dan aktiviti latihan, lalu membantu anda memberi tumpuan kepada bahagian yang memerlukan pengukuhan.
+                Tampal teks atau muat naik dokumen PDF. AI KwizLoo akan membaca nota anda, mengenal pasti topik utama dan menjana
+                kuiz, kad imbas serta aktiviti latihan, kemudian membantu anda memberi tumpuan kepada bahagian yang memerlukan pengukuhan.
             </p>
 
             <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-slate-700">
@@ -24,7 +24,7 @@
                     <span class="w-5 h-5 rounded-md bg-mint border-2 border-ink flex items-center justify-center">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg>
                     </span>
-                    Setiap jawapan berdasarkan nota anda
+                    Soalan dijana oleh AI daripada nota anda
                 </li>
                 <li class="flex items-center gap-2">
                     <span class="w-5 h-5 rounded-md bg-sun border-2 border-ink flex items-center justify-center">
@@ -72,7 +72,7 @@
     <section class="relative max-w-4xl mx-auto">
         <div class="absolute -top-4 left-6 z-10 sticker bg-sun text-ink rotate-[-3deg]">Mulakan di sini</div>
 
-        <div class="academic-card p-6 sm:p-8 shadow-pop-lg" x-data="{ isDragging: false, activeTab: 'paste', fileName: '' }">
+        <div class="academic-card p-6 sm:p-8 shadow-pop-lg" x-data="{ isDragging: false, activeTab: 'paste', fileName: '', isGenerating: false }" @pageshow.window="isGenerating = false">
             @if($errors->any())
                 <div class="mb-6 p-4 rounded-xl bg-tomato/10 border-2 border-tomato text-ink text-sm">
                     <div class="font-bold mb-1">Sila semak perkara berikut:</div>
@@ -86,8 +86,28 @@
 
             <h2 class="text-xl sm:text-2xl font-extrabold text-ink mb-5">Masukkan Nota Pembelajaran</h2>
 
-            <form action="{{ route('decks.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('decks.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 relative" @submit="isGenerating = true">
                 @csrf
+
+                <!-- Shown while the note is being processed -->
+                <div
+                    x-show="isGenerating"
+                    x-transition.opacity
+                    class="absolute -inset-2 z-20 rounded-2xl bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center text-center gap-4"
+                    role="status"
+                    aria-live="polite"
+                    style="display: none;"
+                >
+                    <div class="flex gap-2" aria-hidden="true">
+                        <span class="w-3.5 h-3.5 rounded-full bg-sky-pop border-2 border-ink animate-bounce"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-sun border-2 border-ink animate-bounce [animation-delay:0.15s]"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-tomato border-2 border-ink animate-bounce [animation-delay:0.3s]"></span>
+                    </div>
+                    <div>
+                        <p class="font-display text-xl font-extrabold text-ink">AI sedang membaca nota anda…</p>
+                        <p class="mt-1 text-sm text-slate-600">Mengenal pasti topik dan menyediakan soalan. Sila tunggu sebentar.</p>
+                    </div>
+                </div>
 
                 <div>
                     <label for="title" class="block text-sm font-bold text-ink mb-1.5">
@@ -141,7 +161,7 @@
                         style="background-image: repeating-linear-gradient(transparent 0 27px, rgba(33,72,232,0.08) 27px 28px); background-attachment: local; line-height: 28px;"
                     >{{ old('note_text') }}</textarea>
                     <p class="text-xs text-slate-500 mt-2">
-                        Setiap soalan yang dijana dirujuk terus kepada petikan daripada nota ini bagi memastikan ketepatan maklumat.
+                        AI akan membaca nota ini untuk menjana soalan. Setiap soalan dirujuk kepada petikan asal bagi memastikan ketepatan maklumat.
                     </p>
                 </div>
 
@@ -183,7 +203,7 @@
                     </button>
 
                     <button type="submit" class="btn-pop w-full sm:w-auto bg-indigo-600 text-white px-7 py-3 text-base">
-                        <span>Jana Modul Pembelajaran</span>
+                        <span>Jana dengan AI</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                     </button>
                 </div>
@@ -199,17 +219,17 @@
             <div class="p-5 rounded-2xl bg-mint/25 border-2 border-ink">
                 <div class="w-10 h-10 rounded-full bg-mint border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">1</div>
                 <h3 class="mt-4 text-lg font-extrabold text-ink">Berasaskan nota anda</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Setiap soalan dan kad imbas disemak berdasarkan petikan sebenar daripada nota anda, tanpa maklumat luar yang tidak disahkan.</p>
+                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">AI menjana soalan dan kad imbas berdasarkan kandungan nota anda sahaja, dan setiap satu disertakan petikan sumber.</p>
             </div>
             <div class="p-5 rounded-2xl bg-sun/30 border-2 border-ink">
                 <div class="w-10 h-10 rounded-full bg-sun border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">2</div>
                 <h3 class="mt-4 text-lg font-extrabold text-ink">Latihan yang menyesuaikan diri</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Topik yang sering dijawab salah akan dijadikan cabaran pengukuhan. Sistem mencadangkan aktiviti seterusnya mengikut tahap penguasaan anda.</p>
+                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Ejen AI mengesan topik yang sering dijawab salah, menjadikannya cabaran pengukuhan dan mencadangkan aktiviti seterusnya.</p>
             </div>
             <div class="p-5 rounded-2xl bg-bubblegum/30 border-2 border-ink">
                 <div class="w-10 h-10 rounded-full bg-bubblegum border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">3</div>
                 <h3 class="mt-4 text-lg font-extrabold text-ink">Laporan lengkap untuk guru</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Ketepatan mengikut topik, corak kesilapan dan cadangan intervensi disediakan dalam laporan yang boleh dicetak.</p>
+                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Ejen AI menyediakan ketepatan mengikut topik, corak kesilapan dan cadangan intervensi dalam laporan yang boleh dicetak.</p>
             </div>
         </div>
     </section>

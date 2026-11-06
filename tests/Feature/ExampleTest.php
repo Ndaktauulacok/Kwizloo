@@ -16,6 +16,7 @@ class ExampleTest extends TestCase
 
         $response->assertOk()
             ->assertSee('Mulakan Sekarang')
+            ->assertSee('bantuan AI', false)
             ->assertSee(route('decks.create'), false)
             ->assertSee('Maskot KwizLoo', false)
             ->assertSee(route('how-it-works'), false)

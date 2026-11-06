@@ -13,7 +13,7 @@
             <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Aktiviti selesai</span>
             <h3 class="text-2xl sm:text-3xl font-extrabold text-ink mt-1"
                 x-text="accuracy >= 80 ? 'Cemerlang! Anda menguasai topik ini.' : (accuracy >= 50 ? 'Bagus, anda semakin hampir.' : 'Usaha yang baik. Cuba sekali lagi.')">Tahniah atas usaha anda</h3>
-            <p class="text-sm text-slate-500 mt-1.5">Keputusan anda telah disimpan untuk analisis prestasi.</p>
+            <p class="text-sm text-slate-500 mt-1.5">Keputusan anda telah disimpan dan dianalisis oleh ejen AI.</p>
         </div>
 
         <div class="grid grid-cols-3 gap-2.5">
@@ -33,7 +33,7 @@
 
         <div x-show="nextMission" class="text-left p-4 bg-indigo-50 border-2 border-indigo-600 rounded-xl text-sm space-y-1">
             <div class="font-extrabold text-indigo-900">
-                Cadangan seterusnya: <span x-text="nextMission?.activity_name"></span>
+                Cadangan AI seterusnya: <span x-text="nextMission?.activity_name"></span>
             </div>
             <p class="text-indigo-900/80 leading-relaxed text-[13px]" x-text="nextMission?.rationale"></p>
         </div>
