@@ -22,7 +22,7 @@
                 <div class="bg-indigo-600 h-2 rounded-full transition-all duration-300" :style="'width: ' + ((masteredCount / Math.max(1, totalInitial)) * 100) + '%'"></div>
             </div>
         </div>
-        <span class="text-xs text-slate-400">Tekan [Ruang] untuk pusing kad</span>
+        <span class="text-xs text-slate-400">Tekan [Ruang] untuk membalikkan kad</span>
     </div>
 
     <!-- Active 3D Flashcard -->
@@ -33,7 +33,7 @@
                 class="academic-card p-8 sm:p-12 bg-white border border-slate-200 min-h-[260px] sm:min-h-[300px] flex flex-col justify-center items-center text-center cursor-pointer shadow-sm hover:border-indigo-400 transition select-none relative"
             >
                 <span class="absolute top-4 left-4 text-[10px] font-semibold uppercase tracking-wider text-slate-400" x-text="flipped ? 'Definisi & Petikan' : 'Konsep / Istilah'"></span>
-                <span class="absolute top-4 right-4 text-xs text-slate-400">Pusing &circlearrowright;</span>
+                <span class="absolute top-4 right-4 text-xs text-slate-400">Balikkan kad &circlearrowright;</span>
 
                 <!-- Front Side -->
                 <div x-show="!flipped" class="space-y-3">
@@ -60,7 +60,7 @@
                     class="py-3.5 px-4 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm transition shadow-2xs flex items-center justify-center space-x-2"
                 >
                     <span class="text-rose-500">↺</span>
-                    <span>Perlu Ulang Lagi</span>
+                    <span>Perlu Diulang</span>
                 </button>
 
                 <button 

@@ -42,7 +42,7 @@
                 @if(isset($deck))
                     <a href="{{ route('decks.show', $deck) }}"
                        class="hidden sm:inline-flex text-sm font-semibold px-3 py-1.5 rounded-lg transition {{ request()->routeIs('decks.show') ? 'bg-ink text-paper' : 'text-slate-700 hover:bg-white hover:text-ink' }}">
-                        Hab
+                        Hab Pembelajaran
                     </a>
                     <a href="{{ route('decks.report', $deck) }}"
                        class="hidden sm:inline-flex text-sm font-semibold px-3 py-1.5 rounded-lg transition {{ request()->routeIs('decks.report') ? 'bg-ink text-paper' : 'text-slate-700 hover:bg-white hover:text-ink' }}">
@@ -112,8 +112,8 @@
         >
             <div class="flex items-start justify-between pb-4 border-b-2 border-dashed border-slate-300 mb-6">
                 <div>
-                    <h3 class="text-lg font-extrabold text-ink">Diari Ejen</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Apa yang ejen fikir dan putuskan berdasarkan jawapan anda.</p>
+                    <h3 class="text-lg font-extrabold text-ink">Log Keputusan Ejen</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Rekod penilaian dan keputusan ejen berdasarkan prestasi anda.</p>
                 </div>
                 <button @click="drawerOpen = false" type="button" class="text-slate-500 hover:text-ink p-1.5 rounded-lg hover:bg-white" aria-label="Tutup">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 18 18 6M6 6l12 12"/></svg>
@@ -145,7 +145,7 @@
                         </div>
                     </li>
                 @empty
-                    <li class="pl-5 text-sm text-slate-500 py-8">Belum ada apa-apa. Main satu aktiviti dulu!</li>
+                    <li class="pl-5 text-sm text-slate-500 py-8">Belum ada rekod. Selesaikan satu aktiviti untuk bermula.</li>
                 @endforelse
             </ol>
         </aside>
@@ -155,11 +155,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2">
                 <span class="font-display font-extrabold text-sm text-paper">Kwiz<span class="text-sun">loo</span></span>
-                <span>— belajar dari nota anda sendiri.</span>
+                <span>— Pembelajaran interaktif berasaskan nota anda.</span>
             </div>
             <div class="flex items-center gap-3">
-                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-mint"></span>Setiap soalan ada petikan sumber</span>
-                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sun"></span>Tiada fakta rekaan</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-mint"></span>Setiap soalan disokong petikan sumber</span>
+                <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sun"></span>Kandungan disahkan daripada nota</span>
             </div>
         </div>
     </footer>

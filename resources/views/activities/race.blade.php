@@ -19,7 +19,7 @@
             <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
                 <span class="flex items-center gap-1.5">
                     <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
-                    <span>Anda (Pelajar)</span>
+                    <span>Anda</span>
                 </span>
                 <span class="font-mono text-slate-500" x-text="playerProgress + '%'">0%</span>
             </div>

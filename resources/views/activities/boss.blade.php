@@ -134,7 +134,7 @@
             <div class="w-12 h-12 mx-auto rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
                 ✕
             </div>
-            <h3 class="text-xl font-bold text-slate-900">Cabaran Belum Berjaya Kali Ini</h3>
+            <h3 class="text-xl font-bold text-slate-900">Penilaian Belum Berjaya Kali Ini</h3>
             <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
                 Ejen pedagogi telah merendahkan aras soalan dan menyediakan petunjuk rujukan untuk percubaan seterusnya. Anda disyorkan menyemak flashcard terlebih dahulu.
             </p>

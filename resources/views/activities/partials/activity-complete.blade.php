@@ -10,10 +10,10 @@
         </div>
 
         <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Sesi selesai</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Aktiviti selesai</span>
             <h3 class="text-2xl sm:text-3xl font-extrabold text-ink mt-1"
-                x-text="accuracy >= 80 ? 'Hebat! Anda kuasai ini.' : (accuracy >= 50 ? 'Bagus, hampir sampai!' : 'Usaha yang baik — cuba lagi!')">Tahniah atas usaha anda</h3>
-            <p class="text-sm text-slate-500 mt-1.5">Jawapan anda telah disimpan dan dianalisis oleh ejen.</p>
+                x-text="accuracy >= 80 ? 'Cemerlang! Anda menguasai topik ini.' : (accuracy >= 50 ? 'Bagus, anda semakin hampir.' : 'Usaha yang baik. Cuba sekali lagi.')">Tahniah atas usaha anda</h3>
+            <p class="text-sm text-slate-500 mt-1.5">Keputusan anda telah disimpan untuk analisis prestasi.</p>
         </div>
 
         <div class="grid grid-cols-3 gap-2.5">
@@ -26,14 +26,14 @@
                 <span class="text-xl font-extrabold text-ink tabular-nums" x-text="accuracy + '%'">0%</span>
             </div>
             <div class="p-3 rounded-xl bg-bubblegum/40 border-2 border-ink">
-                <span class="text-[10px] uppercase text-ink/70 font-bold block">Combo</span>
+                <span class="text-[10px] uppercase text-ink/70 font-bold block">Rentetan</span>
                 <span class="text-xl font-extrabold text-ink tabular-nums" x-text="'x' + bestCombo">x0</span>
             </div>
         </div>
 
         <div x-show="nextMission" class="text-left p-4 bg-indigo-50 border-2 border-indigo-600 rounded-xl text-sm space-y-1">
             <div class="font-extrabold text-indigo-900">
-                Seterusnya: <span x-text="nextMission?.activity_name"></span>
+                Cadangan seterusnya: <span x-text="nextMission?.activity_name"></span>
             </div>
             <p class="text-indigo-900/80 leading-relaxed text-[13px]" x-text="nextMission?.rationale"></p>
         </div>
@@ -44,14 +44,14 @@
                     :href="'{{ url('decks/' . $deck->id . '/activities') }}/' + nextMission.activity + (nextMission.topic_id ? '?topic_id=' + nextMission.topic_id : '')"
                     class="btn-pop w-full bg-indigo-600 text-white py-3"
                 >
-                    Teruskan ke misi disyorkan
+                    Teruskan ke aktiviti disyorkan
                 </a>
             </template>
             <button type="button" @click="location.reload()" class="btn-pop w-full bg-white text-ink py-3">
-                Main sekali lagi
+                Ulang aktiviti ini
             </button>
             <a href="{{ route('decks.show', $deck) }}" class="w-full block py-2 text-sm font-semibold text-slate-500 hover:text-ink transition">
-                Kembali ke Hab
+                Kembali ke Hab Pembelajaran
             </a>
         </div>
     </div>

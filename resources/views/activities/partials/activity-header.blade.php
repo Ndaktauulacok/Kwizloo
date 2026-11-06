@@ -21,7 +21,7 @@
 
     <div class="flex items-center gap-2 shrink-0">
         <div x-show="combo > 1" class="px-2.5 py-1 rounded-lg bg-mint border-2 border-ink text-ink text-xs font-extrabold animate-wiggle" style="display: none;">
-            Combo x<span x-text="combo"></span>
+            Rentetan x<span x-text="combo"></span>
         </div>
         <div class="px-3 py-1 rounded-lg bg-ink text-sun text-sm font-extrabold tabular-nums">
             <span x-text="score">0</span> <span class="text-paper/60 text-xs font-bold">mata</span>

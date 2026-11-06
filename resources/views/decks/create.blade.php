@@ -7,16 +7,16 @@
         <div>
             <span class="sticker bg-white text-ink -rotate-2">
                 <span class="w-2 h-2 rounded-full bg-tomato"></span>
-                9 cara main, 1 nota
+                9 mod pembelajaran interaktif
             </span>
 
-            <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink leading-[1.02]">
-                Nota yang membosankan, <span class="marker-underline">jadi permainan</span> dalam 10 saat.
+            <h1 class="mt-5 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-ink leading-[1.05]">
+                Ubah nota anda menjadi <span class="marker-underline">sesi pembelajaran</span> yang interaktif.
             </h1>
 
             <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
-                Tampal nota atau muat naik PDF. KwizLoo cari topik penting, bina kuiz, kad imbas dan cabaran —
-                kemudian kejar bahagian yang anda selalu salah sampai betul-betul faham.
+                Tampal teks atau muat naik dokumen PDF. KwizLoo mengenal pasti topik utama, menjana kuiz,
+                kad imbas dan aktiviti latihan, lalu membantu anda memberi tumpuan kepada bahagian yang memerlukan pengukuhan.
             </p>
 
             <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-slate-700">
@@ -24,13 +24,13 @@
                     <span class="w-5 h-5 rounded-md bg-mint border-2 border-ink flex items-center justify-center">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg>
                     </span>
-                    Jawapan dipetik dari nota anda
+                    Setiap jawapan berdasarkan nota anda
                 </li>
                 <li class="flex items-center gap-2">
                     <span class="w-5 h-5 rounded-md bg-sun border-2 border-ink flex items-center justify-center">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg>
                     </span>
-                    Laporan untuk guru
+                    Laporan prestasi untuk guru
                 </li>
             </ul>
         </div>
@@ -54,13 +54,13 @@
 
             <div class="absolute left-[24%] bottom-[2%] w-64 p-4 rounded-2xl bg-white border-2 border-ink shadow-pop-lg animate-float" style="--r:-2deg; animation-delay:-0.5s">
                 <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-tomato">Bos Topik</span>
-                    <span class="text-xs font-bold text-ink">32 / 100 HP</span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-tomato">Penilaian Penguasaan</span>
+                    <span class="text-xs font-bold text-ink">32%</span>
                 </div>
                 <div class="mt-2 h-3 rounded-full bg-slate-100 border-2 border-ink overflow-hidden"><div class="h-full w-1/3 bg-tomato"></div></div>
                 <div class="mt-3 text-sm font-semibold text-ink">Tindak balas cahaya</div>
                 <div class="mt-2 flex items-center gap-1.5 text-xs font-bold text-mint">
-                    <span class="px-2 py-0.5 rounded-md bg-ink text-sun">Combo x4</span>
+                    <span class="px-2 py-0.5 rounded-md bg-ink text-sun">4 betul berturut-turut</span>
                 </div>
             </div>
 
@@ -70,12 +70,12 @@
 
     <!-- Intake Card -->
     <section class="relative max-w-4xl mx-auto">
-        <div class="absolute -top-4 left-6 z-10 sticker bg-sun text-ink rotate-[-3deg]">Mula di sini</div>
+        <div class="absolute -top-4 left-6 z-10 sticker bg-sun text-ink rotate-[-3deg]">Mulakan di sini</div>
 
         <div class="academic-card p-6 sm:p-8 shadow-pop-lg" x-data="{ isDragging: false, activeTab: 'paste', fileName: '' }">
             @if($errors->any())
                 <div class="mb-6 p-4 rounded-xl bg-tomato/10 border-2 border-tomato text-ink text-sm">
-                    <div class="font-bold mb-1">Ada yang perlu dibetulkan:</div>
+                    <div class="font-bold mb-1">Sila semak perkara berikut:</div>
                     <ul class="list-disc list-inside space-y-1 text-slate-700">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -141,7 +141,7 @@
                         style="background-image: repeating-linear-gradient(transparent 0 27px, rgba(33,72,232,0.08) 27px 28px); background-attachment: local; line-height: 28px;"
                     >{{ old('note_text') }}</textarea>
                     <p class="text-xs text-slate-500 mt-2">
-                        Setiap soalan yang dijana akan dikaitkan terus dengan petikan daripada nota ini — jadi tiada maklumat rekaan.
+                        Setiap soalan yang dijana dirujuk terus kepada petikan daripada nota ini bagi memastikan ketepatan maklumat.
                     </p>
                 </div>
 
@@ -158,8 +158,8 @@
                         <div class="mx-auto w-14 h-14 rounded-2xl bg-sky-pop border-2 border-ink shadow-pop-sm flex items-center justify-center mb-3 rotate-3">
                             <svg class="w-7 h-7 text-ink" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5zM14 3v5h5M12 12v6m-3-3h6"/></svg>
                         </div>
-                        <p class="text-sm font-bold text-ink" x-text="fileName || 'Klik untuk pilih fail, atau seret ke sini'"></p>
-                        <p class="text-xs text-slate-500 mt-1">PDF atau TXT, maksimum 10MB</p>
+                        <p class="text-sm font-bold text-ink" x-text="fileName || 'Klik untuk memilih fail, atau seret dan lepas di sini'"></p>
+                        <p class="text-xs text-slate-500 mt-1">Format PDF atau TXT, saiz maksimum 10MB</p>
                         <input
                             type="file"
                             name="document"
@@ -179,11 +179,11 @@
                         value="1"
                         class="w-full sm:w-auto text-sm font-semibold text-slate-600 hover:text-ink px-2 py-2 flex items-center justify-center gap-2 underline decoration-2 decoration-sun underline-offset-4"
                     >
-                        Tiada nota? Gunakan Nota Contoh: Fotosintesis
+                        Gunakan Nota Contoh: Fotosintesis
                     </button>
 
                     <button type="submit" class="btn-pop w-full sm:w-auto bg-indigo-600 text-white px-7 py-3 text-base">
-                        <span>Jana modul saya</span>
+                        <span>Jana Modul Pembelajaran</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                     </button>
                 </div>
@@ -193,23 +193,23 @@
 
     <!-- How it works -->
     <section class="max-w-5xl mx-auto mt-16">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-ink text-center">Macam mana ia berfungsi</h2>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-ink text-center">Bagaimana KwizLoo berfungsi</h2>
 
         <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="p-5 rounded-2xl bg-mint/25 border-2 border-ink">
                 <div class="w-10 h-10 rounded-full bg-mint border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">1</div>
-                <h3 class="mt-4 text-lg font-extrabold text-ink">Ikut nota, bukan teka</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Setiap soalan dan kad disemak terhadap petikan sebenar daripada nota anda. Tiada fakta luar.</p>
+                <h3 class="mt-4 text-lg font-extrabold text-ink">Berasaskan nota anda</h3>
+                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Setiap soalan dan kad imbas disemak berdasarkan petikan sebenar daripada nota anda, tanpa maklumat luar yang tidak disahkan.</p>
             </div>
             <div class="p-5 rounded-2xl bg-sun/30 border-2 border-ink">
                 <div class="w-10 h-10 rounded-full bg-sun border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">2</div>
-                <h3 class="mt-4 text-lg font-extrabold text-ink">Salah? Jadi bos</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Topik yang selalu silap bertukar jadi cabaran bos. Ejen pilih aktiviti seterusnya ikut tahap anda.</p>
+                <h3 class="mt-4 text-lg font-extrabold text-ink">Latihan yang menyesuaikan diri</h3>
+                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Topik yang sering dijawab salah akan dijadikan cabaran pengukuhan. Sistem mencadangkan aktiviti seterusnya mengikut tahap penguasaan anda.</p>
             </div>
             <div class="p-5 rounded-2xl bg-bubblegum/30 border-2 border-ink">
                 <div class="w-10 h-10 rounded-full bg-bubblegum border-2 border-ink flex items-center justify-center font-display font-extrabold text-lg">3</div>
-                <h3 class="mt-4 text-lg font-extrabold text-ink">Guru nampak semuanya</h3>
-                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Laporan ketepatan setiap topik, corak kesilapan dan cadangan intervensi — sedia untuk dicetak.</p>
+                <h3 class="mt-4 text-lg font-extrabold text-ink">Laporan lengkap untuk guru</h3>
+                <p class="mt-1.5 text-sm text-slate-700 leading-relaxed">Ketepatan mengikut topik, corak kesilapan dan cadangan intervensi disediakan dalam laporan yang boleh dicetak.</p>
             </div>
         </div>
     </section>
