@@ -24,7 +24,7 @@
     <header class="sticky top-0 z-40 bg-paper/90 backdrop-blur border-b-2 border-ink">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
             <div class="flex items-center gap-5 min-w-0">
-                <a href="{{ isset($deck) ? route('decks.show', $deck) : route('decks.create') }}" class="flex items-center gap-2.5 group shrink-0">
+                <a href="{{ isset($deck) ? route('decks.show', $deck) : route('home') }}" class="flex items-center gap-2.5 group shrink-0">
                     <span class="relative w-10 h-10 rounded-xl bg-sun border-2 border-ink shadow-pop-sm flex items-center justify-center -rotate-6 group-hover:rotate-6 transition-transform duration-200">
                         <span class="font-display font-extrabold text-xl text-ink leading-none">K</span>
                         <span class="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-tomato border-2 border-ink"></span>
@@ -54,9 +54,9 @@
                     </a>
                 @endif
 
-                <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white px-3.5 py-1.5 text-sm">
+                <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white px-3 sm:px-3.5 py-1.5 text-sm whitespace-nowrap shrink-0" aria-label="Nota Baharu">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
-                    <span>Nota Baharu</span>
+                    <span class="{{ isset($deck) ? 'hidden min-[420px]:inline' : '' }}">Nota Baharu</span>
                 </a>
 
                 @if(isset($deck))

@@ -61,6 +61,52 @@
         0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
         50% { transform: translateY(-8px) rotate(var(--r, 0deg)); }
     }
+
+    @keyframes hover-y {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-12px); }
+    }
+
+    @keyframes bob {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    @keyframes blink {
+        0%, 92%, 100% { transform: scaleY(1); }
+        95% { transform: scaleY(0.1); }
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.25; transform: scale(0.7); }
+        50% { opacity: 1; transform: scale(1); }
+    }
+}
+
+/* ---------- Mascot (landing page) ---------- */
+
+.mascot svg g,
+.mascot svg path,
+.mascot svg ellipse,
+.mascot svg circle {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.mascot-bob {
+    animation: bob 3.2s ease-in-out infinite;
+}
+
+.mascot-hover {
+    animation: hover-y 4.2s ease-in-out infinite;
+}
+
+.mascot-eye {
+    animation: blink 4.8s ease-in-out infinite;
+}
+
+.mascot-spark {
+    animation: twinkle 2.4s ease-in-out infinite;
 }
 
 @layer base {

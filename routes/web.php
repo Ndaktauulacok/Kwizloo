@@ -7,9 +7,7 @@ use App\Http\Controllers\StudyDeckController;
 use App\Http\Controllers\TeacherReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('decks.create');
-});
+Route::view('/', 'welcome')->name('home');
 
 // Study Deck Routes
 Route::prefix('decks')->name('decks.')->group(function (): void {
