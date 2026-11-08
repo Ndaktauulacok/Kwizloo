@@ -176,7 +176,7 @@ class StudyDeckGeneratorService
 
         $system = 'Anda ialah pakar reka bentuk kurikulum pintar. Anda hanya menggunakan fakta tepat yang terdapat dalam teks nota untuk membina soalan dan flashcard tanpa halusinasi.';
 
-        $result = $this->gemini->generateStructured($prompt, $schema, $system);
+        $result = $this->gemini->generateStructured($prompt, $schema, $system, throwOnError: $this->gemini->isConfigured());
         $topicsData = $result['topics'] ?? [];
 
         $deck->update(['progress' => 70]);

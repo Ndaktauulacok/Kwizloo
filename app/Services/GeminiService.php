@@ -31,11 +31,17 @@ class GeminiService
     /**
      * Generate plain text or explanation using Gemini API with deterministic fallback.
      */
-    public function generateText(string $prompt, ?string $systemInstruction = null): string
-    {
+    public function generateText(
+        string $prompt,
+        ?string $systemInstruction = null,
+        bool $throwOnError = false,
+        ?int $timeoutOverride = null,
+    ): string {
         if (! $this->isConfigured()) {
             return $this->fallbackText($prompt);
         }
+
+        $timeout = $timeoutOverride ?? $this->timeout;
 
         try {
             $payload = [
@@ -59,7 +65,7 @@ class GeminiService
 
             $url = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}";
 
-            $response = Http::timeout($this->timeout)
+            $response = Http::timeout($timeout)
                 ->withHeaders(['Content-Type' => 'application/json'])
                 ->post($url, $payload);
 
@@ -71,11 +77,23 @@ class GeminiService
                 }
             }
 
-            Log::warning('Gemini API text call unsuccessful: '.$response->status().' - '.$response->body());
+            $errMsg = "Gemini API call failed with HTTP status {$response->status()}: {$response->body()}";
+            Log::warning($errMsg);
+
+            if ($throwOnError) {
+                throw new GeminiApiException($errMsg);
+            }
 
             return $this->fallbackText($prompt);
         } catch (Throwable $e) {
             Log::error('Gemini text generation failed: '.$e->getMessage());
+
+            if ($throwOnError) {
+                if ($e instanceof GeminiApiException) {
+                    throw $e;
+                }
+                throw new GeminiApiException('Gemini text generation error: '.$e->getMessage(), 0, $e);
+            }
 
             return $this->fallbackText($prompt);
         }
@@ -87,11 +105,18 @@ class GeminiService
      * @param  array<string, mixed>  $schema
      * @return array<string, mixed>
      */
-    public function generateStructured(string $prompt, array $schema, ?string $systemInstruction = null): array
-    {
+    public function generateStructured(
+        string $prompt,
+        array $schema,
+        ?string $systemInstruction = null,
+        bool $throwOnError = false,
+        ?int $timeoutOverride = null,
+    ): array {
         if (! $this->isConfigured()) {
             return $this->fallbackStructured($prompt, $schema);
         }
+
+        $timeout = $timeoutOverride ?? $this->timeout;
 
         try {
             $payload = [
@@ -119,7 +144,7 @@ class GeminiService
 
             $url = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}";
 
-            $response = Http::timeout($this->timeout)
+            $response = Http::timeout($timeout)
                 ->withHeaders(['Content-Type' => 'application/json'])
                 ->post($url, $payload);
 
@@ -132,13 +157,32 @@ class GeminiService
                 if (is_array($decoded)) {
                     return $decoded;
                 }
-            }
 
-            Log::warning('Gemini API structured call unsuccessful: '.$response->status().' - '.$response->body());
+                $parseErrMsg = 'Gemini structured output could not be parsed as valid JSON: '.json_last_error_msg();
+                Log::warning($parseErrMsg);
+
+                if ($throwOnError) {
+                    throw new GeminiApiException($parseErrMsg);
+                }
+            } else {
+                $httpErrMsg = "Gemini API structured call failed with HTTP status {$response->status()}: {$response->body()}";
+                Log::warning($httpErrMsg);
+
+                if ($throwOnError) {
+                    throw new GeminiApiException($httpErrMsg);
+                }
+            }
 
             return $this->fallbackStructured($prompt, $schema);
         } catch (Throwable $e) {
             Log::error('Gemini structured generation failed: '.$e->getMessage());
+
+            if ($throwOnError) {
+                if ($e instanceof GeminiApiException) {
+                    throw $e;
+                }
+                throw new GeminiApiException('Gemini structured generation error: '.$e->getMessage(), 0, $e);
+            }
 
             return $this->fallbackStructured($prompt, $schema);
         }
@@ -180,36 +224,8 @@ class GeminiService
     private function fallbackStructured(string $prompt, array $schema): array
     {
         if (isset($schema['properties']['topics'])) {
-            return [
-                'topics' => [
-                    [
-                        'name' => 'Konsep Teras 1',
-                        'summary' => 'Ringkasan konsep berasaskan nota teks.',
-                        'questions' => [
-                            [
-                                'question' => 'Apakah idea utama yang dihuraikan dalam bahagian teks ini?',
-                                'options' => [
-                                    'Pernyataan fakta tepat seperti dalam teks.',
-                                    'Pernyataan songsang daripada teks.',
-                                    'Konsep luar sukatan pembelajaran.',
-                                    'Tiada kaitan dengan bab ini.',
-                                ],
-                                'correct_index' => 0,
-                                'difficulty' => 1,
-                                'explanation' => 'Jawapan disahkan berdasarkan teks rujukan.',
-                                'quote' => 'Petikan teks rujukan asal.',
-                            ],
-                        ],
-                        'flashcards' => [
-                            [
-                                'front' => 'Apakah konsep penting dalam teks?',
-                                'back' => 'Fakta utama yang diterangkan dalam nota.',
-                                'quote' => 'Petikan teks rujukan asal.',
-                            ],
-                        ],
-                    ],
-                ],
-            ];
+            // Return empty topics so that caller executes grounded heuristic extraction from real source text
+            return ['topics' => []];
         }
 
         if (isset($schema['properties']['summary'])) {

@@ -26,6 +26,6 @@ Route::prefix('decks')->name('decks.')->group(function (): void {
     Route::post('/{deck}/verify-answer', [StudyActivityController::class, 'verifyAnswer'])->name('verify-answer');
     Route::post('/{deck}/finish-activity', [StudyActivityController::class, 'finishActivity'])->name('finish-activity');
     Route::post('/{deck}/boss-loss', [StudyActivityController::class, 'handleBossLoss'])->name('boss-loss');
-    Route::post('/{deck}/ai-hint', [StudyActivityController::class, 'aiHint'])->name('ai-hint');
-    Route::post('/{deck}/ai-explain', [StudyActivityController::class, 'aiExplain'])->name('ai-explain');
+    Route::post('/{deck}/ai-hint', [StudyActivityController::class, 'aiHint'])->name('ai-hint')->middleware('throttle:30,1');
+    Route::post('/{deck}/ai-explain', [StudyActivityController::class, 'aiExplain'])->name('ai-explain')->middleware('throttle:30,1');
 });

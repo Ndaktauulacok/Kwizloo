@@ -41,6 +41,14 @@ class TeacherReportController extends Controller
             ], 422);
         }
 
+        $existingReport = $deck->teacherAiReport;
+        if ($existingReport && in_array($existingReport->status, ['pending', 'processing'], true)) {
+            return response()->json([
+                'status' => $existingReport->status,
+                'message' => 'Laporan sedang diproses.',
+            ]);
+        }
+
         Cache::lock("teacher_report_{$deck->id}", 60)->get(function () use ($deck): void {
             GenerateTeacherReportJob::dispatch($deck);
         });

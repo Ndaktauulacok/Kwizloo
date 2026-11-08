@@ -167,12 +167,12 @@ class AdaptiveAgentService
             $aiRationale = Cache::remember($cacheKey, 300, function () use ($deck, $mission): string {
                 $prompt = "Sebagai tutor AI pendidikan pintar, berikan satu ayat nasihat pedagogi ringkas bermula dengan 'Analisis AI:' dalam Bahasa Melayu. Modul: '{$deck->title}', Topik tumpuan: '{$mission['topic_name']}', Aktiviti: '{$mission['activity_name']}'. Nasihat:";
 
-                $text = $this->gemini->generateText($prompt);
+                $text = $this->gemini->generateText($prompt, null, false, 2);
 
                 return trim($text);
             });
 
-            if ($aiRationale !== '') {
+            if ($aiRationale !== '' && str_contains($aiRationale, 'Analisis AI:')) {
                 $mission['rationale'] = $aiRationale;
             }
         } catch (Throwable) {

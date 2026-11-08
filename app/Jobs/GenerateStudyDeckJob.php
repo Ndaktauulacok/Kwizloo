@@ -20,6 +20,8 @@ class GenerateStudyDeckJob implements ShouldQueue
 
     public int $timeout = 120;
 
+    public int $tries = 1;
+
     public function __construct(
         public StudyDeck $deck,
     ) {}

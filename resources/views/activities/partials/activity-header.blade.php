@@ -24,7 +24,7 @@
         <template x-if="typeof currentQ !== 'undefined' && currentQ">
             <button
                 type="button"
-                @click="requestAiHint()"
+                @click="requestAiHint(currentQ.id)"
                 class="px-2.5 py-1 rounded-lg bg-white border-2 border-ink text-ink text-xs font-bold hover:bg-sun transition flex items-center gap-1.5 shadow-pop-xs"
                 title="Minta Petunjuk AI"
             >
@@ -96,8 +96,8 @@
 </div>
 
 <script>
-window.requestAiHint = async function() {
-    const questionId = window._currentQuestionId || (typeof currentQ !== 'undefined' && currentQ ? currentQ.id : null);
+window.requestAiHint = async function(paramQId) {
+    const questionId = paramQId || window._currentQuestionId || (typeof currentQ !== 'undefined' && currentQ ? currentQ.id : null);
     if (!questionId) return;
 
     window.dispatchEvent(new CustomEvent('open-ai-hint', { detail: { loading: true, hint: '' } }));

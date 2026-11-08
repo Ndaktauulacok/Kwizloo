@@ -21,6 +21,8 @@ class GenerateTeacherReportJob implements ShouldQueue
 
     public int $timeout = 60;
 
+    public int $tries = 1;
+
     public function __construct(
         public StudyDeck $deck,
     ) {}
@@ -74,13 +76,14 @@ class GenerateTeacherReportJob implements ShouldQueue
 
             $system = 'Anda ialah penasihat akademik diagnostik sekolah yang pakar menganalisis corak kesilapan pelajar dan memberikan cadangan pemulihan kurikulum.';
 
-            $data = $gemini->generateStructured($prompt, $schema, $system);
+            $data = $gemini->generateStructured($prompt, $schema, $system, throwOnError: $gemini->isConfigured());
 
             $report->update([
                 'status' => 'completed',
                 'summary' => (string) ($data['summary'] ?? 'Analisis prestasi bilik darjah selesai.'),
                 'misconceptions' => is_array($data['misconceptions'] ?? null) ? $data['misconceptions'] : [],
                 'recommendations' => is_array($data['recommendations'] ?? null) ? $data['recommendations'] : [],
+                'error_message' => null,
             ]);
 
             AgentLog::create([
@@ -92,6 +95,7 @@ class GenerateTeacherReportJob implements ShouldQueue
         } catch (Throwable $e) {
             $report->update([
                 'status' => 'failed',
+                'error_message' => $e->getMessage(),
             ]);
 
             AgentLog::create([

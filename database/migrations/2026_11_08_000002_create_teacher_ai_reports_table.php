@@ -12,11 +12,12 @@ return new class extends Migration
     {
         Schema::create('teacher_ai_reports', function (Blueprint $table): void {
             $table->id();
-            $table->foreignId('study_deck_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('study_deck_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('status', 30)->default('pending');
             $table->text('summary')->nullable();
             $table->json('misconceptions')->nullable();
             $table->json('recommendations')->nullable();
+            $table->text('error_message')->nullable();
             $table->timestamps();
         });
     }

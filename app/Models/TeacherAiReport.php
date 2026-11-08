@@ -18,6 +18,7 @@ class TeacherAiReport extends Model
         'summary',
         'misconceptions',
         'recommendations',
+        'error_message',
     ];
 
     /**
