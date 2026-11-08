@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadNoteRequest;
+use App\Jobs\GenerateStudyDeckJob;
 use App\Models\StudyDeck;
 use App\Services\AdaptiveAgentService;
 use App\Services\DocumentParserService;
 use App\Services\StudyDeckGeneratorService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -54,10 +56,29 @@ class StudyDeckController extends Controller
             ]);
         }
 
-        $deck = $this->deckGenerator->createFromText($title, $noteText);
+        $deck = $this->deckGenerator->createPending($title, $noteText);
+        GenerateStudyDeckJob::dispatch($deck);
 
-        return redirect()->route('decks.show', $deck)
-            ->with('status', 'Pek modul berjaya dicipta daripada nota anda!');
+        return redirect()->route('decks.processing', $deck);
+    }
+
+    public function processing(StudyDeck $deck): View|RedirectResponse
+    {
+        if ($deck->status === 'completed') {
+            return redirect()->route('decks.show', $deck);
+        }
+
+        return view('decks.processing', compact('deck'));
+    }
+
+    public function status(StudyDeck $deck): JsonResponse
+    {
+        return response()->json([
+            'status' => $deck->status,
+            'progress' => $deck->progress,
+            'redirect_url' => route('decks.show', $deck),
+            'error' => $deck->error_message,
+        ]);
     }
 
     public function show(StudyDeck $deck): View
