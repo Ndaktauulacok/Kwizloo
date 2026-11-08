@@ -9,15 +9,21 @@ use App\Models\StudyDeck;
 use App\Models\StudySession;
 use App\Models\Topic;
 use App\Services\AdaptiveAgentService;
+use App\Services\GeminiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class StudyActivityController extends Controller
 {
+    private readonly GeminiService $gemini;
+
     public function __construct(
         private readonly AdaptiveAgentService $adaptiveAgent,
-    ) {}
+        ?GeminiService $gemini = null,
+    ) {
+        $this->gemini = $gemini ?? app(GeminiService::class);
+    }
 
     public function show(StudyDeck $deck, string $activity, Request $request): View
     {
@@ -134,6 +140,51 @@ class StudyActivityController extends Controller
         return response()->json([
             'strategy' => $newStrategy,
             'topic' => $topic->fresh(),
+        ]);
+    }
+
+    /**
+     * Return contextual AI hint for a question.
+     */
+    public function aiHint(StudyDeck $deck, Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'question_id' => ['required', 'integer', 'exists:questions,id'],
+        ]);
+
+        /** @var Question $question */
+        $question = $deck->questions()->findOrFail($validated['question_id']);
+
+        $prompt = "Berikan satu petunjuk Sokratik ringkas (maksimum 20 patah perkataan) dalam Bahasa Melayu untuk soalan berikut tanpa mendedahkan jawapan secara langsung.\nSoalan: {$question->question}\nPetikan Teks: {$question->quote}\nPetunjuk:";
+
+        $hint = $this->gemini->generateText($prompt, 'Anda ialah tutor bimbingan yang bijak memberi petunjuk tanpa membocorkan jawapan.');
+
+        return response()->json([
+            'hint' => $hint,
+        ]);
+    }
+
+    /**
+     * Return contextual AI explanation for an incorrect student answer choice.
+     */
+    public function aiExplain(StudyDeck $deck, Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'question_id' => ['required', 'integer', 'exists:questions,id'],
+            'selected_index' => ['required', 'integer', 'min:0', 'max:3'],
+        ]);
+
+        /** @var Question $question */
+        $question = $deck->questions()->findOrFail($validated['question_id']);
+        $selectedText = $question->options[$validated['selected_index']] ?? 'Pilihan murid';
+        $correctText = $question->options[$question->correct_index] ?? 'Jawapan betul';
+
+        $prompt = "Pelajar memilih jawapan yang salah dalam kuiz.\nSoalan: {$question->question}\nPilihan murid yang salah: {$selectedText}\nJawapan tepat sebenar: {$correctText}\nPetikan rujukan: {$question->quote}\nTerangkan secara ringkas dan membina (maksimum 30 patah perkataan) mengapa pilihan murid tidak tepat dan hubung kaitkan dengan fakta dalam teks.";
+
+        $explanation = $this->gemini->generateText($prompt, 'Anda ialah guru yang sabar dan membina, menerangkan kesalahan konsep murid secara jelas dan menyokong.');
+
+        return response()->json([
+            'explanation' => $explanation,
         ]);
     }
 }

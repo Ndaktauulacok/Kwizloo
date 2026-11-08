@@ -114,6 +114,30 @@
                         "<span x-text="feedbackData?.quote"></span>"
                     </div>
 
+                    <!-- AI Deep Explanation for Incorrect Answer -->
+                    <template x-if="!feedbackData?.is_correct">
+                        <div class="pt-2 border-t border-rose-200/60 mt-2">
+                            <div x-show="!aiExplanation && !aiExplaining">
+                                <button
+                                    type="button"
+                                    @click="requestAiExplain()"
+                                    class="text-xs font-bold text-rose-700 hover:text-rose-900 underline flex items-center gap-1"
+                                >
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    Tanya AI: Mengapa jawapan saya salah?
+                                </button>
+                            </div>
+                            <div x-show="aiExplaining" class="text-xs text-rose-600 font-semibold italic flex items-center gap-1.5 py-1">
+                                <svg class="animate-spin h-3.5 w-3.5 text-rose-600" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                AI sedang menganalisis pilihan anda...
+                            </div>
+                            <div x-show="aiExplanation" class="p-3 bg-white/90 rounded-lg border border-rose-200 text-xs text-slate-800 leading-relaxed font-medium">
+                                <strong class="text-rose-700 block mb-0.5">Penjelasan Tutor AI:</strong>
+                                <span x-text="aiExplanation"></span>
+                            </div>
+                        </div>
+                    </template>
+
                     <div class="pt-2 flex justify-end">
                         <button 
                             type="button" 
@@ -175,10 +199,13 @@ function bossActivity(config) {
         failed: false,
         accuracy: 0,
         nextMission: null,
+        aiExplanation: '',
+        aiExplaining: false,
 
         init() {
             if (this.questions.length > 0) {
                 this.currentQ = this.questions[0];
+                window._currentQuestionId = this.currentQ.id;
             }
             window.addEventListener('keydown', (e) => {
                 if (this.answered || this.completed || this.failed) return;
@@ -253,9 +280,28 @@ function bossActivity(config) {
             }
 
             this.currentQ = this.questions[this.currentIndex];
+            window._currentQuestionId = this.currentQ.id;
             this.answered = false;
             this.selectedIdx = null;
             this.feedbackData = null;
+            this.aiExplanation = '';
+            this.aiExplaining = false;
+        },
+
+        async requestAiExplain() {
+            if (!this.currentQ || this.selectedIdx === null) return;
+            this.aiExplaining = true;
+            try {
+                const res = await window.secureFetch("{{ route('decks.ai-explain', $deck) }}", {
+                    question_id: this.currentQ.id,
+                    selected_index: this.selectedIdx
+                });
+                this.aiExplanation = res.explanation || 'Tiada huraian lanjut.';
+            } catch (e) {
+                this.aiExplanation = 'Gagal memuat turun penjelasan AI.';
+            } finally {
+                this.aiExplaining = false;
+            }
         },
 
         async finishSession() {
