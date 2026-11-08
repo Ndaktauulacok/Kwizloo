@@ -2,77 +2,102 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
-// Academic audio cues using Web Audio API
+// Soft feedback sounds using the Web Audio API.
+// Every tone is a sine wave through a low-pass filter with a short fade-in and a longer fade-out,
+// so nothing clicks or pops. Ordinary UI clicks stay silent; only meaningful moments make a sound.
 window.AcademicAudio = {
     enabled: true,
     ctx: null,
+    output: null,
 
     init() {
-        if (!this.ctx && typeof window !== 'undefined') {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if (AudioCtx) {
-                this.ctx = new AudioCtx();
-            }
+        if (this.ctx || typeof window === 'undefined') {
+            return;
         }
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) {
+            return;
+        }
+
+        this.ctx = new AudioCtx();
+
+        const lowPass = this.ctx.createBiquadFilter();
+        lowPass.type = 'lowpass';
+        lowPass.frequency.value = 1600;
+        lowPass.Q.value = 0.5;
+        lowPass.connect(this.ctx.destination);
+        this.output = lowPass;
     },
 
-    playTone(frequency, duration, type = 'sine', gainVal = 0.04) {
-        if (!this.enabled) return;
+    /**
+     * @param {number} frequency Start pitch in Hz.
+     * @param {number} duration Length in seconds, including the fade-out.
+     * @param {{ gain?: number, endFrequency?: number, delay?: number }} options
+     */
+    playTone(frequency, duration, { gain = 0.016, endFrequency = null, delay = 0 } = {}) {
+        if (!this.enabled) {
+            return;
+        }
+
         try {
             this.init();
-            if (!this.ctx) return;
+            if (!this.ctx) {
+                return;
+            }
             if (this.ctx.state === 'suspended') {
                 this.ctx.resume();
             }
+
+            const start = this.ctx.currentTime + delay;
+            const fadeIn = 0.01;
             const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = type;
-            osc.frequency.setValueAtTime(frequency, this.ctx.currentTime);
-            gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.start();
-            osc.stop(this.ctx.currentTime + duration);
+            const envelope = this.ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(frequency, start);
+            if (endFrequency) {
+                osc.frequency.exponentialRampToValueAtTime(endFrequency, start + duration);
+            }
+
+            envelope.gain.setValueAtTime(0, start);
+            envelope.gain.linearRampToValueAtTime(gain, start + fadeIn);
+            envelope.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+            osc.connect(envelope);
+            envelope.connect(this.output);
+            osc.start(start);
+            osc.stop(start + duration + 0.05);
         } catch (e) {
-            // Audio context failed or blocked by policy
+            // Audio is optional; ignore browsers that block or lack Web Audio.
         }
     },
 
     correct() {
-        this.playTone(523.25, 0.12, 'triangle', 0.05); // C5
-        setTimeout(() => this.playTone(659.25, 0.18, 'triangle', 0.05), 80); // E5
+        this.playTone(523.25, 0.22, { gain: 0.018 });
+        this.playTone(659.25, 0.32, { gain: 0.018, delay: 0.09 });
     },
 
     incorrect() {
-        this.playTone(220, 0.18, 'sawtooth', 0.03); // Low A3
-    },
-
-    click() {
-        this.playTone(800, 0.05, 'sine', 0.03);
-    },
-
-    pop() {
-        this.playTone(440, 0.08, 'sine', 0.04);
-        setTimeout(() => this.playTone(880, 0.08, 'triangle', 0.04), 40);
-    },
-
-    flip() {
-        this.playTone(320, 0.06, 'sine', 0.02);
-        setTimeout(() => this.playTone(480, 0.08, 'sine', 0.02), 50);
+        this.playTone(180, 0.38, { gain: 0.02, endFrequency: 140 });
     },
 
     levelUp() {
-        [440, 554.37, 659.25, 880].forEach((freq, idx) => {
-            setTimeout(() => this.playTone(freq, 0.15, 'triangle', 0.05), idx * 80);
+        [392, 493.88, 587.33, 783.99].forEach((frequency, index) => {
+            this.playTone(frequency, 0.34, { gain: 0.016, delay: index * 0.09 });
         });
     },
 
     complete() {
-        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
-            setTimeout(() => this.playTone(freq, 0.16, 'sine', 0.05), idx * 75);
+        [523.25, 659.25, 783.99].forEach((frequency, index) => {
+            this.playTone(frequency, 0.4, { gain: 0.015, delay: index * 0.1 });
         });
-    }
+    },
+
+    // Ordinary interface sounds are intentionally silent.
+    click() {},
+    pop() {},
+    flip() {},
 };
 
 // Mascot Hero Alpine Component
@@ -84,7 +109,7 @@ Alpine.data('mascotHero', () => ({
     isHovered: false,
     wiggleTimer: null,
 
-    dialogue: "Hai! Saya Syed, mentor AI anda. Klik saya atau cuba mini-kuiz di bawah.",
+    dialogue: "Hai! Saya Prof. Fahim, mentor AI anda. Klik saya atau cuba mini-kuiz di bawah.",
     isWiggling: false,
     sparkles: [],
 
@@ -142,7 +167,7 @@ Alpine.data('mascotHero', () => ({
     ],
 
     quotes: [
-        "Hai! Saya Syed, pembantu AI anda. Muat naik nota, biar saya sediakan kuiz A+!",
+        "Hai! Saya Prof. Fahim, pembantu AI anda. Muat naik nota, biar saya sediakan kuiz A+!",
         "Petua: Mengulang kaji 15 minit secara aktif 3x lebih berkesan daripada membaca tanpa henti!",
         "Cuba jawab soalan mini-kuiz di bawah saya.",
         "Kad imbas di bawah boleh diterbalikkan. Klik untuk uji ingatan anda.",

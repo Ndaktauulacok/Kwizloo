@@ -3,14 +3,14 @@
 @section('content')
 <div class="max-w-xl mx-auto py-12 px-4 text-center">
     <div class="academic-card p-8 sm:p-10 rounded-3xl relative overflow-hidden">
-        <!-- Syed reading the notes -->
-        <svg viewBox="0 0 400 400" class="mx-auto w-32 h-32 sm:w-36 sm:h-36 syed-float" aria-hidden="true">
-            @include('partials.syed-emblem')
+        <!-- Fahim reading the notes -->
+        <svg viewBox="0 0 400 400" class="mx-auto w-32 h-32 sm:w-36 sm:h-36 fahim-float" aria-hidden="true">
+            @include('partials.fahim-emblem')
         </svg>
 
         <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-paper border-2 border-ink text-[11px] font-extrabold tracking-wide text-ink uppercase mb-5">
             <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-            Prof. Syed sedang membaca nota anda
+            Prof. Fahim sedang membaca nota anda
         </div>
 
         <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink leading-tight">

@@ -12,6 +12,7 @@ Route::view('/cara-ia-berfungsi', 'how-it-works')->name('how-it-works');
 
 // Study Deck Routes
 Route::prefix('decks')->name('decks.')->group(function (): void {
+    Route::get('/', [StudyDeckController::class, 'index'])->name('index');
     Route::get('/create', [StudyDeckController::class, 'create'])->name('create');
     Route::post('/', [StudyDeckController::class, 'store'])->name('store')->middleware('throttle:15,1');
     Route::get('/{deck}/processing', [StudyDeckController::class, 'processing'])->name('processing');

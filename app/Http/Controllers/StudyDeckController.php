@@ -12,6 +12,7 @@ use App\Services\DocumentParserService;
 use App\Services\StudyDeckGeneratorService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class StudyDeckController extends Controller
@@ -21,6 +22,23 @@ class StudyDeckController extends Controller
         private readonly DocumentParserService $documentParser,
         private readonly AdaptiveAgentService $adaptiveAgent,
     ) {}
+
+    /**
+     * List every processed note so learners can return to earlier study decks.
+     */
+    public function index(Request $request): View
+    {
+        $search = trim((string) $request->query('q', ''));
+
+        $decks = StudyDeck::query()
+            ->when($search !== '', fn ($query) => $query->where('title', 'like', '%'.$search.'%'))
+            ->withCount(['topics', 'questions', 'flashcards', 'studySessions'])
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('decks.index', compact('decks', 'search'));
+    }
 
     public function create(): View
     {

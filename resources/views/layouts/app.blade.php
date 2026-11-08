@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#fbf4ea">
 
-    <link rel="icon" href="{{ asset('favicon.ico') }}?v=syed" sizes="48x48">
-    <link rel="icon" href="{{ asset('favicon.svg') }}?v=syed" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}?v=syed">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=fahim" sizes="48x48">
+    <link rel="icon" href="{{ asset('favicon.svg') }}?v=fahim" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}?v=fahim">
 
     <title>{{ $title ?? 'KwizLoo' }} — KwizLoo</title>
 
@@ -26,7 +26,7 @@
             <div class="flex items-center gap-5 min-w-0">
                 <a href="{{ isset($deck) ? route('decks.show', $deck) : route('home') }}" class="flex items-center gap-2.5 group shrink-0">
                     <span class="block w-10 h-10 -rotate-3 group-hover:rotate-3 transition-transform duration-200">
-                        @include('partials.syed-avatar', ['class' => 'w-10 h-10'])
+                        @include('partials.fahim-avatar', ['class' => 'w-10 h-10'])
                     </span>
                     <span class="font-display text-xl font-extrabold tracking-tight text-ink">
                         Kwiz<span class="text-indigo-600">loo</span>
@@ -52,6 +52,16 @@
                         Laporan Guru
                     </a>
                 @endif
+
+                <a
+                    href="{{ route('decks.index') }}"
+                    class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold px-2.5 sm:px-3 py-1.5 rounded-lg transition border-2 {{ request()->routeIs('decks.index') ? 'bg-ink text-paper border-ink' : 'text-slate-700 hover:text-ink hover:bg-white border-transparent hover:border-ink hover:shadow-pop-sm' }}"
+                    title="Sejarah nota yang telah diproses"
+                    aria-label="Sejarah nota"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.25" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5M12 7v5l3 2"/></svg>
+                    <span class="hidden sm:inline">Sejarah</span>
+                </a>
 
                 <button
                     type="button"
@@ -168,7 +178,7 @@
     <footer class="mt-auto border-t-2 border-ink bg-ink text-paper/70 py-6 text-xs print:hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2">
-                @include('partials.syed-avatar', ['class' => 'w-6 h-6'])
+                @include('partials.fahim-avatar', ['class' => 'w-6 h-6'])
                 <span class="font-display font-extrabold text-sm text-paper">Kwiz<span class="text-sun">loo</span></span>
                 <span>— Pembelajaran interaktif berkuasa AI, berasaskan nota anda.</span>
             </div>

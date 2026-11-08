@@ -100,21 +100,46 @@
 
         <div class="academic-card p-6 sm:p-8 shadow-pop-lg" x-data="{
             isDragging: false,
+            dragDepth: 0,
+            justDropped: false,
             activeTab: 'paste',
             fileName: '',
+            fileType: '',
+            fileSizeLabel: '',
             fileError: '',
             isGenerating: false,
             handleFileSelect(files) {
                 if (!files || !files[0]) return;
                 const file = files[0];
+                const extension = file.name.split('.').pop().toLowerCase();
+                if (!['pdf', 'txt'].includes(extension)) {
+                    this.clearFile();
+                    this.fileError = 'Format fail mestilah PDF atau TXT sahaja.';
+                    return;
+                }
                 if (file.size > 10 * 1024 * 1024) {
+                    this.clearFile();
                     this.fileError = 'Saiz fail melebihi had maksimum 10MB.';
-                    this.fileName = '';
-                    if (this.$refs.fileInput) this.$refs.fileInput.value = '';
                     return;
                 }
                 this.fileError = '';
                 this.fileName = file.name;
+                this.fileType = extension.toUpperCase();
+                this.fileSizeLabel = file.size >= 1024 * 1024
+                    ? (file.size / (1024 * 1024)).toFixed(1) + ' MB'
+                    : Math.max(1, Math.round(file.size / 1024)) + ' KB';
+                this.justDropped = false;
+                requestAnimationFrame(() => {
+                    this.justDropped = true;
+                    setTimeout(() => { this.justDropped = false; }, 700);
+                });
+            },
+            clearFile() {
+                this.fileName = '';
+                this.fileType = '';
+                this.fileSizeLabel = '';
+                this.fileError = '';
+                if (this.$refs.fileInput) this.$refs.fileInput.value = '';
             },
             fillSample(title, text) {
                 const titleEl = document.getElementById('title');
@@ -240,7 +265,7 @@
                         rows="9"
                         placeholder="Tampal nota, sukatan pelajaran atau artikel di sini (sekurang-kurangnya 80 aksara)..."
                         class="w-full px-4 py-3 rounded-xl border-2 border-ink bg-paper/60 focus:bg-white focus:ring-4 focus:ring-indigo-200 text-[15px] text-ink placeholder:text-slate-400 leading-relaxed outline-none transition"
-                        style="background-image: repeating-linear-gradient(transparent 0 27px, rgba(33,72,232,0.08) 27px 28px); background-attachment: local; line-height: 28px;"
+                        style="background-image: repeating-linear-gradient(transparent 0 27px, rgba(122,27,48,0.08) 27px 28px); background-attachment: local; line-height: 28px;"
                     >{{ old('note_text') }}</textarea>
                     <p class="text-xs text-slate-500 mt-2">
                         AI akan membaca nota ini untuk menjana soalan. Setiap soalan dirujuk kepada petikan asal bagi memastikan ketepatan maklumat.
@@ -250,24 +275,75 @@
                 <!-- File Upload Tab -->
                 <div x-show="activeTab === 'upload'" style="display: none;">
                     <div
-                        class="border-2 border-dashed rounded-2xl p-10 text-center transition cursor-pointer"
-                        :class="isDragging ? 'border-indigo-600 bg-indigo-50' : (fileError ? 'border-tomato bg-tomato/5' : 'border-ink/40 bg-paper/60 hover:border-ink hover:bg-white')"
-                        @dragover.prevent="isDragging = true"
-                        @dragleave.prevent="isDragging = false"
-                        @drop.prevent="isDragging = false; if ($event.dataTransfer.files.length) { $refs.fileInput.files = $event.dataTransfer.files; handleFileSelect($event.dataTransfer.files); }"
+                        class="dropzone rounded-2xl bg-paper/60 px-6 py-10 text-center cursor-pointer"
+                        :class="{ 'is-dragging': isDragging, 'is-dropped': justDropped, 'has-file': fileName }"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Pilih fail PDF atau TXT untuk dimuat naik"
+                        @dragenter.prevent="dragDepth++; isDragging = true"
+                        @dragover.prevent
+                        @dragleave.prevent="dragDepth = Math.max(0, dragDepth - 1); if (dragDepth === 0) isDragging = false"
+                        @drop.prevent="dragDepth = 0; isDragging = false; if ($event.dataTransfer.files.length) { $refs.fileInput.files = $event.dataTransfer.files; handleFileSelect($event.dataTransfer.files); }"
                         @click="$refs.fileInput.click()"
+                        @keydown.enter.prevent="$refs.fileInput.click()"
+                        @keydown.space.prevent="$refs.fileInput.click()"
                     >
-                        <div class="mx-auto w-14 h-14 rounded-2xl bg-sky-pop border-2 border-ink shadow-pop-sm flex items-center justify-center mb-3 rotate-3">
-                            <svg class="w-7 h-7 text-ink" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5zM14 3v5h5M12 12v6m-3-3h6"/></svg>
+                        <!-- Marching dashed border -->
+                        <svg class="dropzone-border" aria-hidden="true"><rect x="1" y="1" rx="15" ry="15"/></svg>
+
+                        <!-- Paper stack illustration -->
+                        <div class="dz-icon mx-auto mb-4 w-24" aria-hidden="true">
+                            <svg viewBox="0 0 96 88" class="w-24 h-[88px] overflow-visible">
+                                <g class="dz-arrow">
+                                    <path d="M48 2v16m-7-7 7 7 7-7" fill="none" stroke="#2a1217" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                                <g class="dz-sheet-back">
+                                    <rect x="22" y="26" width="46" height="58" rx="6" fill="#efe0c8" stroke="#2a1217" stroke-width="3"/>
+                                </g>
+                                <g class="dz-sheet-front">
+                                    <path d="M32 24h26l12 12v44a5 5 0 0 1-5 5H32a5 5 0 0 1-5-5V29a5 5 0 0 1 5-5z" fill="#ffffff" stroke="#2a1217" stroke-width="3" stroke-linejoin="round"/>
+                                    <path d="M58 24v12h12" fill="none" stroke="#2a1217" stroke-width="3" stroke-linejoin="round"/>
+                                    <g stroke="#d5c6b8" stroke-width="3" stroke-linecap="round">
+                                        <path d="M36 46h22"/><path d="M36 54h26"/><path d="M36 62h18"/>
+                                    </g>
+                                    <rect x="34" y="68" width="22" height="11" rx="3" fill="#7a1b30"/>
+                                    <text x="45" y="76.5" text-anchor="middle" font-family="Bricolage Grotesque, Instrument Sans, sans-serif" font-size="7.5" font-weight="800" fill="#fbf4ea" x-text="fileType || 'PDF'">PDF</text>
+                                    <path class="dz-check" d="M58 66l5 5 9-11" fill="none" stroke="#2a1217" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                            </svg>
                         </div>
-                        <p class="text-sm font-bold text-ink" x-text="fileName || 'Klik untuk memilih fail, atau seret dan lepas di sini'"></p>
-                        <p class="text-xs text-slate-500 mt-1">Format PDF atau TXT, saiz maksimum 10MB</p>
-                        <p x-show="fileError" x-text="fileError" class="text-xs font-bold text-tomato mt-2"></p>
+
+                        <div x-show="!fileName">
+                            <p class="text-sm font-bold text-ink">
+                                <span x-show="!isDragging">Seret dan lepas fail di sini, atau <span class="underline decoration-2 decoration-sun underline-offset-4">klik untuk memilih</span></span>
+                                <span x-show="isDragging" style="display: none;">Lepaskan untuk memuat naik</span>
+                            </p>
+                            <p class="text-xs text-slate-500 mt-1">Format PDF atau TXT, saiz maksimum 10MB</p>
+                        </div>
+
+                        <div x-show="fileName" style="display: none;" class="dz-file mx-auto max-w-sm flex items-center gap-3 rounded-xl border-2 border-ink bg-white px-3 py-2.5 text-left shadow-pop-sm">
+                            <span class="shrink-0 rounded-md bg-indigo-600 px-1.5 py-0.5 text-[10px] font-extrabold text-paper" x-text="fileType"></span>
+                            <span class="min-w-0 flex-1">
+                                <span class="block truncate text-sm font-bold text-ink" x-text="fileName"></span>
+                                <span class="block text-[11px] text-slate-500 tabular-nums"><span x-text="fileSizeLabel"></span> · sedia untuk dijana</span>
+                            </span>
+                            <button
+                                type="button"
+                                @click.stop="clearFile()"
+                                class="shrink-0 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-ink transition"
+                                aria-label="Buang fail"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+
+                        <p x-show="fileError" x-text="fileError" class="text-xs font-bold text-tomato mt-3" role="alert"></p>
                         <input
                             type="file"
                             name="document"
                             x-ref="fileInput"
                             @change="handleFileSelect($event.target.files)"
+                            @click.stop
                             accept=".pdf,.txt,application/pdf,text/plain"
                             class="hidden"
                         >
@@ -293,6 +369,26 @@
             </form>
         </div>
     </section>
+
+    @if($recentDecks->isNotEmpty())
+        <!-- Recent notes -->
+        <section class="max-w-3xl mx-auto mt-12" aria-labelledby="recent-notes-heading">
+            <div class="flex items-center justify-between gap-3">
+                <h2 id="recent-notes-heading" class="text-lg font-extrabold text-ink">Nota terkini anda</h2>
+                <a href="{{ route('decks.index') }}" class="text-sm font-bold text-indigo-600 hover:text-ink underline decoration-2 decoration-sun underline-offset-4">Lihat semua sejarah &rarr;</a>
+            </div>
+            <ul class="mt-3 academic-card divide-y-2 divide-dashed divide-slate-200 overflow-hidden">
+                @foreach($recentDecks as $recentDeck)
+                    <li>
+                        <a href="{{ $recentDeck->status === 'completed' ? route('decks.show', $recentDeck) : route('decks.processing', $recentDeck) }}" class="flex items-center justify-between gap-3 px-4 py-3 hover:bg-amber-50 transition">
+                            <span class="min-w-0 truncate text-sm font-bold text-ink">{{ $recentDeck->title }}</span>
+                            <span class="shrink-0 text-xs text-slate-500">{{ $recentDeck->created_at?->diffForHumans() }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
 
     <!-- How it works -->
     <section class="max-w-5xl mx-auto mt-16">

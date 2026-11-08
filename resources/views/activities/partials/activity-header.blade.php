@@ -70,7 +70,7 @@
     >
         <div class="flex items-center justify-between pb-3 border-b-2 border-dashed border-slate-200">
             <div class="flex items-center gap-2">
-                @include('partials.syed-avatar', ['class' => 'w-8 h-8'])
+                @include('partials.fahim-avatar', ['class' => 'w-8 h-8'])
                 <h4 class="font-display font-extrabold text-base text-ink">Bimbingan Petunjuk AI</h4>
             </div>
             <button type="button" @click="aiHintOpen = false" aria-label="Tutup" class="text-slate-400 hover:text-ink font-bold text-lg leading-none">&times;</button>

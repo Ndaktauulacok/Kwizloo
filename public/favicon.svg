@@ -3,6 +3,9 @@
 <clipPath id="seal">
 <circle cx="200" cy="200" r="166"/>
 </clipPath>
+<clipPath id="seal-eye">
+<path d="M238 188 Q258 170 281 182 Q264 198 238 188 Z"/>
+</clipPath>
 </defs>
 <g>
 <circle cx="200" cy="200" r="184" fill="#fbf4ea" stroke="#2a1217" stroke-width="4"/>
@@ -50,11 +53,16 @@
 <ellipse cx="332" cy="206" rx="3" ry="1.8" transform="rotate(18 332 206)" fill="#ffffff" opacity="0.55"/>
 <path d="M236 170 Q258 158 284 168" fill="none" stroke="#c4b6b9" stroke-width="3.5" stroke-linecap="round"/>
 <g>
-<path d="M238 188 Q258 170 281 182 Q264 198 238 188 Z" fill="#8a2a3e"/>
+<path d="M238 188 Q258 170 281 182 Q264 198 238 188 Z" fill="#ffffff"/>
+<g clip-path="url(#seal-eye)">
 <g>
-<circle cx="262" cy="184" r="5.2" fill="#1d0e11"/>
-<circle cx="264.5" cy="181.5" r="1.9" fill="#ffffff"/>
+<circle cx="262" cy="184" r="6.6" fill="#d11a2f"/>
+<circle cx="262" cy="184" r="6.6" fill="none" stroke="#8c0f1f" stroke-width="1.2"/>
+<circle cx="262" cy="184" r="2.8" fill="#1d0e11"/>
+<circle cx="264.6" cy="181.4" r="1.6" fill="#ffffff"/>
 </g>
+</g>
+<path d="M238 188 Q258 170 281 182 Q264 198 238 188 Z" fill="none" stroke="#2a1217" stroke-width="1.2" opacity="0.5"/>
 <path d="M238 188 Q258 170 281 182" fill="none" stroke="#2a1217" stroke-width="3" stroke-linecap="round"/>
 </g>
 <ellipse cx="248" cy="212" rx="11" ry="6" fill="#e7b3bb" opacity="0.45"/>

@@ -7,7 +7,7 @@
         <div class="order-2 lg:order-1 min-w-0 text-center lg:text-left">
             <span class="sticker bg-white text-ink -rotate-2">
                 <span class="w-2 h-2 rounded-full bg-tomato animate-pulse"></span>
-                Bersama Syed, Mentor AI Anda
+                Bersama Prof. Fahim, Mentor AI Anda
             </span>
 
             <h1 class="mt-5 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-ink leading-[1.05]">
@@ -59,7 +59,7 @@
             </dl>
         </div>
 
-        <!-- Interactive Furry Mascot (Syed Si Serigala Sarjana) -->
+        <!-- Interactive Furry Mascot (Fahim Si Serigala Sarjana) -->
         <div class="order-1 lg:order-2 min-w-0 w-full max-w-[560px] mx-auto select-none" x-data="mascotHero()">
             <div
                 x-ref="stage"
@@ -77,10 +77,10 @@
                         <!-- Speech bubble notch pointing down -->
                         <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-r-2 border-b-2 border-ink rotate-45 group-hover:bg-amber-50/70 transition"></div>
 
-                        <span class="shrink-0">@include('partials.syed-avatar', ['class' => 'w-8 h-8'])</span>
+                        <span class="shrink-0">@include('partials.fahim-avatar', ['class' => 'w-8 h-8'])</span>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between gap-1 mb-0.5">
-                                <span class="font-display font-extrabold text-[11px] text-indigo-600 tracking-wide uppercase">Prof. Syed · Mentor AI</span>
+                                <span class="font-display font-extrabold text-[11px] text-indigo-600 tracking-wide uppercase">Prof. Fahim · Mentor AI</span>
                                 <span class="text-[10px] text-slate-400 group-hover:text-ink font-semibold flex items-center gap-0.5">
                                     <span>Petua seterusnya</span>
                                     <span class="text-xs">&rarr;</span>
@@ -91,18 +91,18 @@
                     </button>
                 </div>
 
-                <!-- Syed, the scholar wolf -->
+                <!-- Fahim, the scholar wolf -->
                 <div
                     @click="petMascot()"
                     @keydown.enter.prevent="petMascot()"
                     @keydown.space.prevent="petMascot()"
                     role="button"
                     tabindex="0"
-                    aria-label="Sapa Syed"
+                    aria-label="Sapa Prof. Fahim"
                     class="relative w-full max-w-[460px] mx-auto cursor-pointer rounded-3xl transition-transform duration-300 ease-out will-change-transform"
                     :style="'transform: perspective(900px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg);'"
                 >
-                    @include('partials.syed-scene')
+                    @include('partials.fahim-scene')
 
                     <!-- XP pops on click -->
                     <template x-for="s in sparkles" :key="s.id">
@@ -115,7 +115,7 @@
                     <!-- Name plate -->
                     <div class="absolute bottom-[3%] left-1/2 -translate-x-1/2 whitespace-nowrap bg-paper text-ink border-2 border-ink px-3 py-1 rounded-full text-xs font-extrabold shadow-pop-sm flex items-center gap-1.5 z-20">
                         <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-                        <span>Prof. Syed</span>
+                        <span>Prof. Fahim</span>
                         <span class="bg-indigo-600 text-paper text-[10px] px-1.5 py-0.5 rounded-md font-mono">Lv.<span x-text="level"></span></span>
                     </div>
                 </div>
@@ -231,7 +231,7 @@
                 <div class="w-full mt-3 relative z-20">
                     <div class="p-2 rounded-xl bg-white/95 backdrop-blur border-2 border-ink shadow-pop-sm flex items-center justify-between gap-2.5 text-xs">
                         <div class="flex items-center gap-2 min-w-0">
-                            <span class="shrink-0">@include('partials.syed-avatar', ['class' => 'w-7 h-7'])</span>
+                            <span class="shrink-0">@include('partials.fahim-avatar', ['class' => 'w-7 h-7'])</span>
                             <div class="min-w-0">
                                 <div class="font-bold text-ink truncate text-[11px]">
                                     Tahap <span x-text="level"></span>: <span x-text="levelTitle" class="text-indigo-600"></span>
@@ -250,13 +250,13 @@
         </div>
     </section>
 
-    <!-- INTERACTIVE STUDY LAB WITH PROF. SYED -->
+    <!-- INTERACTIVE STUDY LAB WITH PROF. FAHIM -->
     <section class="academic-card p-6 sm:p-8 bg-amber-50/50 border-2 border-ink relative" x-data="{ activeLab: 'boss', bossHp: 3, activeQuizChoice: null, quizSolved: false }">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b-2 border-dashed border-slate-300">
             <div class="flex items-start sm:items-center gap-3">
-                <div class="shrink-0">@include('partials.syed-avatar', ['class' => 'w-12 h-12'])</div>
+                <div class="shrink-0">@include('partials.fahim-avatar', ['class' => 'w-12 h-12'])</div>
                 <div>
-                    <span class="sticker bg-sun text-ink -rotate-1 text-[11px]">Makmal Interaktif Syed</span>
+                    <span class="sticker bg-sun text-ink -rotate-1 text-[11px]">Makmal Interaktif Prof. Fahim</span>
                     <h2 class="mt-1 text-2xl sm:text-3xl font-extrabold text-ink">
                         Cuba Simulasi Mod KwizLoo Sekarang
                     </h2>
@@ -303,7 +303,7 @@
                         <span class="w-11 h-11 rounded-xl bg-tomato border-2 border-paper/20 flex items-center justify-center font-display font-extrabold text-sm text-white shrink-0">B2</span>
                         <div>
                             <div class="font-extrabold text-sm sm:text-base text-sun">Bos Bab 2: Monster Reaksi Gelap</div>
-                            <div class="text-xs text-slate-300">Syed mengesan kelemahan: Perbezaan fungsi Stroma vs Grana dalam kloroplas!</div>
+                            <div class="text-xs text-slate-300">Prof. Fahim mengesan kelemahan: Perbezaan fungsi Stroma vs Grana dalam kloroplas!</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 self-start sm:self-auto">
@@ -355,8 +355,8 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-paper/70 pt-1">
-                    <span x-show="bossHp === 0" class="text-sun font-bold">Tahniah, bos tewas! Syed mengesahkan anda kini menguasai topik ini.</span>
-                    <span x-show="bossHp > 0">Petua Syed: Klik jawapan A untuk kurangkan HP Bos.</span>
+                    <span x-show="bossHp === 0" class="text-sun font-bold">Tahniah, bos tewas! Prof. Fahim mengesahkan anda kini menguasai topik ini.</span>
+                    <span x-show="bossHp > 0">Petua Prof. Fahim: Klik jawapan A untuk kurangkan HP Bos.</span>
                     <button
                         type="button"
                         @click="bossHp = 3; quizSolved = false; window.AcademicAudio?.click()"
@@ -724,7 +724,7 @@
         </div>
     </section>
 
-    <!-- Sticky Floating Mascot Companion (Syed AI Assistant) -->
+    <!-- Sticky Floating Mascot Companion (Fahim AI Assistant) -->
     <div
         class="fixed bottom-5 right-5 z-50 select-none"
         x-data="companionWidget()"
@@ -752,8 +752,8 @@
         >
             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
                 <div class="flex items-center gap-2">
-                    @include('partials.syed-avatar', ['class' => 'w-8 h-8'])
-                    <span class="font-extrabold text-xs text-ink">Prof. Syed</span>
+                    @include('partials.fahim-avatar', ['class' => 'w-8 h-8'])
+                    <span class="font-extrabold text-xs text-ink">Prof. Fahim</span>
                 </div>
                 <button type="button" @click="isOpen = false" class="text-slate-400 hover:text-ink font-bold text-sm">✕</button>
             </div>
@@ -779,13 +779,13 @@
             type="button"
             @click="toggle()"
             class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-pop hover:-translate-y-0.5 active:translate-y-0.5 transition-transform duration-200 flex items-center justify-center group"
-            title="Buka pembantu Syed"
-            aria-label="Buka pembantu Syed"
+            title="Buka pembantu Prof. Fahim"
+            aria-label="Buka pembantu Prof. Fahim"
         >
-            @include('partials.syed-avatar', ['class' => 'w-full h-full'])
+            @include('partials.fahim-avatar', ['class' => 'w-full h-full'])
             <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-mint border-2 border-ink animate-pulse"></span>
             <span class="absolute -bottom-2 whitespace-nowrap bg-ink text-paper text-[10px] font-bold px-2 py-0.5 rounded-full border border-sun opacity-0 group-hover:opacity-100 transition-opacity">
-                Tanya Syed
+                Tanya Prof. Fahim
             </span>
         </button>
     </div>
