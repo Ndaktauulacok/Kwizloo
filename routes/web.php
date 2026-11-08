@@ -18,6 +18,8 @@ Route::prefix('decks')->name('decks.')->group(function (): void {
     Route::get('/{deck}/status', [StudyDeckController::class, 'status'])->name('status');
     Route::get('/{deck}', [StudyDeckController::class, 'show'])->name('show');
     Route::get('/{deck}/report', [TeacherReportController::class, 'show'])->name('report');
+    Route::post('/{deck}/report/generate', [TeacherReportController::class, 'generate'])->name('report.generate');
+    Route::get('/{deck}/report/status', [TeacherReportController::class, 'status'])->name('report.status');
 
     // Interactive Study Activity Endpoints
     Route::get('/{deck}/activities/{activity}', [StudyActivityController::class, 'show'])->name('activities.show');
