@@ -93,19 +93,40 @@ class GenerateTeacherReportJob implements ShouldQueue
                 'badge' => 'semak',
             ]);
         } catch (Throwable $e) {
+            $friendlyMessage = $this->sanitizeErrorMessage($e->getMessage());
+
             $report->update([
                 'status' => 'failed',
-                'error_message' => $e->getMessage(),
+                'error_message' => $friendlyMessage,
             ]);
 
             AgentLog::create([
                 'study_deck_id' => $this->deck->id,
                 'kind' => 'Ralat',
-                'message' => 'Kegagalan menjana laporan AI guru: '.$e->getMessage(),
+                'message' => 'Kegagalan menjana laporan AI guru: '.$friendlyMessage,
                 'badge' => 'alert',
             ]);
 
             throw $e;
         }
+    }
+
+    private function sanitizeErrorMessage(string $message): string
+    {
+        $lower = mb_strtolower($message);
+
+        if (str_contains($lower, '429') || str_contains($lower, 'quota') || str_contains($lower, 'resource_exhausted')) {
+            return 'Had kuota harian Gemini AI (Free Tier) telah dicapai (20 permintaan sehari). Sila cuba lagi kemudian.';
+        }
+
+        if (str_contains($lower, '401') || str_contains($lower, '403') || str_contains($lower, 'api key')) {
+            return 'Kunci Gemini API tidak sah atau tiada kebenaran akses.';
+        }
+
+        if (str_contains($message, '{"error"') || str_contains($message, '{ "error"')) {
+            return 'Ralat perkhidmatan AI luar semasa menganalisis laporan.';
+        }
+
+        return $message;
     }
 }

@@ -1,13 +1,13 @@
 @extends('layouts.app', ['title' => 'Selamat Datang'])
 
 @section('content')
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto space-y-16 sm:space-y-24">
     <!-- Hero -->
-    <section class="grid lg:grid-cols-[1fr_1.05fr] gap-8 lg:gap-4 items-center lg:min-h-[calc(100svh-13rem)] pt-2 pb-6">
+    <section class="grid lg:grid-cols-[0.95fr_1.15fr] gap-10 lg:gap-6 items-center pt-2 pb-10">
         <div class="order-2 lg:order-1 text-center lg:text-left">
             <span class="sticker bg-white text-ink -rotate-2">
-                <span class="w-2 h-2 rounded-full bg-tomato"></span>
-                Platform pembelajaran berkuasa AI
+                <span class="w-2 h-2 rounded-full bg-tomato animate-pulse"></span>
+                Bersama Syed, Mentor AI Anda
             </span>
 
             <h1 class="mt-5 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-ink leading-[1.05]">
@@ -19,28 +19,39 @@
                 dan menjana kuiz, kad imbas serta aktiviti interaktif untuk anda. Sesuai untuk murid, pelajar dan guru.
             </p>
 
-            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white text-lg px-8 py-4 rounded-2xl group">
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
+                <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white text-base sm:text-lg px-7 py-3.5 rounded-2xl group w-full sm:w-auto">
                     <span>Mulakan Sekarang</span>
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                 </a>
-                <a href="{{ route('how-it-works') }}" class="text-sm font-bold text-slate-700 hover:text-ink underline decoration-2 decoration-sun underline-offset-4">
-                    Lihat cara ia berfungsi
+                <button
+                    type="button"
+                    @click="$dispatch('open-onboarding')"
+                    class="btn-pop bg-sun text-ink text-sm sm:text-base px-5 py-3.5 rounded-2xl flex items-center justify-center gap-2 group w-full sm:w-auto"
+                >
+                    <svg class="w-5 h-5 text-ink fill-ink/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                    <span>Panduan Pantas</span>
+                </button>
+            </div>
+
+            <div class="mt-4 text-center lg:text-left">
+                <a href="{{ route('how-it-works') }}" class="text-xs font-bold text-slate-600 hover:text-ink underline decoration-2 decoration-slate-300 hover:decoration-ink underline-offset-4">
+                    Ketahui lebih lanjut mengenai cara AI berfungsi &rarr;
                 </a>
             </div>
 
             <dl class="mt-10 grid grid-cols-3 gap-3 max-w-md mx-auto lg:mx-0">
-                <div class="p-3 rounded-xl bg-white border-2 border-ink text-center">
+                <div class="p-3 rounded-xl bg-white border-2 border-ink text-center shadow-pop-sm">
                     <dt class="sr-only">Mod pembelajaran</dt>
                     <dd class="font-display text-2xl font-extrabold text-ink">9</dd>
                     <dd class="text-[11px] font-semibold text-slate-600">mod pembelajaran</dd>
                 </div>
-                <div class="p-3 rounded-xl bg-white border-2 border-ink text-center">
+                <div class="p-3 rounded-xl bg-white border-2 border-ink text-center shadow-pop-sm">
                     <dt class="sr-only">Format disokong</dt>
                     <dd class="font-display text-2xl font-extrabold text-ink">PDF</dd>
                     <dd class="text-[11px] font-semibold text-slate-600">atau teks biasa</dd>
                 </div>
-                <div class="p-3 rounded-xl bg-white border-2 border-ink text-center">
+                <div class="p-3 rounded-xl bg-white border-2 border-ink text-center shadow-pop-sm">
                     <dt class="sr-only">Dijana oleh AI</dt>
                     <dd class="font-display text-2xl font-extrabold text-ink">AI</dd>
                     <dd class="text-[11px] font-semibold text-slate-600">jana soalan automatik</dd>
@@ -48,111 +59,757 @@
             </dl>
         </div>
 
-        <!-- Mascot holding floating study cards -->
-        <div class="order-1 lg:order-2 mascot w-full max-w-[560px] mx-auto">
-            <svg viewBox="0 0 560 540" class="w-full h-auto overflow-visible" role="img" aria-labelledby="mascot-title">
-                <title id="mascot-title">Maskot KwizLoo, pembantu AI, menghulurkan tangan sambil memegang kad pembelajaran yang terapung</title>
+        <!-- Interactive Furry Mascot (Syed Si Serigala Sarjana) -->
+        <div class="order-1 lg:order-2 w-full max-w-[560px] mx-auto select-none" x-data="mascotHero()">
+            <div
+                x-ref="stage"
+                @mousemove="handleMouseMove($event)"
+                @mouseleave="handleMouseLeave()"
+                class="relative flex flex-col items-center justify-center pt-1 pb-2"
+            >
+                <!-- Interactive Mascot Speech Bubble -->
+                <div class="w-full max-w-md mb-2.5 relative z-30 transition-transform duration-200">
+                    <button
+                        type="button"
+                        @click="petMascot()"
+                        class="w-full academic-card p-3 bg-white border-2 border-ink shadow-pop-sm flex items-center gap-2.5 text-left group hover:bg-amber-50/70 transition relative"
+                    >
+                        <!-- Speech bubble notch pointing down -->
+                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-r-2 border-b-2 border-ink rotate-45 group-hover:bg-amber-50/70 transition"></div>
 
-                <!-- Sparkles -->
-                <g fill="#ffc83d" stroke="#1c1915" stroke-width="2.5" stroke-linejoin="round">
-                    <path class="mascot-spark" d="M62 80 Q62 92 74 92 Q62 92 62 104 Q62 92 50 92 Q62 92 62 80Z"/>
-                    <path class="mascot-spark" style="animation-delay:-0.8s" d="M520 40 Q520 52 532 52 Q520 52 520 64 Q520 52 508 52 Q520 52 520 40Z"/>
-                    <path class="mascot-spark" style="animation-delay:-1.6s" d="M512 318 Q512 328 522 328 Q512 328 512 338 Q512 328 502 328 Q512 328 512 318Z"/>
-                    <path class="mascot-spark" style="animation-delay:-1.2s" d="M40 340 Q40 350 50 350 Q40 350 40 360 Q40 350 30 350 Q40 350 40 340Z"/>
-                    <path class="mascot-spark" style="animation-delay:-2s" d="M196 120 Q196 128 204 128 Q196 128 196 136 Q196 128 188 128 Q196 128 196 120Z"/>
-                </g>
+                        <span class="w-7 h-7 rounded-lg bg-sun border-2 border-ink shadow-pop-sm flex items-center justify-center shrink-0 font-bold text-xs">
+                            💡
+                        </span>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-1 mb-0.5">
+                                <span class="font-display font-extrabold text-[11px] text-indigo-600 tracking-wide uppercase">Syed · Mentor AI</span>
+                                <span class="text-[10px] text-slate-400 group-hover:text-ink font-semibold flex items-center gap-0.5">
+                                    <span>Klik petua</span>
+                                    <span class="text-xs">&rarr;</span>
+                                </span>
+                            </div>
+                            <p class="text-xs font-semibold text-slate-700 leading-snug truncate" x-text="dialogue"></p>
+                        </div>
+                    </button>
+                </div>
 
-                <!-- Ground shadow -->
-                <ellipse cx="280" cy="510" rx="112" ry="13" fill="#1c1915" opacity="0.12"/>
+                <!-- Central Furry Model (Syed) - Clear, Unobstructed 3D View -->
+                <div class="relative flex items-center justify-center my-1.5">
+                    <!-- Soft Pulse Glow Background -->
+                    <div class="absolute w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-sun/20 blur-xl animate-pulse-ring pointer-events-none"></div>
 
-                <!-- Character -->
-                <g class="mascot-bob">
-                    <!-- Feet -->
-                    <ellipse cx="240" cy="490" rx="32" ry="15" fill="#ffc83d" stroke="#1c1915" stroke-width="4"/>
-                    <ellipse cx="320" cy="490" rx="32" ry="15" fill="#ffc83d" stroke="#1c1915" stroke-width="4"/>
+                    <!-- Neo-brutalist Circular Seal Outer Rim -->
+                    <div
+                        @click="petMascot()"
+                        class="relative rounded-full p-2 bg-gradient-to-tr from-[#7b1928] via-[#a32238] to-sun border-4 border-ink shadow-pop-lg cursor-pointer group transition-transform duration-200"
+                        :style="'transform: perspective(800px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg);'"
+                        :class="{ 'animate-wiggle': isWiggling }"
+                        title="Klik Syed untuk berinteraksi!"
+                    >
+                        <!-- Avatar Image -->
+                        <div class="relative w-44 h-44 sm:w-56 sm:h-56 rounded-full overflow-hidden border-2 border-ink bg-[#fff7ea]">
+                            <img
+                                src="{{ asset('images/furry-mascot.jpeg') }}"
+                                alt="Syed Si Serigala Sarjana - Maskot KwizLoo"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                            >
+                        </div>
 
-                    <!-- Arms (behind body) -->
-                    <path d="M205 362 C150 362 118 332 106 290" fill="none" stroke="#1c1915" stroke-width="27" stroke-linecap="round"/>
-                    <path d="M205 362 C150 362 118 332 106 290" fill="none" stroke="#ffc83d" stroke-width="17" stroke-linecap="round"/>
-                    <path d="M355 362 C410 362 442 332 454 290" fill="none" stroke="#1c1915" stroke-width="27" stroke-linecap="round"/>
-                    <path d="M355 362 C410 362 442 332 454 290" fill="none" stroke="#ffc83d" stroke-width="17" stroke-linecap="round"/>
+                        <!-- Sparkles on Click -->
+                        <template x-for="s in sparkles" :key="s.id">
+                            <span
+                                class="absolute pointer-events-none font-display font-extrabold text-xs sm:text-sm text-sun bg-ink px-2 py-0.5 rounded-full border border-sun shadow-pop-sm animate-spark-fly z-40 whitespace-nowrap"
+                                :style="'left: ' + s.x + '%; top: ' + s.y + '%;'"
+                            >
+                                ✨ +XP
+                            </span>
+                        </template>
 
-                    <!-- Open palms, facing up -->
-                    <path d="M76 272 Q80 300 106 302 Q132 300 136 270 Q122 279 106 279 Q90 279 76 272Z" fill="#ffc83d" stroke="#1c1915" stroke-width="4" stroke-linejoin="round"/>
-                    <path d="M484 272 Q480 300 454 302 Q428 300 424 270 Q438 279 454 279 Q470 279 484 272Z" fill="#ffc83d" stroke="#1c1915" stroke-width="4" stroke-linejoin="round"/>
+                        <!-- Badge Overlay at Bottom of Circle -->
+                        <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-sun text-ink border-2 border-ink px-3 py-1 rounded-full text-xs font-black shadow-pop-sm flex items-center gap-1.5 group-hover:scale-105 transition z-20">
+                            <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+                            <span>Prof. Syed AI</span>
+                            <span class="bg-ink text-paper text-[10px] px-1.5 py-0.5 rounded-md font-mono">Lv.<span x-text="level"></span></span>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- Magic lines rising from palms -->
-                    <g stroke="#1c1915" stroke-width="3" stroke-linecap="round" opacity="0.45">
-                        <path d="M90 256 L84 244"/><path d="M106 252 L106 238"/><path d="M122 256 L128 244"/>
-                        <path d="M438 256 L432 244"/><path d="M454 252 L454 238"/><path d="M470 256 L476 244"/>
-                    </g>
+                <!-- Interactive Companion Cards (Speed Quiz & 3D Flashcard) -->
+                <div class="w-full mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 z-20">
+                    <!-- Card 1: Playable Speed Quiz Card -->
+                    <div class="academic-card p-3 bg-sky-pop/20 border-2 border-ink shadow-pop-sm transition-transform hover:-translate-y-0.5 duration-150 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="px-2 py-0.5 rounded-md bg-sky-pop border border-ink text-[10px] font-black uppercase text-ink tracking-wider">
+                                    ⚡ Kuiz Pantas
+                                </span>
+                                <span class="text-[11px] font-bold text-slate-700 flex items-center gap-1">
+                                    <span x-show="streak > 0">🔥</span>
+                                    <span>Streak: <span x-text="streak" class="font-extrabold text-indigo-600"></span></span>
+                                </span>
+                            </div>
 
-                    <!-- Antenna -->
-                    <path d="M282 252 Q276 218 292 198" fill="none" stroke="#1c1915" stroke-width="5" stroke-linecap="round"/>
-                    <circle cx="294" cy="190" r="13" fill="#ff6b4a" stroke="#1c1915" stroke-width="4"/>
-                    <circle cx="290" cy="186" r="3.5" fill="#ffffff" opacity="0.8"/>
+                            <!-- Question Prompt -->
+                            <div class="mt-1.5 min-h-[38px]">
+                                <p class="text-[11px] font-bold text-ink leading-tight" x-text="questions[quizIndex].q"></p>
+                            </div>
+                        </div>
 
-                    <!-- Body -->
-                    <rect x="188" y="256" width="200" height="236" rx="100" fill="#1c1915"/>
-                    <rect x="180" y="248" width="200" height="236" rx="100" fill="#ffc83d" stroke="#1c1915" stroke-width="5"/>
-                    <ellipse cx="280" cy="420" rx="62" ry="46" fill="#ffe08a"/>
+                        <!-- Choice Buttons -->
+                        <div x-show="!quizAnswered" class="mt-2 grid grid-cols-2 gap-1.5">
+                            <button
+                                type="button"
+                                @click="answerQuiz(false)"
+                                class="px-2 py-1.5 rounded-lg bg-white hover:bg-slate-100 border-2 border-ink text-[11px] font-bold text-ink shadow-pop-sm active:translate-y-0.5 transition"
+                            >
+                                Salah
+                            </button>
+                            <button
+                                type="button"
+                                @click="answerQuiz(true)"
+                                class="px-2 py-1.5 rounded-lg bg-ink hover:bg-slate-800 border-2 border-ink text-[11px] font-bold text-white shadow-pop-sm active:translate-y-0.5 transition"
+                            >
+                                Betul
+                            </button>
+                        </div>
 
-                    <!-- Eyes -->
-                    <g class="mascot-eye">
-                        <ellipse cx="250" cy="322" rx="17" ry="20" fill="#ffffff" stroke="#1c1915" stroke-width="4"/>
-                        <circle cx="253" cy="326" r="9" fill="#1c1915"/>
-                        <circle cx="256" cy="321" r="3" fill="#ffffff"/>
-                    </g>
-                    <g class="mascot-eye">
-                        <ellipse cx="310" cy="322" rx="17" ry="20" fill="#ffffff" stroke="#1c1915" stroke-width="4"/>
-                        <circle cx="313" cy="326" r="9" fill="#1c1915"/>
-                        <circle cx="316" cy="321" r="3" fill="#ffffff"/>
-                    </g>
+                        <!-- Result Feedback -->
+                        <div x-show="quizAnswered" class="mt-2 pt-2 border-t border-ink/20 space-y-1" style="display: none;">
+                            <div class="flex items-center justify-between text-[11px] font-extrabold">
+                                <span :class="isCorrect ? 'text-emerald-700' : 'text-tomato'" x-text="isCorrect ? '✓ Tepat! (+25 XP)' : '✕ Kurang Tepat'"></span>
+                                <button
+                                    type="button"
+                                    @click="nextQuiz()"
+                                    class="text-[10px] text-indigo-600 hover:text-ink font-bold underline underline-offset-2"
+                                >
+                                    Lain &rarr;
+                                </button>
+                            </div>
+                            <p class="text-[10px] text-slate-600 leading-tight" x-text="quizFeedback"></p>
+                        </div>
+                    </div>
 
-                    <!-- Cheeks & smile -->
-                    <ellipse cx="224" cy="358" rx="13" ry="8" fill="#ff8fc7" opacity="0.85"/>
-                    <ellipse cx="336" cy="358" rx="13" ry="8" fill="#ff8fc7" opacity="0.85"/>
-                    <path d="M260 356 Q280 386 300 356 Z" fill="#1c1915" stroke="#1c1915" stroke-width="4" stroke-linejoin="round"/>
-                    <ellipse cx="280" cy="368" rx="8" ry="4" fill="#ff6b4a"/>
-                </g>
+                    <!-- Card 2: 3D Flippable Flashcard -->
+                    <div
+                        class="cursor-pointer card-flip-container min-h-[125px]"
+                        @click="toggleFlip()"
+                    >
+                        <div
+                            class="card-flip-inner relative w-full h-full min-h-[125px]"
+                            :class="{ 'is-flipped': isFlipped }"
+                        >
+                            <!-- Front Face -->
+                            <div class="card-face absolute inset-0 academic-card p-3 bg-sun/20 border-2 border-ink shadow-pop-sm flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2 py-0.5 rounded-md bg-sun border border-ink text-[10px] font-black uppercase text-ink tracking-wider">
+                                            🃏 Kad Imbas
+                                        </span>
+                                        <span class="text-[10px] font-bold text-slate-500">Balikkan ↺</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class="text-[9px] uppercase font-bold text-slate-400">Istilah:</span>
+                                        <h4 class="font-extrabold text-sm text-ink leading-snug" x-text="flashcards[flashcardIndex].term"></h4>
+                                    </div>
+                                </div>
+                                <div class="text-[10px] font-semibold text-indigo-600 flex items-center justify-between mt-1">
+                                    <span>Klik untuk maksud</span>
+                                    <span class="text-xs">&rarr;</span>
+                                </div>
+                            </div>
 
-                <!-- Floating card above left hand: speed quiz -->
-                <g class="mascot-hover">
-                    <g transform="rotate(-8)">
-                        <rect x="27" y="123" width="176" height="96" rx="16" fill="#1c1915"/>
-                        <rect x="22" y="118" width="176" height="96" rx="16" fill="#5aa9ff" stroke="#1c1915" stroke-width="4"/>
-                        <text x="40" y="146" font-family="Bricolage Grotesque, Instrument Sans, sans-serif" font-size="12" font-weight="700" letter-spacing="1" fill="#1c1915" opacity="0.7">UJIAN PANTAS</text>
-                        <text x="40" y="182" font-family="Bricolage Grotesque, Instrument Sans, sans-serif" font-size="30" font-weight="800" fill="#1c1915">00:42</text>
-                        <rect x="40" y="192" width="140" height="12" rx="6" fill="#ffffff" fill-opacity="0.6" stroke="#1c1915" stroke-width="3"/>
-                        <rect x="40" y="192" width="92" height="12" rx="6" fill="#1c1915"/>
-                    </g>
-                </g>
+                            <!-- Back Face -->
+                            <div class="card-face card-face-back absolute inset-0 academic-card p-3 bg-white border-2 border-ink shadow-pop-sm flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2 py-0.5 rounded-md bg-mint/30 border border-ink text-[9px] font-black uppercase text-ink" x-text="flashcards[flashcardIndex].category"></span>
+                                        <button
+                                            type="button"
+                                            @click.stop="nextFlashcard()"
+                                            class="text-[10px] font-bold text-indigo-600 hover:text-ink underline"
+                                        >
+                                            Lain ↻
+                                        </button>
+                                    </div>
+                                    <p class="mt-1 text-[10px] text-slate-700 leading-snug" x-text="flashcards[flashcardIndex].def"></p>
+                                </div>
+                                <div class="text-[10px] font-bold text-emerald-700 text-right mt-0.5">
+                                    ✓ Faham (+10 XP)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Floating card above right hand: true or false -->
-                <g class="mascot-hover" style="animation-delay:-2.1s">
-                    <g transform="rotate(7)">
-                        <rect x="367" y="113" width="180" height="104" rx="16" fill="#1c1915"/>
-                        <rect x="362" y="108" width="180" height="104" rx="16" fill="#ff8fc7" stroke="#1c1915" stroke-width="4"/>
-                        <text x="378" y="135" font-family="Bricolage Grotesque, Instrument Sans, sans-serif" font-size="11.5" font-weight="700" letter-spacing="1" fill="#1c1915" opacity="0.7">BETUL ATAU SALAH?</text>
-                        <text x="378" y="158" font-family="Newsreader, Georgia, serif" font-size="15" font-style="italic" fill="#1c1915">“Klorofil menyerap</text>
-                        <text x="378" y="176" font-family="Newsreader, Georgia, serif" font-size="15" font-style="italic" fill="#1c1915">cahaya hijau.”</text>
-                        <rect x="378" y="184" width="70" height="20" rx="6" fill="#ffffff" stroke="#1c1915" stroke-width="3"/>
-                        <text x="413" y="198" text-anchor="middle" font-family="Bricolage Grotesque, Instrument Sans, sans-serif" font-size="11" font-weight="700" fill="#1c1915">Salah</text>
-                        <rect x="456" y="184" width="70" height="20" rx="6" fill="#1c1915" stroke="#1c1915" stroke-width="3"/>
-                        <text x="491" y="198" text-anchor="middle" font-family="Bricolage Grotesque, Instrument Sans, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Betul</text>
-                    </g>
-                </g>
-
-                <!-- Floating badge above head -->
-                <g class="mascot-hover" style="animation-delay:-1s">
-                    <g transform="rotate(10)">
-                        <circle cx="344" cy="92" r="30" fill="#1c1915"/>
-                        <circle cx="340" cy="88" r="30" fill="#2ec4a0" stroke="#1c1915" stroke-width="4"/>
-                        <text x="340" y="97" text-anchor="middle" font-family="Bricolage Grotesque, Instrument Sans, sans-serif" font-size="24" font-weight="800" fill="#1c1915">A+</text>
-                    </g>
-                </g>
-            </svg>
+                <!-- XP & Academic Rank Bar (Bottom) -->
+                <div class="w-full mt-3 relative z-20">
+                    <div class="p-2 rounded-xl bg-white/95 backdrop-blur border-2 border-ink shadow-pop-sm flex items-center justify-between gap-2.5 text-xs">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="w-6 h-6 rounded-lg bg-[#7b1928] text-white flex items-center justify-center font-display font-extrabold text-[11px] border border-ink shrink-0">
+                                S
+                            </span>
+                            <div class="min-w-0">
+                                <div class="font-bold text-ink truncate text-[11px]">
+                                    Tahap <span x-text="level"></span>: <span x-text="levelTitle" class="text-indigo-600"></span>
+                                </div>
+                                <div class="w-24 sm:w-32 bg-slate-100 h-1.5 rounded-full border border-ink overflow-hidden mt-0.5">
+                                    <div class="bg-mint h-full transition-all duration-300 rounded-full" :style="'width: ' + Math.min(100, Math.round(xp / maxXp * 100)) + '%'"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-mono font-bold text-[10px] text-slate-700"><span x-text="xp"></span>/<span x-text="maxXp"></span> XP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+
+    <!-- INTERACTIVE STUDY LAB WITH PROF. SYED -->
+    <section class="academic-card p-6 sm:p-8 bg-amber-50/50 border-2 border-ink relative" x-data="{ activeLab: 'boss', bossHp: 3, activeQuizChoice: null, quizSolved: false }">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b-2 border-dashed border-slate-300">
+            <div class="flex items-start sm:items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl p-0.5 bg-gradient-to-tr from-[#7b1928] to-sun border-2 border-ink shadow-pop-sm shrink-0">
+                    <img src="{{ asset('images/furry-mascot.jpeg') }}" alt="Syed" class="w-full h-full rounded-2xl object-cover">
+                </div>
+                <div>
+                    <span class="sticker bg-sun text-ink -rotate-1 text-[11px]">Makmal Interaktif Syed</span>
+                    <h2 class="mt-1 text-2xl sm:text-3xl font-extrabold text-ink">
+                        Cuba Simulasi Mod KwizLoo Sekarang
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
+                        Pilih mod di bawah untuk uji minda anda secara langsung sebelum memuat naik sebarang nota.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mode Selector Tabs -->
+            <div class="flex items-center flex-wrap gap-2">
+                <button
+                    type="button"
+                    @click="activeLab = 'boss'; window.AcademicAudio?.click()"
+                    class="btn-pop text-xs sm:text-sm px-3.5 py-2 rounded-xl transition"
+                    :class="activeLab === 'boss' ? 'bg-tomato text-white' : 'bg-white text-ink'"
+                >
+                    ⚔️ Cabaran Bos
+                </button>
+                <button
+                    type="button"
+                    @click="activeLab = 'speed'; window.AcademicAudio?.click()"
+                    class="btn-pop text-xs sm:text-sm px-3.5 py-2 rounded-xl transition"
+                    :class="activeLab === 'speed' ? 'bg-sun text-ink' : 'bg-white text-ink'"
+                >
+                    ⚡ Ujian Pantas (60s)
+                </button>
+                <button
+                    type="button"
+                    @click="activeLab = 'cards'; window.AcademicAudio?.click()"
+                    class="btn-pop text-xs sm:text-sm px-3.5 py-2 rounded-xl transition"
+                    :class="activeLab === 'cards' ? 'bg-mint text-ink' : 'bg-white text-ink'"
+                >
+                    🃏 Kad Imbas Ajaib
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 1: Cabaran Bos Preview -->
+        <div x-show="activeLab === 'boss'" class="mt-6 space-y-4" x-transition>
+            <div class="p-5 sm:p-6 rounded-2xl bg-ink text-white border-2 border-ink shadow-pop-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-3xl">👹</span>
+                        <div>
+                            <div class="font-extrabold text-sm sm:text-base text-sun">Bos Bab 2: Monster Reaksi Gelap</div>
+                            <div class="text-xs text-slate-300">Syed mengesan kelemahan: Perbezaan fungsi Stroma vs Grana dalam kloroplas!</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 self-start sm:self-auto">
+                        <span class="text-xs font-bold text-tomato tracking-wider uppercase">HP BOS:</span>
+                        <div class="flex gap-1.5">
+                            <template x-for="i in 3" :key="i">
+                                <span class="w-6 h-6 rounded-lg border border-white/30 flex items-center justify-center text-xs transition-transform duration-200" :class="i <= bossHp ? 'bg-tomato text-white scale-105' : 'bg-slate-800 text-slate-600 opacity-40'">❤️</span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-700">
+                    <p class="text-sm font-semibold text-paper leading-snug">
+                        "Di manakah berlakunya fasa tindak balas tidak bersandarkan cahaya (fasa gelap) di dalam kloroplas?"
+                    </p>
+                    <div class="mt-3.5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                        <button
+                            type="button"
+                            @click="if (bossHp > 0) { bossHp = Math.max(0, bossHp - 1); window.AcademicAudio?.correct(); quizSolved = true; }"
+                            class="p-3 rounded-xl text-left font-bold transition flex items-center justify-between"
+                            :class="quizSolved ? 'bg-mint text-ink border-2 border-mint shadow-pop-sm' : 'bg-slate-800 text-paper hover:bg-slate-700 border border-slate-600'"
+                        >
+                            <span>A. Stroma</span>
+                            <span x-show="quizSolved" class="text-[11px] font-black uppercase">✓ Serangan Tepat!</span>
+                        </button>
+                        <button
+                            type="button"
+                            @click="window.AcademicAudio?.incorrect()"
+                            class="p-3 rounded-xl text-left font-bold bg-slate-800 text-paper hover:bg-slate-700 border border-slate-600 transition"
+                        >
+                            <span>B. Grana (Granum)</span>
+                        </button>
+                        <button
+                            type="button"
+                            @click="window.AcademicAudio?.incorrect()"
+                            class="p-3 rounded-xl text-left font-bold bg-slate-800 text-paper hover:bg-slate-700 border border-slate-600 transition"
+                        >
+                            <span>C. Membran Luar</span>
+                        </button>
+                        <button
+                            type="button"
+                            @click="window.AcademicAudio?.incorrect()"
+                            class="p-3 rounded-xl text-left font-bold bg-slate-800 text-paper hover:bg-slate-700 border border-slate-600 transition"
+                        >
+                            <span>D. Tilakoid</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-paper/70 pt-1">
+                    <span x-show="bossHp === 0" class="text-sun font-bold">🎉 TAHNIAH! Bos tewas! Syed mengesahkan anda kini menguasai topik ini.</span>
+                    <span x-show="bossHp > 0">Petua Syed: Klik jawapan A untuk kurangkan HP Bos.</span>
+                    <button
+                        type="button"
+                        @click="bossHp = 3; quizSolved = false; window.AcademicAudio?.click()"
+                        class="text-xs text-sun hover:underline font-bold self-start sm:self-auto"
+                    >
+                        Set Semula Simulasi ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Ujian Pantas Preview -->
+        <div x-show="activeLab === 'speed'" class="mt-6 space-y-4" style="display: none;" x-transition>
+            <div class="p-5 sm:p-6 rounded-2xl bg-white border-2 border-ink shadow-pop-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-9 h-9 rounded-xl bg-sun border-2 border-ink flex items-center justify-center font-bold text-base shadow-pop-sm">⏱️</span>
+                        <div>
+                            <div class="font-extrabold text-sm sm:text-base text-ink">Mod Ujian Pantas (60 Saat)</div>
+                            <div class="text-xs text-slate-500">Masa bergerak pantas. Jawab seberapa banyak soalan sebelum masa tamat!</div>
+                        </div>
+                    </div>
+                    <div class="px-3.5 py-1.5 rounded-xl bg-ink text-white font-mono font-bold text-sm border-2 border-ink shadow-pop-sm">
+                        00:42
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-amber-50/70 border-2 border-ink text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed">
+                    "Molekul klorofil teruja dan melepaskan elektron bertenaga tinggi apabila menyerap foton tenaga cahaya."
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button
+                        type="button"
+                        @click="window.AcademicAudio?.incorrect()"
+                        class="btn-pop bg-white text-ink text-xs sm:text-sm py-2.5 rounded-xl"
+                    >
+                        Salah
+                    </button>
+                    <button
+                        type="button"
+                        @click="window.AcademicAudio?.correct()"
+                        class="btn-pop bg-indigo-600 text-white text-xs sm:text-sm py-2.5 rounded-xl"
+                    >
+                        Betul (✓ Tepat)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Kad Imbas Preview -->
+        <div x-show="activeLab === 'cards'" class="mt-6 space-y-4" style="display: none;" x-transition>
+            <div class="p-5 sm:p-6 rounded-2xl bg-white border-2 border-ink shadow-pop-sm space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-600">Simulasi Kad Imbas Berjarak (Spaced Repetition)</span>
+                    <span class="text-xs font-extrabold text-indigo-600">Kad 1 daripada 12</span>
+                </div>
+                <div class="p-6 rounded-xl bg-[#fff7ea] border-2 border-ink text-center space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full bg-sun border border-ink text-[11px] font-bold">Biologi SPM Bab 2</span>
+                    <div class="text-lg font-extrabold text-ink">Apakah maksud 'Fotofosforilasi'?</div>
+                    <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
+                        Sintesis ATP daripada ADP dan fosfat tak organik dengan menggunakan tenaga cahaya yang diserap oleh klorofil.
+                    </p>
+                </div>
+                <div class="flex items-center justify-center flex-wrap gap-2.5 pt-2">
+                    <button type="button" @click="window.AcademicAudio?.incorrect()" class="btn-pop bg-slate-100 text-ink text-xs px-4 py-2 rounded-xl">
+                        Sukar (Ulang Kerap)
+                    </button>
+                    <button type="button" @click="window.AcademicAudio?.pop()" class="btn-pop bg-sun text-ink text-xs px-4 py-2 rounded-xl">
+                        Sederhana (Ulang Esok)
+                    </button>
+                    <button type="button" @click="window.AcademicAudio?.correct()" class="btn-pop bg-mint text-ink text-xs px-4 py-2 rounded-xl">
+                        Mudah (Dikuasai ✓)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP-BY-STEP WORKFLOW GUIDE (NETFLIX-STYLE WALKTHROUGH) -->
+    <section class="relative pt-6">
+        <div class="text-center max-w-3xl mx-auto">
+            <span class="sticker bg-sun text-ink -rotate-1">Aliran Kerja Mudah</span>
+            <h2 class="mt-4 text-3xl sm:text-5xl font-extrabold text-ink leading-tight">
+                Cara KwizLoo Berfungsi dalam <span class="marker-underline">3 Langkah</span>
+            </h2>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
+                Tiada konfigurasi yang rumit. Sama seperti menonton Netflix, anda hanya perlukan bahan dan AI menguruskan segala-galanya untuk anda.
+            </p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            <!-- Step 1 -->
+            <div class="academic-card p-6 sm:p-7 flex flex-col justify-between relative group hover:-translate-y-1 transition duration-200">
+                <div class="absolute -top-4 -left-3 w-11 h-11 rounded-2xl bg-sky-pop border-2 border-ink shadow-pop-sm flex items-center justify-center font-display font-extrabold text-lg text-ink">
+                    01
+                </div>
+
+                <div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-600">Langkah Pertama</span>
+                        <span class="px-2 py-0.5 rounded-md bg-sky-pop/20 border border-ink text-[11px] font-bold text-ink">Format Bebas</span>
+                    </div>
+
+                    <h3 class="mt-4 text-xl sm:text-2xl font-extrabold text-ink leading-snug">
+                        Muat Naik atau Tampal Nota
+                    </h3>
+                    <p class="mt-2.5 text-sm text-slate-600 leading-relaxed">
+                        Tampal teks ringkas atau seret dokumen PDF sukatan pelajaran. KwizLoo membaca keseluruhan kandungan tanpa memerlukan anda memformatnya terlebih dahulu.
+                    </p>
+
+                    <!-- Preview graphic -->
+                    <div class="mt-5 p-3.5 rounded-xl bg-paper border-2 border-ink text-xs font-mono text-slate-700 space-y-1.5">
+                        <div class="flex items-center gap-2 font-sans font-bold text-ink text-[11px]">
+                            <svg class="w-4 h-4 text-sky-pop" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            Nota_Sains_Bab2.pdf
+                        </div>
+                        <div class="text-[11px] text-slate-500 font-serif italic truncate">
+                            "Tumbuhan menghasilkan glukosa melalui fotosintesis..."
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t-2 border-dashed border-slate-200 flex items-center justify-between text-xs font-bold text-slate-700">
+                    <span>Sedia dalam 5 saat</span>
+                    <button type="button" @click="$dispatch('open-onboarding')" class="text-indigo-600 hover:text-ink underline decoration-2 decoration-sun underline-offset-4">
+                        Lihat panduan &rarr;
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="academic-card p-6 sm:p-7 flex flex-col justify-between relative group hover:-translate-y-1 transition duration-200 bg-amber-50/40">
+                <div class="absolute -top-4 -left-3 w-11 h-11 rounded-2xl bg-sun border-2 border-ink shadow-pop-sm flex items-center justify-center font-display font-extrabold text-lg text-ink">
+                    02
+                </div>
+
+                <div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Langkah Kedua</span>
+                        <span class="px-2 py-0.5 rounded-md bg-sun/30 border border-ink text-[11px] font-bold text-ink">Berkuasa AI</span>
+                    </div>
+
+                    <h3 class="mt-4 text-xl sm:text-2xl font-extrabold text-ink leading-snug">
+                        AI Ekstrak & Jana Bahan
+                    </h3>
+                    <p class="mt-2.5 text-sm text-slate-600 leading-relaxed">
+                        AI membedah nota anda kepada topik-topik teras, menyediakan soalan aneka pilihan, soalan pantas, dan kad imbas berserta petikan rujukan teks asal.
+                    </p>
+
+                    <!-- Preview graphic -->
+                    <div class="mt-5 p-3.5 rounded-xl bg-white border-2 border-ink text-xs space-y-2">
+                        <div class="flex items-center justify-between text-[11px] font-bold">
+                            <span class="text-tomato">⚔️ Soalan Aras Tinggi</span>
+                            <span class="text-mint font-extrabold">Dijana</span>
+                        </div>
+                        <div class="text-[11px] text-slate-700 leading-snug">
+                            "Apakah faktor utama yang mempengaruhi kadar fotosintesis?"
+                        </div>
+                        <div class="text-[10px] text-slate-400 border-l-2 border-sun pl-2 italic">
+                            Disahkan dengan petikan sumber teks.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t-2 border-dashed border-slate-200 flex items-center justify-between text-xs font-bold text-slate-700">
+                    <span>9 mod serentak</span>
+                    <span class="text-mint">✓ 100% Automatik</span>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="academic-card p-6 sm:p-7 flex flex-col justify-between relative group hover:-translate-y-1 transition duration-200">
+                <div class="absolute -top-4 -left-3 w-11 h-11 rounded-2xl bg-mint border-2 border-ink shadow-pop-sm flex items-center justify-center font-display font-extrabold text-lg text-ink">
+                    03
+                </div>
+
+                <div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Langkah Ketiga</span>
+                        <span class="px-2 py-0.5 rounded-md bg-mint/30 border border-ink text-[11px] font-bold text-ink">Interaktif</span>
+                    </div>
+
+                    <h3 class="mt-4 text-xl sm:text-2xl font-extrabold text-ink leading-snug">
+                        Main Kuiz & Takluk Bos
+                    </h3>
+                    <p class="mt-2.5 text-sm text-slate-600 leading-relaxed">
+                        Pilih aktiviti kegemaran anda. Jika anda kerap salah menjawab, ejen AI membangkitkan 'Cabaran Bos' untuk membaiki kelemahan anda sehingga mahir.
+                    </p>
+
+                    <!-- Preview graphic -->
+                    <div class="mt-5 p-3.5 rounded-xl bg-ink text-white text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-extrabold text-sun">Cabaran Bos Aktif</span>
+                            <span class="text-tomato font-bold text-[10px]">HP: 3/3</span>
+                        </div>
+                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div class="bg-tomato h-full w-full"></div>
+                        </div>
+                        <div class="text-[10px] text-paper/70">
+                            Ejen AI: "Fokus pada topik 'Reaksi Gelap' untuk pengukuhan."
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t-2 border-dashed border-slate-200 flex items-center justify-between text-xs font-bold text-slate-700">
+                    <span>Laporan Guru Tersedia</span>
+                    <a href="{{ route('decks.create') }}" class="text-indigo-600 hover:text-ink underline decoration-2 decoration-sun underline-offset-4">
+                        Cuba sekarang &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9 MODES SHOWCASE -->
+    <section class="academic-card p-6 sm:p-10 bg-white">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <span class="sticker bg-bubblegum/40 text-ink -rotate-1">Pelbagai Cara Belajar</span>
+                <h2 class="mt-3 text-2xl sm:text-4xl font-extrabold text-ink">
+                    9 Mod Pembelajaran Interaktif
+                </h2>
+                <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-xl">
+                    Semua aktiviti ini dijana secara langsung daripada nota anda. Pilih gaya pembelajaran yang paling sesuai dengan mood anda hari ini.
+                </p>
+            </div>
+            <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white text-sm px-5 py-2.5 shrink-0">
+                Ubah Nota Anda Sekarang
+            </a>
+        </div>
+
+        @php
+            $studyModes = [
+                ['name' => 'Penilaian Penguasaan', 'tag' => 'Cabaran Bos', 'desc' => 'Soalan aras tinggi untuk mengukuhkan topik lemah.', 'bg' => 'bg-tomato', 'text' => 'text-white'],
+                ['name' => 'Ujian Pantas', 'tag' => '60 Saat', 'desc' => 'Jawab seberapa banyak soalan sebelum masa tamat.', 'bg' => 'bg-sun', 'text' => 'text-ink'],
+                ['name' => 'Sintesis Menurun', 'tag' => 'Refleks', 'desc' => 'Pilih jawapan yang betul sebelum blok jawapan jatuh ke bawah.', 'bg' => 'bg-sky-pop', 'text' => 'text-ink'],
+                ['name' => 'Padanan Konsep', 'tag' => 'Kefahaman', 'desc' => 'Padankan istilah penting dengan maksud atau definisinya.', 'bg' => 'bg-bubblegum', 'text' => 'text-ink'],
+                ['name' => 'Menara Kefahaman', 'tag' => '8 Aras', 'desc' => 'Bina menara pengetahuan aras demi aras tanpa tergelincir.', 'bg' => 'bg-mint', 'text' => 'text-ink'],
+                ['name' => 'Pengesahan Kritis', 'tag' => 'Betul / Salah', 'desc' => 'Tentukan kesahihan fakta berdasarkan nota rujukan.', 'bg' => 'bg-[#b8e986]', 'text' => 'text-ink'],
+                ['name' => 'Rekonstruksi Istilah', 'tag' => 'Susun Ejaan', 'desc' => 'Susun semula huruf berselerak untuk membentuk istilah penting.', 'bg' => 'bg-[#ffa65c]', 'text' => 'text-ink'],
+                ['name' => 'Flashcard Berjarak', 'tag' => 'Ingatan Aktif', 'desc' => 'Semak kad imbas pintar untuk ingatan jangka panjang.', 'bg' => 'bg-[#c3b1ff]', 'text' => 'text-ink'],
+                ['name' => 'Penanda Aras Adaptif', 'tag' => 'Lumba Bot', 'desc' => 'Bersaing dengan bot simulasi mengikut tahap kelajuan anda.', 'bg' => 'bg-[#7fe3e8]', 'text' => 'text-ink'],
+            ];
+        @endphp
+
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            @foreach($studyModes as $m)
+                <div class="p-4 rounded-xl border-2 border-ink bg-paper/50 hover:bg-white transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="px-2 py-0.5 rounded-md border border-ink text-[10px] font-black uppercase tracking-wider {{ $m['bg'] }} {{ $m['text'] }}">
+                                {{ $m['tag'] }}
+                            </span>
+                        </div>
+                        <h3 class="mt-2.5 font-extrabold text-base text-ink">{{ $m['name'] }}</h3>
+                        <p class="mt-1 text-xs text-slate-600 leading-relaxed">{{ $m['desc'] }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </section>
+
+    <!-- NETFLIX-STYLE FAQ ACCORDION -->
+    <section class="max-w-4xl mx-auto" x-data="{ openFaq: null }">
+        <div class="text-center">
+            <span class="sticker bg-white text-ink -rotate-1">Soalan Lazim</span>
+            <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-ink">
+                Segala Yang Anda Perlu Tahu
+            </h2>
+            <p class="mt-2 text-slate-600 text-sm sm:text-base">
+                Jawapan pantas untuk soalan yang sering ditanya oleh murid dan guru.
+            </p>
+        </div>
+
+        <div class="mt-8 space-y-3">
+            <!-- FAQ 1 -->
+            <div class="academic-card overflow-hidden">
+                <button
+                    type="button"
+                    @click="openFaq = openFaq === 1 ? null : 1"
+                    class="w-full p-5 text-left font-extrabold text-base sm:text-lg text-ink flex items-center justify-between gap-4 hover:bg-slate-50 transition"
+                    :aria-expanded="openFaq === 1"
+                >
+                    <span>Bagaimanakah KwizLoo menukar nota saya kepada kuiz?</span>
+                    <span class="w-7 h-7 rounded-lg bg-sun border-2 border-ink flex items-center justify-center shrink-0 font-bold transition-transform duration-200" :class="openFaq === 1 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="openFaq === 1" x-collapse class="px-5 pb-5 text-sm sm:text-base text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    AI KwizLoo membaca dokumen atau teks nota anda, mengesan konsep-konsep penting, dan menstrukturkannya menjadi soalan berbilang pilihan, soalan betul/salah, kad imbas, serta aktiviti interaktif. Setiap soalan disertakan petikan rujukan daripada nota asal anda.
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="academic-card overflow-hidden">
+                <button
+                    type="button"
+                    @click="openFaq = openFaq === 2 ? null : 2"
+                    class="w-full p-5 text-left font-extrabold text-base sm:text-lg text-ink flex items-center justify-between gap-4 hover:bg-slate-50 transition"
+                    :aria-expanded="openFaq === 2"
+                >
+                    <span>Bolehkah saya mencuba tanpa memuat naik nota saya sendiri?</span>
+                    <span class="w-7 h-7 rounded-lg bg-sun border-2 border-ink flex items-center justify-center shrink-0 font-bold transition-transform duration-200" :class="openFaq === 2 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="openFaq === 2" x-collapse class="px-5 pb-5 text-sm sm:text-base text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    Ya! Kami menyediakan pek contoh segera (Biologi: Fotosintesis). Anda boleh mencuba kesemua 9 mod pembelajaran dalam 1 klik tanpa perlu menulis teks atau memuat naik sebarang fail.
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="academic-card overflow-hidden">
+                <button
+                    type="button"
+                    @click="openFaq = openFaq === 3 ? null : 3"
+                    class="w-full p-5 text-left font-extrabold text-base sm:text-lg text-ink flex items-center justify-between gap-4 hover:bg-slate-50 transition"
+                    :aria-expanded="openFaq === 3"
+                >
+                    <span>Apakah itu 'Cabaran Bos' dan bagaimana ia membantu saya?</span>
+                    <span class="w-7 h-7 rounded-lg bg-sun border-2 border-ink flex items-center justify-center shrink-0 font-bold transition-transform duration-200" :class="openFaq === 3 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="openFaq === 3" x-collapse class="px-5 pb-5 text-sm sm:text-base text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    Apabila anda melakukan kesilapan pada soalan sesuatu topik, ejen AI akan menandakan topik tersebut sebagai 'Bos'. Mod ini memberi tumpuan kepada soalan aras tinggi dan penjelasan khusus sehingga anda berjaya menguasai kelemahan tersebut.
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="academic-card overflow-hidden">
+                <button
+                    type="button"
+                    @click="openFaq = openFaq === 4 ? null : 4"
+                    class="w-full p-5 text-left font-extrabold text-base sm:text-lg text-ink flex items-center justify-between gap-4 hover:bg-slate-50 transition"
+                    :aria-expanded="openFaq === 4"
+                >
+                    <span>Bagaimanakah guru boleh menyemak kemajuan murid?</span>
+                    <span class="w-7 h-7 rounded-lg bg-sun border-2 border-ink flex items-center justify-center shrink-0 font-bold transition-transform duration-200" :class="openFaq === 4 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="openFaq === 4" x-collapse class="px-5 pb-5 text-sm sm:text-base text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    Setiap modul mempunyai halaman 'Laporan Guru' automatik yang merumuskan tahap penguasaan murid mengikut topik, kadar ketepatan masa, dan cadangan penambahbaikan yang disediakan oleh ejen AI.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NETFLIX-STYLE BOTTOM CALL TO ACTION -->
+    <section class="academic-card p-8 sm:p-12 bg-sun border-3 border-ink shadow-pop-lg text-center relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl mx-auto space-y-5">
+            <span class="sticker bg-white text-ink -rotate-2">Mula Belajar Sekarang</span>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-ink leading-tight">
+                Bersedia Mengubah Cara Anda Mengulang Kaji?
+            </h2>
+            <p class="text-base sm:text-lg text-slate-800 font-medium leading-relaxed">
+                Hanya muat naik nota anda dan biarkan AI mencipta pengalaman pembelajaran interaktif yang menyeronokkan.
+            </p>
+
+            <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white text-base sm:text-lg px-8 py-4 rounded-2xl w-full sm:w-auto">
+                    <span>Cipta Modul Pertama Percuma</span>
+                </a>
+
+                <form action="{{ route('decks.store') }}" method="POST" class="w-full sm:w-auto">
+                    @csrf
+                    <input type="hidden" name="use_sample" value="1">
+                    <button type="submit" class="btn-pop bg-white text-ink text-base px-6 py-4 rounded-2xl w-full sm:w-auto">
+                        <span>Cuba Pek Contoh Segera (1-Klik)</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky Floating Mascot Companion (Syed AI Assistant) -->
+    <div
+        class="fixed bottom-5 right-5 z-50 select-none"
+        x-data="companionWidget()"
+        x-show="scrolled"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-6 scale-90"
+        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+        x-transition:leave-end="opacity-0 translate-y-6 scale-90"
+        style="display: none;"
+    >
+        <!-- Speech Bubble Popup -->
+        <div
+            x-show="isOpen"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 translate-y-3 scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+            x-transition:leave-end="opacity-0 translate-y-3 scale-95"
+            @click.outside="isOpen = false"
+            class="academic-card p-4 bg-white border-2 border-ink shadow-pop-lg w-72 sm:w-80 mb-3"
+            style="display: none;"
+        >
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                <div class="flex items-center gap-2">
+                    <img src="{{ asset('images/furry-mascot.jpeg') }}" alt="Syed" class="w-7 h-7 rounded-full object-cover border border-ink">
+                    <span class="font-extrabold text-xs text-ink">Prof. Syed AI</span>
+                </div>
+                <button type="button" @click="isOpen = false" class="text-slate-400 hover:text-ink font-bold text-sm">✕</button>
+            </div>
+            <p class="mt-2.5 text-xs text-slate-700 leading-relaxed">
+                "Ada dokumen nota atau teks subjek anda? Muat naik sekarang dan saya tukarkan jadi 9 aktiviti kuiz berkuasa AI!"
+            </p>
+            <div class="mt-3.5 flex flex-col gap-2">
+                <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white text-xs py-2 w-full text-center">
+                    🚀 Muat Naik Nota Baharu
+                </a>
+                <button
+                    type="button"
+                    @click="$dispatch('open-onboarding'); isOpen = false"
+                    class="btn-pop bg-sun text-ink text-xs py-2 w-full"
+                >
+                    📖 Panduan Langkah Demi Langkah
+                </button>
+            </div>
+        </div>
+
+        <!-- Floating Avatar Button -->
+        <button
+            type="button"
+            @click="toggle()"
+            class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-1 bg-gradient-to-tr from-[#7b1928] via-[#a32238] to-sun border-3 border-ink shadow-pop-lg hover:scale-105 active:scale-95 transition-transform duration-200 flex items-center justify-center group"
+            title="Buka pembantu Syed"
+            aria-label="Buka pembantu Syed"
+        >
+            <img
+                src="{{ asset('images/furry-mascot.jpeg') }}"
+                alt="Syed"
+                class="w-full h-full rounded-full object-cover border border-ink"
+            >
+            <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-mint border-2 border-ink animate-pulse"></span>
+            <span class="absolute -bottom-2 whitespace-nowrap bg-ink text-paper text-[10px] font-bold px-2 py-0.5 rounded-full border border-sun opacity-0 group-hover:opacity-100 transition-opacity">
+                Tanya Syed
+            </span>
+        </button>
+    </div>
 </div>
 @endsection

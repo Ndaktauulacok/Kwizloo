@@ -68,11 +68,62 @@
         </div>
     </section>
 
+    <!-- Step Pipeline Banner -->
+    <div class="max-w-4xl mx-auto mb-6 p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-ink shadow-pop-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-bold text-ink">
+        <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-center sm:justify-start">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-600 text-white border border-ink">
+                <span class="w-2 h-2 rounded-full bg-sun"></span>
+                Langkah 1: Masukkan Nota
+            </span>
+            <span class="text-slate-400">&rarr;</span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-100 text-slate-500 border border-slate-300">
+                Langkah 2: AI Proses
+            </span>
+            <span class="text-slate-400">&rarr;</span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-100 text-slate-500 border border-slate-300">
+                Langkah 3: 9 Mod Belajar
+            </span>
+        </div>
+        <button
+            type="button"
+            @click="$dispatch('open-onboarding')"
+            class="inline-flex items-center gap-1.5 text-slate-700 hover:text-ink underline decoration-2 decoration-sun underline-offset-4"
+        >
+            <svg class="w-4 h-4 text-sun fill-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="#1c1915"/></svg>
+            <span>Buka Panduan Langkah Demi Langkah</span>
+        </button>
+    </div>
+
     <!-- Intake Card -->
     <section class="relative max-w-4xl mx-auto">
         <div class="absolute -top-4 left-6 z-10 sticker bg-sun text-ink rotate-[-3deg]">Mulakan di sini</div>
 
-        <div class="academic-card p-6 sm:p-8 shadow-pop-lg" x-data="{ isDragging: false, activeTab: 'paste', fileName: '', isGenerating: false }" @pageshow.window="isGenerating = false">
+        <div class="academic-card p-6 sm:p-8 shadow-pop-lg" x-data="{
+            isDragging: false,
+            activeTab: 'paste',
+            fileName: '',
+            fileError: '',
+            isGenerating: false,
+            handleFileSelect(files) {
+                if (!files || !files[0]) return;
+                const file = files[0];
+                if (file.size > 10 * 1024 * 1024) {
+                    this.fileError = 'Saiz fail melebihi had maksimum 10MB.';
+                    this.fileName = '';
+                    if (this.$refs.fileInput) this.$refs.fileInput.value = '';
+                    return;
+                }
+                this.fileError = '';
+                this.fileName = file.name;
+            },
+            fillSample(title, text) {
+                const titleEl = document.getElementById('title');
+                const noteEl = document.getElementById('note_text');
+                if (titleEl) titleEl.value = title;
+                if (noteEl) noteEl.value = text;
+                this.activeTab = 'paste';
+            }
+        }" @pageshow.window="isGenerating = false">
             @if($errors->any())
                 <div class="mb-6 p-4 rounded-xl bg-tomato/10 border-2 border-tomato text-ink text-sm">
                     <div class="font-bold mb-1">Sila semak perkara berikut:</div>
@@ -123,30 +174,61 @@
                     >
                 </div>
 
-                <!-- Input Tabs -->
-                <div class="inline-flex p-1 rounded-xl bg-slate-100 border-2 border-ink" role="tablist">
-                    <button
-                        type="button"
-                        role="tab"
-                        :aria-selected="activeTab === 'paste'"
-                        @click="activeTab = 'paste'"
-                        :class="activeTab === 'paste' ? 'bg-white text-ink shadow-pop-sm border-ink' : 'text-slate-600 border-transparent hover:text-ink'"
-                        class="px-4 py-2 text-sm font-bold rounded-lg border-2 transition flex items-center gap-2"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
-                        <span>Tampal teks</span>
-                    </button>
-                    <button
-                        type="button"
-                        role="tab"
-                        :aria-selected="activeTab === 'upload'"
-                        @click="activeTab = 'upload'"
-                        :class="activeTab === 'upload' ? 'bg-white text-ink shadow-pop-sm border-ink' : 'text-slate-600 border-transparent hover:text-ink'"
-                        class="px-4 py-2 text-sm font-bold rounded-lg border-2 transition flex items-center gap-2"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M12 4v12m0-12 4 4m-4-4L8 8"/></svg>
-                        <span>Muat naik PDF / TXT</span>
-                    </button>
+                <!-- Input Tabs & Quick Preset Pills -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="inline-flex p-1 rounded-xl bg-slate-100 border-2 border-ink" role="tablist">
+                        <button
+                            type="button"
+                            role="tab"
+                            :aria-selected="activeTab === 'paste'"
+                            @click="activeTab = 'paste'"
+                            :class="activeTab === 'paste' ? 'bg-white text-ink shadow-pop-sm border-ink' : 'text-slate-600 border-transparent hover:text-ink'"
+                            class="px-4 py-2 text-sm font-bold rounded-lg border-2 transition flex items-center gap-2"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
+                            <span>Tampal teks</span>
+                        </button>
+                        <button
+                            type="button"
+                            role="tab"
+                            :aria-selected="activeTab === 'upload'"
+                            @click="activeTab = 'upload'"
+                            :class="activeTab === 'upload' ? 'bg-white text-ink shadow-pop-sm border-ink' : 'text-slate-600 border-transparent hover:text-ink'"
+                            class="px-4 py-2 text-sm font-bold rounded-lg border-2 transition flex items-center gap-2"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M12 4v12m0-12 4 4m-4-4L8 8"/></svg>
+                            <span>Muat naik PDF / TXT</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Sample Buttons -->
+                    <div class="flex items-center gap-1.5 flex-wrap text-xs font-bold">
+                        <span class="text-slate-500">Contoh segera:</span>
+                        <button
+                            type="button"
+                            @click="fillSample('Biologi Tingkatan 4: Fotosintesis', 'Fotosintesis ialah proses tumbuhan hijau membuat makanan sendiri menggunakan karbon dioksida, air dan cahaya matahari. Hasil fotosintesis ialah glukosa dan oksigen. Karbon dioksida masuk ke dalam daun melalui stoma. Air diserap oleh akar dan diangkut ke daun melalui xilem. Proses berlaku di dalam kloroplas yang mengandungi klorofil. Glukosa berlebihan disimpan sebagai kanji.')"
+                            class="px-2.5 py-1 rounded-lg bg-mint/20 hover:bg-mint/40 border border-ink text-ink transition"
+                            title="Isi contoh nota Biologi"
+                        >
+                            🌱 Biologi
+                        </button>
+                        <button
+                            type="button"
+                            @click="fillSample('Sejarah: Kesultanan Melayu Melaka', 'Kesultanan Melayu Melaka diasaskan oleh Parameswara sekitar tahun 1400. Melaka berkembang menjadi pusat perdagangan antarabangsa kerana kedudukan strategik di Selat Melaka, terlindung daripada tiupan angin monsun barat daya dan monsun timur laut. Pentadbiran berasaskan Sistem Pembesar Empat Lipatan yang diketuai oleh Bendahara, Penghulu Bendahari, Temenggung dan Laksamana.')"
+                            class="px-2.5 py-1 rounded-lg bg-sun/30 hover:bg-sun/60 border border-ink text-ink transition"
+                            title="Isi contoh nota Sejarah"
+                        >
+                            🏛️ Sejarah
+                        </button>
+                        <button
+                            type="button"
+                            @click="fillSample('Fizik: Tiga Hukum Gerakan Newton', 'Hukum Gerakan Newton Pertama menyatakan bahawa sesuatu objek akan kekal dalam keadaan pegun atau bergerak dengan halaju malar jika tiada daya luar bertindak ke atasnya (Inersia). Hukum Newton Kedua menyatakan bahawa daya paduan adalah berkadar terus dengan kadar perubahan momentum (F = ma). Hukum Newton Ketiga menyatakan bahawa setiap tindakan menghasilkan tindak balas yang sama magnitud tetapi bertentangan arah.')"
+                            class="px-2.5 py-1 rounded-lg bg-sky-pop/25 hover:bg-sky-pop/50 border border-ink text-ink transition"
+                            title="Isi contoh nota Fizik"
+                        >
+                            ⚡ Fizik
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Text Area Tab -->
@@ -169,10 +251,10 @@
                 <div x-show="activeTab === 'upload'" style="display: none;">
                     <div
                         class="border-2 border-dashed rounded-2xl p-10 text-center transition cursor-pointer"
-                        :class="isDragging ? 'border-indigo-600 bg-indigo-50' : 'border-ink/40 bg-paper/60 hover:border-ink hover:bg-white'"
+                        :class="isDragging ? 'border-indigo-600 bg-indigo-50' : (fileError ? 'border-tomato bg-tomato/5' : 'border-ink/40 bg-paper/60 hover:border-ink hover:bg-white')"
                         @dragover.prevent="isDragging = true"
                         @dragleave.prevent="isDragging = false"
-                        @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; fileName = $event.dataTransfer.files[0]?.name || ''"
+                        @drop.prevent="isDragging = false; if ($event.dataTransfer.files.length) { $refs.fileInput.files = $event.dataTransfer.files; handleFileSelect($event.dataTransfer.files); }"
                         @click="$refs.fileInput.click()"
                     >
                         <div class="mx-auto w-14 h-14 rounded-2xl bg-sky-pop border-2 border-ink shadow-pop-sm flex items-center justify-center mb-3 rotate-3">
@@ -180,11 +262,12 @@
                         </div>
                         <p class="text-sm font-bold text-ink" x-text="fileName || 'Klik untuk memilih fail, atau seret dan lepas di sini'"></p>
                         <p class="text-xs text-slate-500 mt-1">Format PDF atau TXT, saiz maksimum 10MB</p>
+                        <p x-show="fileError" x-text="fileError" class="text-xs font-bold text-tomato mt-2"></p>
                         <input
                             type="file"
                             name="document"
                             x-ref="fileInput"
-                            @change="fileName = $event.target.files[0]?.name || ''"
+                            @change="handleFileSelect($event.target.files)"
                             accept=".pdf,.txt,application/pdf,text/plain"
                             class="hidden"
                         >

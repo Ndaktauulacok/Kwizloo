@@ -43,10 +43,16 @@ class StudyDeckController extends Controller
 
         if ($request->hasFile('document')) {
             $file = $request->file('document');
-            $extractedText = $this->documentParser->extractTextFromUploadedFile($file);
-            $noteText = $extractedText;
-            if ($title === '') {
-                $title = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            try {
+                $extractedText = $this->documentParser->extractTextFromUploadedFile($file);
+                $noteText = $extractedText;
+                if ($title === '') {
+                    $title = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                }
+            } catch (\InvalidArgumentException $e) {
+                return back()->withInput()->withErrors([
+                    'document' => $e->getMessage(),
+                ]);
             }
         }
 
@@ -79,6 +85,14 @@ class StudyDeckController extends Controller
             'redirect_url' => route('decks.show', $deck),
             'error' => $deck->error_message,
         ]);
+    }
+
+    public function retryFallback(StudyDeck $deck): RedirectResponse
+    {
+        $this->deckGenerator->populateFallbackContent($deck);
+
+        return redirect()->route('decks.show', $deck)
+            ->with('status', 'Modul pembelajaran berjaya disediakan dalam Mod Asas.');
     }
 
     public function show(StudyDeck $deck): View

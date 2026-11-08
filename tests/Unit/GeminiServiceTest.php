@@ -93,4 +93,36 @@ class GeminiServiceTest extends TestCase
 
         $this->assertIsArray($result);
     }
+
+    public function test_openai_compatible_endpoint_generates_text_and_structured(): void
+    {
+        config([
+            'services.gemini.key' => 'mock-9router-key',
+            'services.gemini.model' => 'instant-kill',
+            'services.gemini.base_url' => 'http://127.0.0.1:20128/v1',
+        ]);
+
+        Http::fake([
+            'http://127.0.0.1:20128/v1/chat/completions' => Http::response([
+                'choices' => [
+                    [
+                        'message' => [
+                            'content' => json_encode(['topics' => [['name' => 'Fotosintesis', 'summary' => 'Proses tumbuhan']]]),
+                        ],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $service = app(GeminiService::class);
+        $this->assertTrue($service->isOpenAiCompatible());
+
+        $result = $service->generateStructured('Uji prompt', [
+            'type' => 'OBJECT',
+            'properties' => ['topics' => ['type' => 'ARRAY']],
+        ]);
+
+        $this->assertArrayHasKey('topics', $result);
+        $this->assertEquals('Fotosintesis', $result['topics'][0]['name']);
+    }
 }

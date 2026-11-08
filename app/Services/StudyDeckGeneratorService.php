@@ -247,6 +247,34 @@ class StudyDeckGeneratorService
     /**
      * Fallback heuristic logic if Gemini is unavailable or returns no topics.
      */
+    public function populateFallbackContent(StudyDeck $deck): void
+    {
+        DB::transaction(function () use ($deck): void {
+            $deck->topics()->delete();
+            $this->populateHeuristicFallback($deck);
+
+            $topicCount = $deck->topics()->count();
+            $qCount = $deck->questions()->count();
+            $fCount = $deck->flashcards()->count();
+
+            AgentLog::create([
+                'study_deck_id' => $deck->id,
+                'kind' => 'Keputusan',
+                'message' => "Pek modul mod asas berjaya dibina: {$topicCount} topik, {$qCount} soalan, dan {$fCount} flashcard.",
+                'badge' => 'cipta',
+            ]);
+        });
+
+        $deck->update([
+            'status' => 'completed',
+            'progress' => 100,
+            'error_message' => null,
+        ]);
+    }
+
+    /**
+     * Fallback heuristic logic if Gemini is unavailable or returns no topics.
+     */
     private function populateHeuristicFallback(StudyDeck $deck): void
     {
         $paragraphs = array_values(array_filter(

@@ -38,11 +38,40 @@
             AI sedang mengekstrak konsep penting, menjana soalan aneka pilihan, dan menyediakan kad imbasan secara automatik. Sila tunggu sebentar.
         </p>
 
-        <div id="error-container" class="hidden mt-6 p-4 rounded-xl bg-tomato/15 border-2 border-tomato text-tomato text-sm font-bold">
-            <p id="error-message"></p>
-            <a href="{{ route('decks.create') }}" class="mt-3 inline-block px-4 py-2 bg-ink text-white rounded-xl text-xs font-bold hover:bg-slate-800">
-                Cuba Semula
-            </a>
+        <!-- Polished Error State (Hidden by default) -->
+        <div id="error-container" class="hidden mt-6 text-left bg-white border-2 border-tomato rounded-2xl p-6 shadow-pop-sm">
+            <div class="flex items-start gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-tomato/20 border-2 border-tomato flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5 text-tomato" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <div class="flex-1">
+                    <div class="inline-block px-2 py-0.5 rounded-md bg-tomato text-white text-[11px] font-black uppercase tracking-wider mb-1" id="error-badge">
+                        Penjanaan AI Tergendala
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-ink" id="error-title">Penjanaan AI Tergendala</h3>
+                    <p class="text-xs text-slate-700 mt-1 leading-relaxed" id="error-message"></p>
+                </div>
+            </div>
+
+            <!-- Alternative Guidance Box -->
+            <div class="mt-4 p-3.5 rounded-xl bg-sun/25 border-2 border-ink text-xs text-ink leading-relaxed">
+                <span class="font-bold">💡 Alternatif Serta-Merta:</span> Anda boleh menjana modul ini sekarang juga dalam <strong>Mod Asas (Luar Talian)</strong>. Sistem akan mengekstrak soalan kuiz dan kad imbasan terus daripada teks nota anda tanpa menggunakan sebarang kuota AI.
+            </div>
+
+            <!-- Action buttons -->
+            <div class="mt-5 flex flex-col sm:flex-row gap-2.5">
+                <form action="{{ route('decks.retry-fallback', $deck) }}" method="POST" class="flex-1">
+                    @csrf
+                    <button type="submit" class="w-full btn-pop bg-mint text-ink font-bold px-4 py-2.5 text-xs rounded-xl flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span>Jana Dalam Mod Asas Segera</span>
+                    </button>
+                </form>
+
+                <a href="{{ route('decks.create') }}" class="btn-pop bg-slate-100 hover:bg-white text-slate-700 font-bold px-4 py-2.5 text-xs rounded-xl flex items-center justify-center gap-1.5 border border-ink">
+                    <span>Kembali / Cuba Semula</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -55,6 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const stepLabel = document.getElementById('step-label');
     const errorContainer = document.getElementById('error-container');
     const errorMessage = document.getElementById('error-message');
+    const errorTitle = document.getElementById('error-title');
+    const errorBadge = document.getElementById('error-badge');
 
     let pollInterval = setInterval(async () => {
         try {
@@ -90,8 +121,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 600);
             } else if (data.status === 'failed') {
                 clearInterval(pollInterval);
+                stepLabel.textContent = 'Penjanaan terhenti';
                 errorContainer.classList.remove('hidden');
-                errorMessage.textContent = data.error || 'Ralat berlaku semasa penjanaan AI. Sila cuba lagi.';
+
+                let cleanError = data.error || 'Ralat berlaku semasa penjanaan modul AI.';
+                const lower = cleanError.toLowerCase();
+
+                if (lower.includes('429') || lower.includes('quota') || lower.includes('resource_exhausted') || lower.includes('{')) {
+                    if (errorBadge) errorBadge.textContent = 'Kuota AI Dicapai';
+                    if (errorTitle) errorTitle.textContent = 'Had Kuota Harian AI Percuma Telah Dicapai';
+                    cleanError = 'Akaun percuma Google Gemini AI mengehadkan 20 permintaan setiap hari dan had tersebut telah dicapai buat masa ini. Sila klik "Jana Dalam Mod Asas Segera" di bawah untuk menghasilkan modul pembelajaran anda tanpa kuota AI.';
+                } else {
+                    if (errorBadge) errorBadge.textContent = 'Ralat Penjanaan';
+                    if (errorTitle) errorTitle.textContent = 'Penjanaan AI Tidak Berjaya';
+                }
+
+                errorMessage.textContent = cleanError;
             }
         } catch (err) {
             console.error('Polling error:', err);

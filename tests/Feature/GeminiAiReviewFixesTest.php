@@ -58,10 +58,35 @@ class GeminiAiReviewFixesTest extends TestCase
         $fresh = $deck->fresh();
         $this->assertEquals('failed', $fresh->status);
         $this->assertNotEmpty($fresh->error_message);
+        $this->assertStringNotContainsString('HTTP status 429', $fresh->error_message);
+        $this->assertStringNotContainsString('{"error"', $fresh->error_message);
+        $this->assertStringContainsString('kuota', mb_strtolower($fresh->error_message));
         $this->assertDatabaseHas('agent_logs', [
             'study_deck_id' => $deck->id,
             'kind' => 'Ralat',
         ]);
+    }
+
+    public function test_retry_fallback_populates_deck_heuristically_and_redirects(): void
+    {
+        $deck = StudyDeck::create([
+            'title' => 'Nota Biologi Tingkatan 4',
+            'source_text' => str_repeat('Fotosintesis ialah proses tumbuhan hijau menghasilkan makanan sendiri. ', 4),
+            'status' => 'failed',
+            'error_message' => 'Had kuota harian Gemini AI telah dicapai.',
+            'progress' => 20,
+        ]);
+
+        $response = $this->post(route('decks.retry-fallback', $deck));
+
+        $response->assertRedirect(route('decks.show', $deck));
+        $fresh = $deck->fresh();
+        $this->assertEquals('completed', $fresh->status);
+        $this->assertEquals(100, $fresh->progress);
+        $this->assertNull($fresh->error_message);
+        $this->assertGreaterThan(0, $fresh->topics()->count());
+        $this->assertGreaterThan(0, $fresh->questions()->count());
+        $this->assertGreaterThan(0, $fresh->flashcards()->count());
     }
 
     public function test_teacher_report_controller_prevents_duplicate_dispatch_when_already_pending(): void

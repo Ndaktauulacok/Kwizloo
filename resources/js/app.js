@@ -48,12 +48,229 @@ window.AcademicAudio = {
         this.playTone(220, 0.18, 'sawtooth', 0.03); // Low A3
     },
 
+    click() {
+        this.playTone(800, 0.05, 'sine', 0.03);
+    },
+
+    pop() {
+        this.playTone(440, 0.08, 'sine', 0.04);
+        setTimeout(() => this.playTone(880, 0.08, 'triangle', 0.04), 40);
+    },
+
+    flip() {
+        this.playTone(320, 0.06, 'sine', 0.02);
+        setTimeout(() => this.playTone(480, 0.08, 'sine', 0.02), 50);
+    },
+
+    levelUp() {
+        [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+            setTimeout(() => this.playTone(freq, 0.15, 'triangle', 0.05), idx * 80);
+        });
+    },
+
     complete() {
         [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
             setTimeout(() => this.playTone(freq, 0.16, 'sine', 0.05), idx * 75);
         });
     }
 };
+
+// Mascot Hero Alpine Component
+Alpine.data('mascotHero', () => ({
+    tiltX: 0,
+    tiltY: 0,
+    isHovered: false,
+
+    dialogue: "Hai! Saya Syed, mentor AI anda. Klik saya atau cuba mini-kuiz di sisi!",
+    isWiggling: false,
+    sparkles: [],
+
+    xp: 35,
+    maxXp: 100,
+    level: 1,
+    streak: 0,
+    levelTitle: 'Murid Cergas',
+
+    quizIndex: 0,
+    quizAnswered: false,
+    quizFeedback: null,
+    isCorrect: false,
+    questions: [
+        {
+            q: "Klorofil menyerap spektrum cahaya hijau untuk fotosintesis?",
+            a: false,
+            expl: "Tepat! Daun hijau kerana klorofil MEMANTULKAN cahaya hijau dan menyerap merah & biru."
+        },
+        {
+            q: "Fotosintesis menghasilkan gas Oksigen (O₂) dan Glukosa?",
+            a: true,
+            expl: "Tepat sekali! Formula: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂."
+        },
+        {
+            q: "Mitokondria ialah organel yang menjana tenaga (ATP) sel?",
+            a: true,
+            expl: "Hebat! Mitokondria dipanggil pusat jana kuasa sel."
+        },
+        {
+            q: "KwizLoo menukar nota PDF kepada 9 mod kuiz secara automatik?",
+            a: true,
+            expl: "Betul! AI kami mengekstrak konsep teras dalam beberapa saat sahaja."
+        }
+    ],
+
+    isFlipped: false,
+    flashcardIndex: 0,
+    flashcards: [
+        {
+            term: "Fotolisis Air",
+            category: "Biologi SPM",
+            def: "Penguraian molekul air (H₂O) kepada ion hidrogen dan oksigen oleh cahaya dalam tindak balas bersandarkan cahaya."
+        },
+        {
+            term: "Osmosis",
+            category: "Fisiologi Sel",
+            def: "Pergerakan bersih molekul air merentasi membran separa telap dari keupayaan air tinggi ke rendah."
+        },
+        {
+            term: "Enzim",
+            category: "Biokimia",
+            def: "Mangkin biologi protein yang mempercepatkan kadar tindak balas dengan merendahkan tenaga pengaktifan."
+        }
+    ],
+
+    quotes: [
+        "Hai! Saya Syed, pembantu AI anda. Muat naik nota, biar saya sediakan kuiz A+!",
+        "💡 Petua Syed: Mengulang kaji 15 minit secara aktif 3x lebih berkesan daripada membaca tanpa henti!",
+        "🎯 Cubalah jawab soalan mini-kuiz di kad sebelah kiri saya!",
+        "⚡ Kad imbas di sebelah kanan boleh diterbalikkan! Klik untuk uji ingatan aktif anda.",
+        "🌟 Tahniah! Setiap interaksi membantu otak mengukuhkan sambungan ingatan sinaps!",
+        "🚀 Sedia untuk peperiksaan? Klik 'Mulakan Sekarang' untuk cuba pek contoh segera!"
+    ],
+    quoteIndex: 0,
+
+    handleMouseMove(e) {
+        const rect = this.$refs.stage?.getBoundingClientRect() || this.$el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        this.tiltX = Math.max(-10, Math.min(10, -(y / (rect.height / 2)) * 10));
+        this.tiltY = Math.max(-10, Math.min(10, (x / (rect.width / 2)) * 10));
+        this.isHovered = true;
+    },
+
+    handleMouseLeave() {
+        this.tiltX = 0;
+        this.tiltY = 0;
+        this.isHovered = false;
+    },
+
+    petMascot() {
+        this.isWiggling = true;
+        this.addXp(15);
+        window.AcademicAudio?.pop();
+        this.spawnSparkle();
+
+        this.quoteIndex = (this.quoteIndex + 1) % this.quotes.length;
+        this.dialogue = this.quotes[this.quoteIndex];
+
+        setTimeout(() => {
+            this.isWiggling = false;
+        }, 600);
+    },
+
+    spawnSparkle() {
+        const id = Date.now() + Math.random();
+        const x = 20 + Math.random() * 60;
+        const y = 20 + Math.random() * 40;
+        this.sparkles.push({ id, x, y });
+        setTimeout(() => {
+            this.sparkles = this.sparkles.filter(s => s.id !== id);
+        }, 950);
+    },
+
+    answerQuiz(userChoice) {
+        if (this.quizAnswered) return;
+        const current = this.questions[this.quizIndex];
+        const correct = userChoice === current.a;
+        this.quizAnswered = true;
+        this.isCorrect = correct;
+
+        if (correct) {
+            this.streak++;
+            this.addXp(25);
+            window.AcademicAudio?.correct();
+            this.quizFeedback = current.expl;
+            this.dialogue = "Syabas! Jawapan anda tepat sekali. Teruskan momentum!";
+            this.spawnSparkle();
+        } else {
+            this.streak = 0;
+            this.addXp(5);
+            window.AcademicAudio?.incorrect();
+            this.quizFeedback = `Kurang tepat. ${current.expl}`;
+            this.dialogue = "Jangan bimbang! Kesilapan ialah langkah pertama untuk kuasai topik.";
+        }
+    },
+
+    nextQuiz() {
+        window.AcademicAudio?.click();
+        this.quizAnswered = false;
+        this.quizFeedback = null;
+        this.quizIndex = (this.quizIndex + 1) % this.questions.length;
+    },
+
+    toggleFlip() {
+        this.isFlipped = !this.isFlipped;
+        window.AcademicAudio?.flip();
+        if (this.isFlipped) {
+            this.addXp(10);
+            this.dialogue = "Bagus! Kaedah 'Active Recall' dengan kad imbas menguatkan ingatan SPM!";
+        }
+    },
+
+    nextFlashcard() {
+        window.AcademicAudio?.click();
+        this.isFlipped = false;
+        setTimeout(() => {
+            this.flashcardIndex = (this.flashcardIndex + 1) % this.flashcards.length;
+        }, 200);
+    },
+
+    addXp(amount) {
+        this.xp += amount;
+        if (this.xp >= this.maxXp) {
+            this.xp = this.xp - this.maxXp;
+            this.level++;
+            this.maxXp = Math.round(this.maxXp * 1.4);
+            window.AcademicAudio?.levelUp();
+            this.updateLevelTitle();
+            this.dialogue = `🎉 TAHNIAH! Anda naik ke Tahap ${this.level} (${this.levelTitle})!`;
+        }
+    },
+
+    updateLevelTitle() {
+        if (this.level === 1) this.levelTitle = "Murid Cergas";
+        else if (this.level === 2) this.levelTitle = "Pencari Ilmu";
+        else if (this.level === 3) this.levelTitle = "Sarjana Muda";
+        else if (this.level === 4) this.levelTitle = "Pendeta Minda";
+        else this.levelTitle = "Profesor Ulung";
+    }
+}));
+
+// Floating Companion Alpine Component
+Alpine.data('companionWidget', () => ({
+    isOpen: false,
+    scrolled: false,
+
+    init() {
+        window.addEventListener('scroll', () => {
+            this.scrolled = window.scrollY > 400;
+        }, { passive: true });
+    },
+
+    toggle() {
+        this.isOpen = !this.isOpen;
+        window.AcademicAudio?.click();
+    }
+}));
 
 // Global helper for secure POST fetch requests with CSRF token
 window.secureFetch = async function(url, data) {

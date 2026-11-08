@@ -17,7 +17,20 @@ class DeckViewsTest extends TestCase
         $response = $this->get(route('decks.create'));
         $response->assertOk()
             ->assertSee('Masukkan Nota Pembelajaran')
-            ->assertSee('Gunakan Nota Contoh');
+            ->assertSee('Gunakan Nota Contoh')
+            ->assertSee('Langkah 1: Masukkan Nota')
+            ->assertSee('Contoh segera:');
+    }
+
+    public function test_welcome_page_shows_step_by_step_guide_and_modal(): void
+    {
+        $response = $this->get(route('home'));
+        $response->assertOk()
+            ->assertSee('Cara KwizLoo Berfungsi dalam')
+            ->assertSee('Panduan Pantas')
+            ->assertSee('Panduan Pengguna KwizLoo')
+            ->assertSee('Langkah Pertama')
+            ->assertSee('9 Mod Pembelajaran Interaktif');
     }
 
     public function test_can_view_study_hub_with_recommended_mission(): void

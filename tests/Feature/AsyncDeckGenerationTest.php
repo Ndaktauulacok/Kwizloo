@@ -9,6 +9,7 @@ use App\Models\StudyDeck;
 use App\Services\GeminiService;
 use App\Services\StudyDeckGeneratorService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -27,6 +28,48 @@ class AsyncDeckGenerationTest extends TestCase
 
         $deck = StudyDeck::first();
         $this->assertNotNull($deck);
+        $this->assertEquals('pending', $deck->status);
+
+        Queue::assertPushed(GenerateStudyDeckJob::class, function ($job) use ($deck) {
+            return $job->deck->id === $deck->id;
+        });
+
+        $response->assertRedirect(route('decks.processing', $deck));
+    }
+
+    public function test_document_upload_failure_triggers_uploaded_validation_error(): void
+    {
+        $file = new UploadedFile(
+            path: '',
+            originalName: 'test.pdf',
+            mimeType: 'application/pdf',
+            error: UPLOAD_ERR_INI_SIZE,
+            test: true
+        );
+
+        $response = $this->from(route('decks.create'))->post(route('decks.store'), [
+            'document' => $file,
+        ]);
+
+        $response->assertSessionHasErrors(['document']);
+        $errors = session('errors')->get('document');
+        $this->assertContains('Fail gagal dimuat naik. Sila pastikan fail tidak melebihi had saiz pelayan atau format sah.', $errors);
+    }
+
+    public function test_uploading_valid_text_document_dispatches_job(): void
+    {
+        Queue::fake();
+
+        $content = str_repeat('Fotosintesis ialah proses tumbuhan hijau membuat makanan sendiri. ', 4);
+        $file = UploadedFile::fake()->createWithContent('nota-biologi.txt', $content);
+
+        $response = $this->post(route('decks.store'), [
+            'document' => $file,
+        ]);
+
+        $deck = StudyDeck::first();
+        $this->assertNotNull($deck);
+        $this->assertEquals('nota-biologi', $deck->title);
         $this->assertEquals('pending', $deck->status);
 
         Queue::assertPushed(GenerateStudyDeckJob::class, function ($job) use ($deck) {

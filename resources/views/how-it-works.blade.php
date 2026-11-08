@@ -19,6 +19,20 @@
         <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Anda hanya perlu menyediakan nota. AI KwizLoo akan melakukan selebihnya, dalam tiga langkah mudah.
         </p>
+
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <button
+                type="button"
+                @click="$dispatch('open-onboarding')"
+                class="btn-pop bg-sun text-ink text-sm px-5 py-2.5 rounded-xl flex items-center gap-2 font-extrabold"
+            >
+                <svg class="w-4 h-4 fill-ink" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Buka Panduan Langkah Demi Langkah</span>
+            </button>
+            <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl">
+                Cipta Modul Sekarang &rarr;
+            </a>
+        </div>
     </header>
 
     <!-- Steps -->

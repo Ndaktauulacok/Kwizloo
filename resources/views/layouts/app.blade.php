@@ -54,6 +54,16 @@
                     </a>
                 @endif
 
+                <button
+                    type="button"
+                    @click="$dispatch('open-onboarding')"
+                    class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold px-2.5 sm:px-3 py-1.5 rounded-lg text-slate-700 hover:text-ink hover:bg-white border-2 border-transparent hover:border-ink hover:shadow-pop-sm transition"
+                    title="Buka panduan langkah demi langkah"
+                >
+                    <svg class="w-4 h-4 text-sun fill-sun stroke-ink" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span>Panduan</span>
+                </button>
+
                 <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white px-3 sm:px-3.5 py-1.5 text-sm whitespace-nowrap shrink-0" aria-label="Nota Baharu">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
                     <span class="{{ isset($deck) ? 'hidden min-[420px]:inline' : '' }}">Nota Baharu</span>
@@ -167,6 +177,8 @@
             </div>
         </div>
     </footer>
+
+    @include('partials.onboarding-modal')
 
     @stack('scripts')
 </body>

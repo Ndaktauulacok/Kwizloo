@@ -34,6 +34,7 @@ class UploadNoteRequest extends FormRequest
         return [
             'note_text.min' => 'Nota terlalu pendek. Masukkan sekurang-kurangnya 80 aksara.',
             'note_text.max' => 'Nota melebihi had maksimum 30,000 aksara.',
+            'document.uploaded' => 'Fail gagal dimuat naik. Sila pastikan fail tidak melebihi had saiz pelayan atau format sah.',
             'document.mimes' => 'Format fail mestilah PDF atau TXT sahaja.',
             'document.max' => 'Saiz fail tidak boleh melebihi 10MB.',
         ];

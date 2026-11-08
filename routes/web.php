@@ -15,6 +15,7 @@ Route::prefix('decks')->name('decks.')->group(function (): void {
     Route::get('/create', [StudyDeckController::class, 'create'])->name('create');
     Route::post('/', [StudyDeckController::class, 'store'])->name('store')->middleware('throttle:15,1');
     Route::get('/{deck}/processing', [StudyDeckController::class, 'processing'])->name('processing');
+    Route::post('/{deck}/retry-fallback', [StudyDeckController::class, 'retryFallback'])->name('retry-fallback');
     Route::get('/{deck}/status', [StudyDeckController::class, 'status'])->name('status');
     Route::get('/{deck}', [StudyDeckController::class, 'show'])->name('show');
     Route::get('/{deck}/report', [TeacherReportController::class, 'show'])->name('report');
