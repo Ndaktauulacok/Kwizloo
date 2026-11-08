@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Models\AgentLog;
 use App\Models\StudyDeck;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 class StudyDeckGeneratorService
 {

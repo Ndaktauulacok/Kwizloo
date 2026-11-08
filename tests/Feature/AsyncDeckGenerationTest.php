@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Jobs\GenerateStudyDeckJob;
 use App\Models\StudyDeck;
 use App\Services\GeminiService;
+use App\Services\StudyDeckGeneratorService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -97,7 +98,7 @@ class AsyncDeckGenerationTest extends TestCase
         });
 
         $job = new GenerateStudyDeckJob($deck);
-        $job->handle(app(\App\Services\StudyDeckGeneratorService::class));
+        $job->handle(app(StudyDeckGeneratorService::class));
 
         $fresh = $deck->fresh();
         $this->assertEquals('completed', $fresh->status);

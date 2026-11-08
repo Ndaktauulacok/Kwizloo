@@ -18,6 +18,7 @@ class AdaptiveAgentService
     {
         $this->gemini = $gemini ?? app(GeminiService::class);
     }
+
     /**
      * Study activity definitions with pedagogical intent.
      */

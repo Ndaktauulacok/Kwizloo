@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Models\Question;
 use App\Models\StudyDeck;
 use App\Services\GeminiService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
