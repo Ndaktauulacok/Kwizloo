@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class StudyDeck extends Model
 {
@@ -17,6 +18,16 @@ class StudyDeck extends Model
         'source_text',
         'total_words',
         'mode',
+        'status',
+        'progress',
+        'error_message',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'progress' => 'integer',
     ];
 
     /**
@@ -57,5 +68,13 @@ class StudyDeck extends Model
     public function agentLogs(): HasMany
     {
         return $this->hasMany(AgentLog::class)->latest();
+    }
+
+    /**
+     * @return HasOne<TeacherAiReport, $this>
+     */
+    public function teacherAiReport(): HasOne
+    {
+        return $this->hasOne(TeacherAiReport::class);
     }
 }
