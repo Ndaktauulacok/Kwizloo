@@ -7,9 +7,17 @@ namespace App\Services;
 use App\Models\AgentLog;
 use App\Models\StudyDeck;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Cache;
+use Throwable;
 
 class AdaptiveAgentService
 {
+    private readonly GeminiService $gemini;
+
+    public function __construct(?GeminiService $gemini = null)
+    {
+        $this->gemini = $gemini ?? app(GeminiService::class);
+    }
     /**
      * Study activity definitions with pedagogical intent.
      */
@@ -84,64 +92,93 @@ class AdaptiveAgentService
             $acc = $b->accuracy_percentage;
 
             if ($b->losses > 0) {
-                return [
+                $mission = [
                     'topic_id' => $b->id,
                     'topic_name' => $b->name,
                     'activity' => 'cards',
                     'activity_name' => self::ACTIVITIES['cards']['name'],
                     'rationale' => "Kamu menghadapi kesukaran dalam {$b->name}. Ulang kaji konsep asas melalui flashcard dahulu sebelum mencuba semula.",
                 ];
-            }
-
-            if ($acc < 40) {
-                return [
+            } elseif ($acc < 40) {
+                $mission = [
                     'topic_id' => $b->id,
                     'topic_name' => $b->name,
                     'activity' => 'cards',
                     'activity_name' => self::ACTIVITIES['cards']['name'],
                     'rationale' => "Ketepatan bagi {$b->name} masih rendah ({$acc}%). Kukuhkan memori dengan flashcard aktif.",
                 ];
-            }
-
-            if ($acc < 65) {
-                return [
+            } elseif ($acc < 65) {
+                $mission = [
                     'topic_id' => $b->id,
                     'topic_name' => $b->name,
                     'activity' => 'match',
                     'activity_name' => self::ACTIVITIES['match']['name'],
                     'rationale' => "Kamu hampir menguasai {$b->name}. Padanan konsep akan memperkukuh perkaitan fakta.",
                 ];
-            }
-
-            if ($b->attempts === 0 && $acc < 85) {
-                return [
+            } elseif ($b->attempts === 0 && $acc < 85) {
+                $mission = [
                     'topic_id' => $b->id,
                     'topic_name' => $b->name,
                     'activity' => 'tower',
                     'activity_name' => self::ACTIVITIES['tower']['name'],
                     'rationale' => "Bina kefahaman berperingkat dalam {$b->name} sebelum menghadapi penilaian penguasaan.",
                 ];
+            } else {
+                $mission = [
+                    'topic_id' => $b->id,
+                    'topic_name' => $b->name,
+                    'activity' => 'boss',
+                    'activity_name' => self::ACTIVITIES['boss']['name'],
+                    'rationale' => "Kefahaman kamu kukuh. Bersedia untuk menewaskan jurang penguasaan dalam {$b->name}!",
+                ];
             }
 
-            return [
-                'topic_id' => $b->id,
-                'topic_name' => $b->name,
-                'activity' => 'boss',
-                'activity_name' => self::ACTIVITIES['boss']['name'],
-                'rationale' => "Kefahaman kamu kukuh. Bersedia untuk menewaskan jurang penguasaan dalam {$b->name}!",
-            ];
+            return $this->enrichMissionRationale($deck, $mission);
         }
 
         // If no active boss, pick the topic with lowest accuracy
         $lowest = $topics->sortBy(fn (Topic $t) => $t->accuracy_percentage)->first();
 
-        return [
+        $mission = [
             'topic_id' => $lowest->id,
             'topic_name' => $lowest->name,
             'activity' => 'blitz',
             'activity_name' => self::ACTIVITIES['blitz']['name'],
             'rationale' => 'Semua jurang utama telah diatasi. Teruskan latihan kelajuan ingatan untuk pengekalan jangka panjang.',
         ];
+
+        return $this->enrichMissionRationale($deck, $mission);
+    }
+
+    /**
+     * @param  array{topic_id: int, topic_name: string, activity: string, activity_name: string, rationale: string}  $mission
+     * @return array{topic_id: int, topic_name: string, activity: string, activity_name: string, rationale: string}
+     */
+    private function enrichMissionRationale(StudyDeck $deck, array $mission): array
+    {
+        if (! $this->gemini->isConfigured()) {
+            return $mission;
+        }
+
+        try {
+            $cacheKey = "deck_{$deck->id}_adaptive_rationale_{$mission['topic_id']}_{$mission['activity']}";
+
+            $aiRationale = Cache::remember($cacheKey, 300, function () use ($deck, $mission): string {
+                $prompt = "Sebagai tutor AI pendidikan pintar, berikan satu ayat nasihat pedagogi ringkas bermula dengan 'Analisis AI:' dalam Bahasa Melayu. Modul: '{$deck->title}', Topik tumpuan: '{$mission['topic_name']}', Aktiviti: '{$mission['activity_name']}'. Nasihat:";
+
+                $text = $this->gemini->generateText($prompt);
+
+                return trim($text);
+            });
+
+            if ($aiRationale !== '') {
+                $mission['rationale'] = $aiRationale;
+            }
+        } catch (Throwable) {
+            // Keep deterministic fallback rationale
+        }
+
+        return $mission;
     }
 
     /**
