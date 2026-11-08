@@ -40,6 +40,19 @@ class StudyDeckController extends Controller
         return view('decks.index', compact('decks', 'search'));
     }
 
+    /**
+     * Delete a note and everything generated from it (topics, questions, flashcards, sessions, logs, report).
+     */
+    public function destroy(Request $request, StudyDeck $deck): RedirectResponse
+    {
+        $title = $deck->title;
+        $deck->delete();
+
+        return redirect()
+            ->route('decks.index', array_filter(['q' => $request->input('q')]))
+            ->with('status', "Nota \"{$title}\" telah dipadam daripada sejarah.");
+    }
+
     public function create(): View
     {
         $recentDecks = StudyDeck::latest()->take(5)->get();

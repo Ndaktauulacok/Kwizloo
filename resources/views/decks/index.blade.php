@@ -10,7 +10,26 @@
     ];
 @endphp
 
-<div class="max-w-5xl mx-auto">
+<div
+    class="max-w-5xl mx-auto"
+    x-data="{
+        deleteOpen: false,
+        deleting: false,
+        target: { title: '', url: '', topics: 0, questions: 0, flashcards: 0, sessions: 0 },
+        askDelete(deck) {
+            this.target = deck;
+            this.deleting = false;
+            this.deleteOpen = true;
+            this.$nextTick(() => this.$refs.cancelDelete?.focus());
+        },
+        closeDelete() {
+            if (this.deleting) return;
+            this.deleteOpen = false;
+        },
+    }"
+    x-effect="document.documentElement.classList.toggle('overflow-hidden', deleteOpen)"
+    @keydown.escape.window="closeDelete()"
+>
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-5">
         <div class="flex items-center gap-4 min-w-0">
             @include('partials.fahim-avatar', ['class' => 'w-14 h-14 shrink-0'])
@@ -107,6 +126,23 @@
                                 {{ $historyDeck->status === 'failed' ? 'Lihat Ralat & Cuba Semula' : 'Lihat Status' }}
                             </a>
                         @endif
+
+                        <button
+                            type="button"
+                            class="delete-trigger ml-auto inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-bold text-slate-500 hover:text-tomato hover:bg-tomato/10 transition"
+                            @click="askDelete(@js([
+                                'title' => $historyDeck->title,
+                                'url' => route('decks.destroy', $historyDeck),
+                                'topics' => $historyDeck->topics_count,
+                                'questions' => $historyDeck->questions_count,
+                                'flashcards' => $historyDeck->flashcards_count,
+                                'sessions' => $historyDeck->study_sessions_count,
+                            ]))"
+                            aria-label="Padam {{ $historyDeck->title }}"
+                        >
+                            @include('partials.trash-icon', ['class' => 'w-4 h-4'])
+                            <span>Padam</span>
+                        </button>
                     </div>
                 </li>
             @endforeach
@@ -116,5 +152,7 @@
             {{ $decks->links() }}
         </div>
     @endif
+
+    @include('decks.partials.delete-dialog')
 </div>
 @endsection

@@ -43,6 +43,46 @@ class DeckHistoryTest extends TestCase
             ->assertDontSee('Biologi Sel');
     }
 
+    public function test_deleting_a_note_removes_it_and_everything_generated_from_it(): void
+    {
+        $deck = app(StudyDeckGeneratorService::class)->createFromSample();
+        $deck->studySessions()->create([
+            'activity_type' => 'blitz',
+            'score' => 50,
+            'right_count' => 5,
+            'wrong_count' => 5,
+            'best_combo' => 2,
+        ]);
+
+        $this->delete(route('decks.destroy', $deck))
+            ->assertRedirect(route('decks.index'))
+            ->assertSessionHas('status');
+
+        $this->assertModelMissing($deck);
+        $this->assertDatabaseMissing('topics', ['study_deck_id' => $deck->id]);
+        $this->assertDatabaseMissing('questions', ['study_deck_id' => $deck->id]);
+        $this->assertDatabaseMissing('flashcards', ['study_deck_id' => $deck->id]);
+        $this->assertDatabaseMissing('study_sessions', ['study_deck_id' => $deck->id]);
+    }
+
+    public function test_deleting_keeps_the_current_search(): void
+    {
+        $deck = StudyDeck::create(['title' => 'Fizik Newton', 'source_text' => 'Hukum gerakan.', 'status' => 'completed']);
+
+        $this->delete(route('decks.destroy', $deck), ['q' => 'Fizik'])
+            ->assertRedirect(route('decks.index', ['q' => 'Fizik']));
+    }
+
+    public function test_history_page_offers_a_delete_confirmation(): void
+    {
+        app(StudyDeckGeneratorService::class)->createFromSample();
+
+        $this->get(route('decks.index'))
+            ->assertOk()
+            ->assertSee('Padam nota ini?')
+            ->assertSee('Tindakan ini tidak boleh dibatalkan.');
+    }
+
     public function test_history_shows_an_empty_state_without_notes(): void
     {
         $this->get(route('decks.index'))
