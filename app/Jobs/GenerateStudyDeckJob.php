@@ -28,6 +28,12 @@ class GenerateStudyDeckJob implements ShouldQueue
 
     public function handle(StudyDeckGeneratorService $generator): void
     {
+        $this->deck->refresh();
+
+        if ($this->deck->status === 'completed') {
+            return;
+        }
+
         try {
             $this->deck->update([
                 'status' => 'processing',

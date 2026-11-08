@@ -61,7 +61,7 @@
             <span class="text-xs text-ink/70 mt-0.5 block">Topik memerlukan fokus intensif</span>
         </div>
 
-        <div class="p-5 rounded-2xl border-2 border-ink shadow-pop bg-[#c3b1ff]/55">
+        <div class="p-5 rounded-2xl border-2 border-ink shadow-pop bg-[#bcaed6]/55">
             <span class="text-[11px] uppercase font-bold text-ink/70 block tracking-wider">Intervensi Ejen AI</span>
             <div class="text-4xl font-extrabold font-display text-indigo-700 mt-1">
                 {{ $logs->count() }}
@@ -436,7 +436,7 @@ function teacherAiReport(config) {
                 if (res.ok) {
                     this.startPolling();
                 } else {
-                    const err = await res.json();
+                    const err = await res.json().catch(() => ({}));
                     alert(err.message || 'Gagal menghantar permintaan analisis.');
                     this.status = 'failed';
                 }

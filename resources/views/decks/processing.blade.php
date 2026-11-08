@@ -2,11 +2,15 @@
 
 @section('content')
 <div class="max-w-xl mx-auto py-12 px-4 text-center">
-    <div class="card p-8 sm:p-10 bg-white border-3 border-ink shadow-pop rounded-3xl relative overflow-hidden">
-        <!-- Floating badge -->
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sun border-2 border-ink text-xs font-black tracking-wide text-ink uppercase mb-6 animate-bounce">
-            <span class="w-2.5 h-2.5 rounded-full bg-tomato animate-ping"></span>
-            Gemini AI Sedang Memproses
+    <div class="academic-card p-8 sm:p-10 rounded-3xl relative overflow-hidden">
+        <!-- Syed reading the notes -->
+        <svg viewBox="0 0 400 400" class="mx-auto w-32 h-32 sm:w-36 sm:h-36 syed-float" aria-hidden="true">
+            @include('partials.syed-emblem')
+        </svg>
+
+        <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-paper border-2 border-ink text-[11px] font-extrabold tracking-wide text-ink uppercase mb-5">
+            <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+            Prof. Syed sedang membaca nota anda
         </div>
 
         <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink leading-tight">
@@ -18,7 +22,7 @@
         </p>
 
         <!-- Dynamic Step Container -->
-        <div class="my-8 py-6 px-4 bg-sky-pop/20 border-2 border-ink rounded-2xl">
+        <div class="my-8 py-6 px-4 bg-amber-50 border-2 border-ink rounded-2xl" role="status" aria-live="polite">
             <div class="flex items-center justify-center gap-3">
                 <svg class="animate-spin h-6 w-6 text-ink" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -29,12 +33,12 @@
 
             <!-- Progress Bar -->
             <div class="mt-5 w-full bg-white rounded-full h-4 border-2 border-ink overflow-hidden p-0.5">
-                <div id="progress-bar" class="bg-mint h-full rounded-full transition-all duration-500 ease-out" style="width: {{ $deck->progress }}%;"></div>
+                <div id="progress-bar" class="bg-indigo-600 h-full rounded-full transition-all duration-500 ease-out" style="width: {{ $deck->progress }}%;"></div>
             </div>
-            <div class="mt-2 text-xs font-black text-ink/70" id="progress-pct">{{ $deck->progress }}% Selesai</div>
+            <div class="mt-2 text-xs font-extrabold text-ink/70 tabular-nums" id="progress-pct">{{ $deck->progress }}% Selesai</div>
         </div>
 
-        <p class="text-xs text-slate-500 max-w-sm mx-auto">
+        <p id="waiting-copy" class="text-xs text-slate-500 max-w-sm mx-auto">
             AI sedang mengekstrak konsep penting, menjana soalan aneka pilihan, dan menyediakan kad imbasan secara automatik. Sila tunggu sebentar.
         </p>
 
@@ -55,7 +59,7 @@
 
             <!-- Alternative Guidance Box -->
             <div class="mt-4 p-3.5 rounded-xl bg-sun/25 border-2 border-ink text-xs text-ink leading-relaxed">
-                <span class="font-bold">💡 Alternatif Serta-Merta:</span> Anda boleh menjana modul ini sekarang juga dalam <strong>Mod Asas (Luar Talian)</strong>. Sistem akan mengekstrak soalan kuiz dan kad imbasan terus daripada teks nota anda tanpa menggunakan sebarang kuota AI.
+                <span class="font-bold">Alternatif serta-merta:</span> Anda boleh menjana modul ini sekarang juga dalam <strong>Mod Asas (Luar Talian)</strong>. Sistem akan mengekstrak soalan kuiz dan kad imbasan terus daripada teks nota anda tanpa menggunakan sebarang kuota AI.
             </div>
 
             <!-- Action buttons -->
@@ -87,6 +91,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorTitle = document.getElementById('error-title');
     const errorBadge = document.getElementById('error-badge');
 
+    const startedAt = Date.now();
+    const stuckAfterMs = 45000;
+    let stuckShown = false;
+
+    const showStuckNotice = () => {
+        if (stuckShown) {
+            return;
+        }
+        stuckShown = true;
+        errorContainer.classList.remove('hidden');
+        if (errorBadge) errorBadge.textContent = 'Masih Menunggu';
+        if (errorTitle) errorTitle.textContent = 'Penjanaan mengambil masa lebih lama daripada biasa';
+        errorMessage.textContent = 'Pelayan AI mungkin sibuk, atau pekerja barisan (queue worker) belum dihidupkan. Anda boleh terus menunggu, atau bina modul sekarang dalam Mod Asas.';
+    };
+
     let pollInterval = setInterval(async () => {
         try {
             const res = await fetch(statusUrl, {
@@ -102,6 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await res.json();
 
+            if (data.status === 'pending' && Date.now() - startedAt > stuckAfterMs) {
+                showStuckNotice();
+            }
+
             if (progressBar && progressPct) {
                 progressBar.style.width = data.progress + '%';
                 progressPct.textContent = data.progress + '% Selesai';
@@ -115,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.status === 'completed') {
                 clearInterval(pollInterval);
+                errorContainer.classList.add('hidden');
                 stepLabel.textContent = 'Selesai! Mengalihkan ke hab pembelajaran...';
                 setTimeout(() => {
                     window.location.href = data.redirect_url;

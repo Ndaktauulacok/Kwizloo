@@ -3,8 +3,8 @@
 @section('content')
 <div class="max-w-6xl mx-auto space-y-16 sm:space-y-24">
     <!-- Hero -->
-    <section class="grid lg:grid-cols-[0.95fr_1.15fr] gap-10 lg:gap-6 items-center pt-2 pb-10">
-        <div class="order-2 lg:order-1 text-center lg:text-left">
+    <section class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.15fr] gap-10 lg:gap-6 items-center pt-2 pb-10">
+        <div class="order-2 lg:order-1 min-w-0 text-center lg:text-left">
             <span class="sticker bg-white text-ink -rotate-2">
                 <span class="w-2 h-2 rounded-full bg-tomato animate-pulse"></span>
                 Bersama Syed, Mentor AI Anda
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Interactive Furry Mascot (Syed Si Serigala Sarjana) -->
-        <div class="order-1 lg:order-2 w-full max-w-[560px] mx-auto select-none" x-data="mascotHero()">
+        <div class="order-1 lg:order-2 min-w-0 w-full max-w-[560px] mx-auto select-none" x-data="mascotHero()">
             <div
                 x-ref="stage"
                 @mousemove="handleMouseMove($event)"
@@ -77,14 +77,12 @@
                         <!-- Speech bubble notch pointing down -->
                         <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-r-2 border-b-2 border-ink rotate-45 group-hover:bg-amber-50/70 transition"></div>
 
-                        <span class="w-7 h-7 rounded-lg bg-sun border-2 border-ink shadow-pop-sm flex items-center justify-center shrink-0 font-bold text-xs">
-                            💡
-                        </span>
+                        <span class="shrink-0">@include('partials.syed-avatar', ['class' => 'w-8 h-8'])</span>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between gap-1 mb-0.5">
-                                <span class="font-display font-extrabold text-[11px] text-indigo-600 tracking-wide uppercase">Syed · Mentor AI</span>
+                                <span class="font-display font-extrabold text-[11px] text-indigo-600 tracking-wide uppercase">Prof. Syed · Mentor AI</span>
                                 <span class="text-[10px] text-slate-400 group-hover:text-ink font-semibold flex items-center gap-0.5">
-                                    <span>Klik petua</span>
+                                    <span>Petua seterusnya</span>
                                     <span class="text-xs">&rarr;</span>
                                 </span>
                             </div>
@@ -93,58 +91,46 @@
                     </button>
                 </div>
 
-                <!-- Central Furry Model (Syed) - Clear, Unobstructed 3D View -->
-                <div class="relative flex items-center justify-center my-1.5">
-                    <!-- Soft Pulse Glow Background -->
-                    <div class="absolute w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-sun/20 blur-xl animate-pulse-ring pointer-events-none"></div>
+                <!-- Syed, the scholar wolf -->
+                <div
+                    @click="petMascot()"
+                    @keydown.enter.prevent="petMascot()"
+                    @keydown.space.prevent="petMascot()"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Sapa Syed"
+                    class="relative w-full max-w-[460px] mx-auto cursor-pointer rounded-3xl transition-transform duration-300 ease-out will-change-transform"
+                    :style="'transform: perspective(900px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg);'"
+                >
+                    @include('partials.syed-scene')
 
-                    <!-- Neo-brutalist Circular Seal Outer Rim -->
-                    <div
-                        @click="petMascot()"
-                        class="relative rounded-full p-2 bg-gradient-to-tr from-[#7b1928] via-[#a32238] to-sun border-4 border-ink shadow-pop-lg cursor-pointer group transition-transform duration-200"
-                        :style="'transform: perspective(800px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg);'"
-                        :class="{ 'animate-wiggle': isWiggling }"
-                        title="Klik Syed untuk berinteraksi!"
-                    >
-                        <!-- Avatar Image -->
-                        <div class="relative w-44 h-44 sm:w-56 sm:h-56 rounded-full overflow-hidden border-2 border-ink bg-[#fff7ea]">
-                            <img
-                                src="{{ asset('images/furry-mascot.jpeg') }}"
-                                alt="Syed Si Serigala Sarjana - Maskot KwizLoo"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none"
-                            >
-                        </div>
+                    <!-- XP pops on click -->
+                    <template x-for="s in sparkles" :key="s.id">
+                        <span
+                            class="absolute pointer-events-none font-display font-extrabold text-xs sm:text-sm text-ink bg-sun px-2 py-0.5 rounded-full border-2 border-ink shadow-pop-sm animate-spark-fly z-40 whitespace-nowrap"
+                            :style="'left: ' + s.x + '%; top: ' + s.y + '%;'"
+                         x-text="s.label"></span>
+                    </template>
 
-                        <!-- Sparkles on Click -->
-                        <template x-for="s in sparkles" :key="s.id">
-                            <span
-                                class="absolute pointer-events-none font-display font-extrabold text-xs sm:text-sm text-sun bg-ink px-2 py-0.5 rounded-full border border-sun shadow-pop-sm animate-spark-fly z-40 whitespace-nowrap"
-                                :style="'left: ' + s.x + '%; top: ' + s.y + '%;'"
-                            >
-                                ✨ +XP
-                            </span>
-                        </template>
-
-                        <!-- Badge Overlay at Bottom of Circle -->
-                        <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-sun text-ink border-2 border-ink px-3 py-1 rounded-full text-xs font-black shadow-pop-sm flex items-center gap-1.5 group-hover:scale-105 transition z-20">
-                            <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-                            <span>Prof. Syed AI</span>
-                            <span class="bg-ink text-paper text-[10px] px-1.5 py-0.5 rounded-md font-mono">Lv.<span x-text="level"></span></span>
-                        </div>
+                    <!-- Name plate -->
+                    <div class="absolute bottom-[3%] left-1/2 -translate-x-1/2 whitespace-nowrap bg-paper text-ink border-2 border-ink px-3 py-1 rounded-full text-xs font-extrabold shadow-pop-sm flex items-center gap-1.5 z-20">
+                        <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+                        <span>Prof. Syed</span>
+                        <span class="bg-indigo-600 text-paper text-[10px] px-1.5 py-0.5 rounded-md font-mono">Lv.<span x-text="level"></span></span>
                     </div>
                 </div>
 
                 <!-- Interactive Companion Cards (Speed Quiz & 3D Flashcard) -->
-                <div class="w-full mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 z-20">
+                <div class="w-full mt-4 hidden sm:grid grid-cols-2 gap-3 z-20">
                     <!-- Card 1: Playable Speed Quiz Card -->
-                    <div class="academic-card p-3 bg-sky-pop/20 border-2 border-ink shadow-pop-sm transition-transform hover:-translate-y-0.5 duration-150 flex flex-col justify-between">
+                    <div class="academic-card p-3 bg-indigo-50 border-2 border-ink shadow-pop-sm transition-transform hover:-translate-y-0.5 duration-150 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-1">
                                 <span class="px-2 py-0.5 rounded-md bg-sky-pop border border-ink text-[10px] font-black uppercase text-ink tracking-wider">
-                                    ⚡ Kuiz Pantas
+                                    Kuiz Pantas
                                 </span>
                                 <span class="text-[11px] font-bold text-slate-700 flex items-center gap-1">
-                                    <span x-show="streak > 0">🔥</span>
+                                    
                                     <span>Streak: <span x-text="streak" class="font-extrabold text-indigo-600"></span></span>
                                 </span>
                             </div>
@@ -203,7 +189,7 @@
                                 <div>
                                     <div class="flex items-center justify-between">
                                         <span class="px-2 py-0.5 rounded-md bg-sun border border-ink text-[10px] font-black uppercase text-ink tracking-wider">
-                                            🃏 Kad Imbas
+                                            Kad Imbas
                                         </span>
                                         <span class="text-[10px] font-bold text-slate-500">Balikkan ↺</span>
                                     </div>
@@ -245,9 +231,7 @@
                 <div class="w-full mt-3 relative z-20">
                     <div class="p-2 rounded-xl bg-white/95 backdrop-blur border-2 border-ink shadow-pop-sm flex items-center justify-between gap-2.5 text-xs">
                         <div class="flex items-center gap-2 min-w-0">
-                            <span class="w-6 h-6 rounded-lg bg-[#7b1928] text-white flex items-center justify-center font-display font-extrabold text-[11px] border border-ink shrink-0">
-                                S
-                            </span>
+                            <span class="shrink-0">@include('partials.syed-avatar', ['class' => 'w-7 h-7'])</span>
                             <div class="min-w-0">
                                 <div class="font-bold text-ink truncate text-[11px]">
                                     Tahap <span x-text="level"></span>: <span x-text="levelTitle" class="text-indigo-600"></span>
@@ -270,9 +254,7 @@
     <section class="academic-card p-6 sm:p-8 bg-amber-50/50 border-2 border-ink relative" x-data="{ activeLab: 'boss', bossHp: 3, activeQuizChoice: null, quizSolved: false }">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b-2 border-dashed border-slate-300">
             <div class="flex items-start sm:items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl p-0.5 bg-gradient-to-tr from-[#7b1928] to-sun border-2 border-ink shadow-pop-sm shrink-0">
-                    <img src="{{ asset('images/furry-mascot.jpeg') }}" alt="Syed" class="w-full h-full rounded-2xl object-cover">
-                </div>
+                <div class="shrink-0">@include('partials.syed-avatar', ['class' => 'w-12 h-12'])</div>
                 <div>
                     <span class="sticker bg-sun text-ink -rotate-1 text-[11px]">Makmal Interaktif Syed</span>
                     <h2 class="mt-1 text-2xl sm:text-3xl font-extrabold text-ink">
@@ -292,7 +274,7 @@
                     class="btn-pop text-xs sm:text-sm px-3.5 py-2 rounded-xl transition"
                     :class="activeLab === 'boss' ? 'bg-tomato text-white' : 'bg-white text-ink'"
                 >
-                    ⚔️ Cabaran Bos
+                    Cabaran Bos
                 </button>
                 <button
                     type="button"
@@ -300,7 +282,7 @@
                     class="btn-pop text-xs sm:text-sm px-3.5 py-2 rounded-xl transition"
                     :class="activeLab === 'speed' ? 'bg-sun text-ink' : 'bg-white text-ink'"
                 >
-                    ⚡ Ujian Pantas (60s)
+                    Ujian Pantas (60s)
                 </button>
                 <button
                     type="button"
@@ -308,7 +290,7 @@
                     class="btn-pop text-xs sm:text-sm px-3.5 py-2 rounded-xl transition"
                     :class="activeLab === 'cards' ? 'bg-mint text-ink' : 'bg-white text-ink'"
                 >
-                    🃏 Kad Imbas Ajaib
+                    Kad Imbas
                 </button>
             </div>
         </div>
@@ -318,7 +300,7 @@
             <div class="p-5 sm:p-6 rounded-2xl bg-ink text-white border-2 border-ink shadow-pop-sm space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5">
-                        <span class="text-3xl">👹</span>
+                        <span class="w-11 h-11 rounded-xl bg-tomato border-2 border-paper/20 flex items-center justify-center font-display font-extrabold text-sm text-white shrink-0">B2</span>
                         <div>
                             <div class="font-extrabold text-sm sm:text-base text-sun">Bos Bab 2: Monster Reaksi Gelap</div>
                             <div class="text-xs text-slate-300">Syed mengesan kelemahan: Perbezaan fungsi Stroma vs Grana dalam kloroplas!</div>
@@ -328,7 +310,7 @@
                         <span class="text-xs font-bold text-tomato tracking-wider uppercase">HP BOS:</span>
                         <div class="flex gap-1.5">
                             <template x-for="i in 3" :key="i">
-                                <span class="w-6 h-6 rounded-lg border border-white/30 flex items-center justify-center text-xs transition-transform duration-200" :class="i <= bossHp ? 'bg-tomato text-white scale-105' : 'bg-slate-800 text-slate-600 opacity-40'">❤️</span>
+                                <span class="w-6 h-6 rounded-lg border border-white/30 flex items-center justify-center transition-transform duration-200" :class="i <= bossHp ? 'bg-tomato text-white scale-105' : 'bg-slate-800 text-slate-600 opacity-40'"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3.1 4.5 6.8 4.5c2.1 0 3.6 1.1 5.2 3 1.6-1.9 3.1-3 5.2-3 3.7 0 5.9 3.7 4.4 7.2C19.5 16.4 12 21 12 21z"/></svg></span>
                             </template>
                         </div>
                     </div>
@@ -373,7 +355,7 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-paper/70 pt-1">
-                    <span x-show="bossHp === 0" class="text-sun font-bold">🎉 TAHNIAH! Bos tewas! Syed mengesahkan anda kini menguasai topik ini.</span>
+                    <span x-show="bossHp === 0" class="text-sun font-bold">Tahniah, bos tewas! Syed mengesahkan anda kini menguasai topik ini.</span>
                     <span x-show="bossHp > 0">Petua Syed: Klik jawapan A untuk kurangkan HP Bos.</span>
                     <button
                         type="button"
@@ -430,7 +412,7 @@
                     <span class="text-xs font-bold text-slate-600">Simulasi Kad Imbas Berjarak (Spaced Repetition)</span>
                     <span class="text-xs font-extrabold text-indigo-600">Kad 1 daripada 12</span>
                 </div>
-                <div class="p-6 rounded-xl bg-[#fff7ea] border-2 border-ink text-center space-y-2">
+                <div class="p-6 rounded-xl bg-paper border-2 border-ink text-center space-y-2">
                     <span class="px-2.5 py-0.5 rounded-full bg-sun border border-ink text-[11px] font-bold">Biologi SPM Bab 2</span>
                     <div class="text-lg font-extrabold text-ink">Apakah maksud 'Fotofosforilasi'?</div>
                     <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
@@ -452,7 +434,7 @@
         </div>
     </section>
 
-    <!-- STEP-BY-STEP WORKFLOW GUIDE (NETFLIX-STYLE WALKTHROUGH) -->
+    <!-- How it works in three steps -->
     <section class="relative pt-6">
         <div class="text-center max-w-3xl mx-auto">
             <span class="sticker bg-sun text-ink -rotate-1">Aliran Kerja Mudah</span>
@@ -460,7 +442,7 @@
                 Cara KwizLoo Berfungsi dalam <span class="marker-underline">3 Langkah</span>
             </h2>
             <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-                Tiada konfigurasi yang rumit. Sama seperti menonton Netflix, anda hanya perlukan bahan dan AI menguruskan segala-galanya untuk anda.
+                Tiada tetapan yang rumit. Sediakan nota anda, dan AI akan menguruskan selebihnya.
             </p>
         </div>
 
@@ -473,7 +455,7 @@
 
                 <div>
                     <div class="mt-3 flex items-center justify-between">
-                        <span class="text-xs font-bold uppercase tracking-wider text-sky-600">Langkah Pertama</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Langkah Pertama</span>
                         <span class="px-2 py-0.5 rounded-md bg-sky-pop/20 border border-ink text-[11px] font-bold text-ink">Format Bebas</span>
                     </div>
 
@@ -526,7 +508,7 @@
                     <!-- Preview graphic -->
                     <div class="mt-5 p-3.5 rounded-xl bg-white border-2 border-ink text-xs space-y-2">
                         <div class="flex items-center justify-between text-[11px] font-bold">
-                            <span class="text-tomato">⚔️ Soalan Aras Tinggi</span>
+                            <span class="text-tomato">Soalan Aras Tinggi</span>
                             <span class="text-mint font-extrabold">Dijana</span>
                         </div>
                         <div class="text-[11px] text-slate-700 leading-snug">
@@ -612,10 +594,10 @@
                 ['name' => 'Sintesis Menurun', 'tag' => 'Refleks', 'desc' => 'Pilih jawapan yang betul sebelum blok jawapan jatuh ke bawah.', 'bg' => 'bg-sky-pop', 'text' => 'text-ink'],
                 ['name' => 'Padanan Konsep', 'tag' => 'Kefahaman', 'desc' => 'Padankan istilah penting dengan maksud atau definisinya.', 'bg' => 'bg-bubblegum', 'text' => 'text-ink'],
                 ['name' => 'Menara Kefahaman', 'tag' => '8 Aras', 'desc' => 'Bina menara pengetahuan aras demi aras tanpa tergelincir.', 'bg' => 'bg-mint', 'text' => 'text-ink'],
-                ['name' => 'Pengesahan Kritis', 'tag' => 'Betul / Salah', 'desc' => 'Tentukan kesahihan fakta berdasarkan nota rujukan.', 'bg' => 'bg-[#b8e986]', 'text' => 'text-ink'],
-                ['name' => 'Rekonstruksi Istilah', 'tag' => 'Susun Ejaan', 'desc' => 'Susun semula huruf berselerak untuk membentuk istilah penting.', 'bg' => 'bg-[#ffa65c]', 'text' => 'text-ink'],
-                ['name' => 'Flashcard Berjarak', 'tag' => 'Ingatan Aktif', 'desc' => 'Semak kad imbas pintar untuk ingatan jangka panjang.', 'bg' => 'bg-[#c3b1ff]', 'text' => 'text-ink'],
-                ['name' => 'Penanda Aras Adaptif', 'tag' => 'Lumba Bot', 'desc' => 'Bersaing dengan bot simulasi mengikut tahap kelajuan anda.', 'bg' => 'bg-[#7fe3e8]', 'text' => 'text-ink'],
+                ['name' => 'Pengesahan Kritis', 'tag' => 'Betul / Salah', 'desc' => 'Tentukan kesahihan fakta berdasarkan nota rujukan.', 'bg' => 'bg-[#bfcf95]', 'text' => 'text-ink'],
+                ['name' => 'Rekonstruksi Istilah', 'tag' => 'Susun Ejaan', 'desc' => 'Susun semula huruf berselerak untuk membentuk istilah penting.', 'bg' => 'bg-[#e5ad78]', 'text' => 'text-ink'],
+                ['name' => 'Flashcard Berjarak', 'tag' => 'Ingatan Aktif', 'desc' => 'Semak kad imbas pintar untuk ingatan jangka panjang.', 'bg' => 'bg-[#bcaed6]', 'text' => 'text-ink'],
+                ['name' => 'Penanda Aras Adaptif', 'tag' => 'Lumba Bot', 'desc' => 'Bersaing dengan bot simulasi mengikut tahap kelajuan anda.', 'bg' => 'bg-[#93c3c4]', 'text' => 'text-ink'],
             ];
         @endphp
 
@@ -636,7 +618,7 @@
         </div>
     </section>
 
-    <!-- NETFLIX-STYLE FAQ ACCORDION -->
+    <!-- FAQ -->
     <section class="max-w-4xl mx-auto" x-data="{ openFaq: null }">
         <div class="text-center">
             <span class="sticker bg-white text-ink -rotate-1">Soalan Lazim</span>
@@ -715,7 +697,7 @@
         </div>
     </section>
 
-    <!-- NETFLIX-STYLE BOTTOM CALL TO ACTION -->
+    <!-- Closing call to action -->
     <section class="academic-card p-8 sm:p-12 bg-sun border-3 border-ink shadow-pop-lg text-center relative overflow-hidden">
         <div class="relative z-10 max-w-2xl mx-auto space-y-5">
             <span class="sticker bg-white text-ink -rotate-2">Mula Belajar Sekarang</span>
@@ -770,8 +752,8 @@
         >
             <div class="flex items-center justify-between pb-2 border-b border-slate-200">
                 <div class="flex items-center gap-2">
-                    <img src="{{ asset('images/furry-mascot.jpeg') }}" alt="Syed" class="w-7 h-7 rounded-full object-cover border border-ink">
-                    <span class="font-extrabold text-xs text-ink">Prof. Syed AI</span>
+                    @include('partials.syed-avatar', ['class' => 'w-8 h-8'])
+                    <span class="font-extrabold text-xs text-ink">Prof. Syed</span>
                 </div>
                 <button type="button" @click="isOpen = false" class="text-slate-400 hover:text-ink font-bold text-sm">✕</button>
             </div>
@@ -780,14 +762,14 @@
             </p>
             <div class="mt-3.5 flex flex-col gap-2">
                 <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white text-xs py-2 w-full text-center">
-                    🚀 Muat Naik Nota Baharu
+                    Muat Naik Nota Baharu
                 </a>
                 <button
                     type="button"
                     @click="$dispatch('open-onboarding'); isOpen = false"
                     class="btn-pop bg-sun text-ink text-xs py-2 w-full"
                 >
-                    📖 Panduan Langkah Demi Langkah
+                    Panduan Langkah Demi Langkah
                 </button>
             </div>
         </div>
@@ -796,15 +778,11 @@
         <button
             type="button"
             @click="toggle()"
-            class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-1 bg-gradient-to-tr from-[#7b1928] via-[#a32238] to-sun border-3 border-ink shadow-pop-lg hover:scale-105 active:scale-95 transition-transform duration-200 flex items-center justify-center group"
+            class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-pop hover:-translate-y-0.5 active:translate-y-0.5 transition-transform duration-200 flex items-center justify-center group"
             title="Buka pembantu Syed"
             aria-label="Buka pembantu Syed"
         >
-            <img
-                src="{{ asset('images/furry-mascot.jpeg') }}"
-                alt="Syed"
-                class="w-full h-full rounded-full object-cover border border-ink"
-            >
+            @include('partials.syed-avatar', ['class' => 'w-full h-full'])
             <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-mint border-2 border-ink animate-pulse"></span>
             <span class="absolute -bottom-2 whitespace-nowrap bg-ink text-paper text-[10px] font-bold px-2 py-0.5 rounded-full border border-sun opacity-0 group-hover:opacity-100 transition-opacity">
                 Tanya Syed

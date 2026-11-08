@@ -55,7 +55,12 @@
         aiHintText = $event.detail.hint || ''; 
         aiHintLoading = $event.detail.loading || false;
     "
+    @keydown.escape.window="aiHintOpen = false"
     x-show="aiHintOpen"
+    x-transition.opacity
+    role="dialog"
+    aria-modal="true"
+    aria-label="Bimbingan Petunjuk AI"
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60 backdrop-blur-xs"
     style="display: none;"
 >
@@ -65,10 +70,10 @@
     >
         <div class="flex items-center justify-between pb-3 border-b-2 border-dashed border-slate-200">
             <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-sun border-2 border-ink"></span>
+                @include('partials.syed-avatar', ['class' => 'w-8 h-8'])
                 <h4 class="font-display font-extrabold text-base text-ink">Bimbingan Petunjuk AI</h4>
             </div>
-            <button @click="aiHintOpen = false" class="text-slate-400 hover:text-ink font-bold text-lg leading-none">&times;</button>
+            <button type="button" @click="aiHintOpen = false" aria-label="Tutup" class="text-slate-400 hover:text-ink font-bold text-lg leading-none">&times;</button>
         </div>
 
         <div class="py-4 text-sm text-slate-700 leading-relaxed min-h-[70px] flex items-center">
@@ -112,8 +117,11 @@ window.requestAiHint = async function(paramQId) {
             },
             body: JSON.stringify({ question_id: questionId })
         });
-        const data = await res.json();
-        window.dispatchEvent(new CustomEvent('open-ai-hint', { detail: { loading: false, hint: data.hint || 'Tiada petunjuk ditemui.' } }));
+        const data = await res.json().catch(() => ({}));
+        const hint = res.ok
+            ? (data.hint || 'Tiada petunjuk ditemui.')
+            : (res.status === 429 ? 'Anda terlalu kerap meminta petunjuk. Cuba lagi sebentar nanti.' : (data.message || 'Petunjuk tidak dapat dimuatkan buat masa ini.'));
+        window.dispatchEvent(new CustomEvent('open-ai-hint', { detail: { loading: false, hint } }));
     } catch (e) {
         window.dispatchEvent(new CustomEvent('open-ai-hint', { detail: { loading: false, hint: 'Gagal memuat turun petunjuk AI.' } }));
     }

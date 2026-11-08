@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\GenerateTeacherReportJob;
 use App\Models\StudyDeck;
+use App\Models\TeacherAiReport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -50,6 +51,11 @@ class TeacherReportController extends Controller
         }
 
         Cache::lock("teacher_report_{$deck->id}", 60)->get(function () use ($deck): void {
+            TeacherAiReport::updateOrCreate(
+                ['study_deck_id' => $deck->id],
+                ['status' => 'pending', 'error_message' => null],
+            );
+
             GenerateTeacherReportJob::dispatch($deck);
         });
 

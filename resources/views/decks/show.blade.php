@@ -78,10 +78,10 @@
             'rain' => ['name' => 'Sintesis Menurun', 'desc' => 'Pilih jawapan yang betul sebelum masa tamat.', 'tag' => 'Refleks', 'tile' => 'bg-sky-pop', 'meta' => 'Masa nyata'],
             'match' => ['name' => 'Padanan Konsep', 'desc' => 'Padankan istilah penting dengan definisi yang tepat.', 'tag' => 'Kefahaman', 'tile' => 'bg-bubblegum', 'meta' => 'Istilah & definisi'],
             'tower' => ['name' => 'Menara Kefahaman', 'desc' => 'Tingkatkan kefahaman secara berperingkat, aras demi aras.', 'tag' => '8 aras', 'tile' => 'bg-mint', 'meta' => 'Berperingkat'],
-            'tf' => ['name' => 'Pengesahan Kritis', 'desc' => 'Tentukan sama ada setiap pernyataan betul atau salah.', 'tag' => 'Fakta', 'tile' => 'bg-[#b8e986]', 'meta' => '10 pernyataan'],
-            'word' => ['name' => 'Rekonstruksi Istilah', 'desc' => 'Susun huruf untuk membentuk istilah penting.', 'tag' => 'Ejaan', 'tile' => 'bg-[#ffa65c]', 'meta' => 'Istilah'],
-            'cards' => ['name' => 'Flashcard Berjarak', 'desc' => 'Ulang kaji konsep utama menggunakan kad imbas.', 'tag' => 'Ulang kaji', 'tile' => 'bg-[#c3b1ff]', 'meta' => 'Ingatan aktif'],
-            'race' => ['name' => 'Penanda Aras Adaptif', 'desc' => 'Bersaing dengan bot yang menyesuaikan kelajuan mengikut tahap anda.', 'tag' => 'Cabaran bot', 'tile' => 'bg-[#7fe3e8]', 'meta' => 'Kelajuan'],
+            'tf' => ['name' => 'Pengesahan Kritis', 'desc' => 'Tentukan sama ada setiap pernyataan betul atau salah.', 'tag' => 'Fakta', 'tile' => 'bg-[#bfcf95]', 'meta' => '10 pernyataan'],
+            'word' => ['name' => 'Rekonstruksi Istilah', 'desc' => 'Susun huruf untuk membentuk istilah penting.', 'tag' => 'Ejaan', 'tile' => 'bg-[#e5ad78]', 'meta' => 'Istilah'],
+            'cards' => ['name' => 'Flashcard Berjarak', 'desc' => 'Ulang kaji konsep utama menggunakan kad imbas.', 'tag' => 'Ulang kaji', 'tile' => 'bg-[#bcaed6]', 'meta' => 'Ingatan aktif'],
+            'race' => ['name' => 'Penanda Aras Adaptif', 'desc' => 'Bersaing dengan bot yang menyesuaikan kelajuan mengikut tahap anda.', 'tag' => 'Cabaran bot', 'tile' => 'bg-[#93c3c4]', 'meta' => 'Kelajuan'],
         ];
     @endphp
 

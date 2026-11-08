@@ -113,10 +113,10 @@
             ['name' => 'Sintesis Menurun', 'desc' => 'Pilih jawapan yang betul sebelum masa tamat.', 'dot' => 'bg-sky-pop'],
             ['name' => 'Padanan Konsep', 'desc' => 'Padankan istilah dengan definisi yang tepat.', 'dot' => 'bg-bubblegum'],
             ['name' => 'Menara Kefahaman', 'desc' => 'Tingkatkan kefahaman secara berperingkat.', 'dot' => 'bg-mint'],
-            ['name' => 'Pengesahan Kritis', 'desc' => 'Tentukan sama ada pernyataan betul atau salah.', 'dot' => 'bg-[#b8e986]'],
-            ['name' => 'Rekonstruksi Istilah', 'desc' => 'Susun huruf untuk membentuk istilah penting.', 'dot' => 'bg-[#ffa65c]'],
-            ['name' => 'Flashcard Berjarak', 'desc' => 'Ulang kaji konsep utama dengan kad imbas.', 'dot' => 'bg-[#c3b1ff]'],
-            ['name' => 'Penanda Aras Adaptif', 'desc' => 'Bersaing dengan bot mengikut tahap anda.', 'dot' => 'bg-[#7fe3e8]'],
+            ['name' => 'Pengesahan Kritis', 'desc' => 'Tentukan sama ada pernyataan betul atau salah.', 'dot' => 'bg-[#bfcf95]'],
+            ['name' => 'Rekonstruksi Istilah', 'desc' => 'Susun huruf untuk membentuk istilah penting.', 'dot' => 'bg-[#e5ad78]'],
+            ['name' => 'Flashcard Berjarak', 'desc' => 'Ulang kaji konsep utama dengan kad imbas.', 'dot' => 'bg-[#bcaed6]'],
+            ['name' => 'Penanda Aras Adaptif', 'desc' => 'Bersaing dengan bot mengikut tahap anda.', 'dot' => 'bg-[#93c3c4]'],
         ];
     @endphp
 

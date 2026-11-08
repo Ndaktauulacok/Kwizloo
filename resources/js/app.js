@@ -79,9 +79,12 @@ window.AcademicAudio = {
 Alpine.data('mascotHero', () => ({
     tiltX: 0,
     tiltY: 0,
+    lookX: 0,
+    lookY: 0,
     isHovered: false,
+    wiggleTimer: null,
 
-    dialogue: "Hai! Saya Syed, mentor AI anda. Klik saya atau cuba mini-kuiz di sisi!",
+    dialogue: "Hai! Saya Syed, mentor AI anda. Klik saya atau cuba mini-kuiz di bawah.",
     isWiggling: false,
     sparkles: [],
 
@@ -140,11 +143,11 @@ Alpine.data('mascotHero', () => ({
 
     quotes: [
         "Hai! Saya Syed, pembantu AI anda. Muat naik nota, biar saya sediakan kuiz A+!",
-        "💡 Petua Syed: Mengulang kaji 15 minit secara aktif 3x lebih berkesan daripada membaca tanpa henti!",
-        "🎯 Cubalah jawab soalan mini-kuiz di kad sebelah kiri saya!",
-        "⚡ Kad imbas di sebelah kanan boleh diterbalikkan! Klik untuk uji ingatan aktif anda.",
-        "🌟 Tahniah! Setiap interaksi membantu otak mengukuhkan sambungan ingatan sinaps!",
-        "🚀 Sedia untuk peperiksaan? Klik 'Mulakan Sekarang' untuk cuba pek contoh segera!"
+        "Petua: Mengulang kaji 15 minit secara aktif 3x lebih berkesan daripada membaca tanpa henti!",
+        "Cuba jawab soalan mini-kuiz di bawah saya.",
+        "Kad imbas di bawah boleh diterbalikkan. Klik untuk uji ingatan anda.",
+        "Setiap latihan kecil membantu otak mengukuhkan sambungan ingatan sinaps!",
+        "Sedia untuk peperiksaan? Klik 'Mulakan Sekarang' untuk cuba pek contoh segera!"
     ],
     quoteIndex: 0,
 
@@ -152,19 +155,29 @@ Alpine.data('mascotHero', () => ({
         const rect = this.$refs.stage?.getBoundingClientRect() || this.$el.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        this.tiltX = Math.max(-10, Math.min(10, -(y / (rect.height / 2)) * 10));
-        this.tiltY = Math.max(-10, Math.min(10, (x / (rect.width / 2)) * 10));
+        const relX = Math.max(-1, Math.min(1, x / (rect.width / 2)));
+        const relY = Math.max(-1, Math.min(1, y / (rect.height / 2)));
+        this.tiltX = -relY * 5;
+        this.tiltY = relX * 5;
+        this.lookX = relX * 3;
+        this.lookY = relY * 2;
         this.isHovered = true;
     },
 
     handleMouseLeave() {
         this.tiltX = 0;
         this.tiltY = 0;
+        this.lookX = 0;
+        this.lookY = 0;
         this.isHovered = false;
     },
 
     petMascot() {
-        this.isWiggling = true;
+        clearTimeout(this.wiggleTimer);
+        this.isWiggling = false;
+        requestAnimationFrame(() => {
+            this.isWiggling = true;
+        });
         this.addXp(15);
         window.AcademicAudio?.pop();
         this.spawnSparkle();
@@ -172,16 +185,16 @@ Alpine.data('mascotHero', () => ({
         this.quoteIndex = (this.quoteIndex + 1) % this.quotes.length;
         this.dialogue = this.quotes[this.quoteIndex];
 
-        setTimeout(() => {
+        this.wiggleTimer = setTimeout(() => {
             this.isWiggling = false;
-        }, 600);
+        }, 750);
     },
 
-    spawnSparkle() {
+    spawnSparkle(label = '+15 XP') {
         const id = Date.now() + Math.random();
         const x = 20 + Math.random() * 60;
         const y = 20 + Math.random() * 40;
-        this.sparkles.push({ id, x, y });
+        this.sparkles.push({ id, x, y, label });
         setTimeout(() => {
             this.sparkles = this.sparkles.filter(s => s.id !== id);
         }, 950);
@@ -200,7 +213,7 @@ Alpine.data('mascotHero', () => ({
             window.AcademicAudio?.correct();
             this.quizFeedback = current.expl;
             this.dialogue = "Syabas! Jawapan anda tepat sekali. Teruskan momentum!";
-            this.spawnSparkle();
+            this.spawnSparkle('+25 XP');
         } else {
             this.streak = 0;
             this.addXp(5);
@@ -242,7 +255,7 @@ Alpine.data('mascotHero', () => ({
             this.maxXp = Math.round(this.maxXp * 1.4);
             window.AcademicAudio?.levelUp();
             this.updateLevelTitle();
-            this.dialogue = `🎉 TAHNIAH! Anda naik ke Tahap ${this.level} (${this.levelTitle})!`;
+            this.dialogue = `Tahniah! Anda naik ke Tahap ${this.level} (${this.levelTitle})!`;
         }
     },
 

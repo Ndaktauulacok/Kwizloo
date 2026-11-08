@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#fff7ea">
+    <meta name="theme-color" content="#fbf4ea">
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
@@ -25,9 +25,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
             <div class="flex items-center gap-5 min-w-0">
                 <a href="{{ isset($deck) ? route('decks.show', $deck) : route('home') }}" class="flex items-center gap-2.5 group shrink-0">
-                    <span class="relative w-10 h-10 rounded-xl bg-sun border-2 border-ink shadow-pop-sm flex items-center justify-center -rotate-6 group-hover:rotate-6 transition-transform duration-200">
-                        <span class="font-display font-extrabold text-xl text-ink leading-none">K</span>
-                        <span class="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-tomato border-2 border-ink"></span>
+                    <span class="block w-10 h-10 -rotate-3 group-hover:rotate-3 transition-transform duration-200">
+                        @include('partials.syed-avatar', ['class' => 'w-10 h-10'])
                     </span>
                     <span class="font-display text-xl font-extrabold tracking-tight text-ink">
                         Kwiz<span class="text-indigo-600">loo</span>
@@ -59,9 +58,10 @@
                     @click="$dispatch('open-onboarding')"
                     class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold px-2.5 sm:px-3 py-1.5 rounded-lg text-slate-700 hover:text-ink hover:bg-white border-2 border-transparent hover:border-ink hover:shadow-pop-sm transition"
                     title="Buka panduan langkah demi langkah"
+                    aria-label="Buka panduan"
                 >
                     <svg class="w-4 h-4 text-sun fill-sun stroke-ink" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <span>Panduan</span>
+                    <span class="hidden sm:inline">Panduan</span>
                 </button>
 
                 <a href="{{ route('decks.create') }}" class="btn-pop bg-indigo-600 text-white px-3 sm:px-3.5 py-1.5 text-sm whitespace-nowrap shrink-0" aria-label="Nota Baharu">
@@ -168,6 +168,7 @@
     <footer class="mt-auto border-t-2 border-ink bg-ink text-paper/70 py-6 text-xs print:hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2">
+                @include('partials.syed-avatar', ['class' => 'w-6 h-6'])
                 <span class="font-display font-extrabold text-sm text-paper">Kwiz<span class="text-sun">loo</span></span>
                 <span>— Pembelajaran interaktif berkuasa AI, berasaskan nota anda.</span>
             </div>

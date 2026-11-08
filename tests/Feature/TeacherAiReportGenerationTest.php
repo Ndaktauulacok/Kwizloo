@@ -51,6 +51,30 @@ class TeacherAiReportGenerationTest extends TestCase
         });
     }
 
+    public function test_regenerating_a_report_marks_it_pending_before_the_job_runs(): void
+    {
+        Queue::fake();
+
+        $deck = StudyDeck::create(['title' => 'Sains', 'source_text' => 'Nota...', 'status' => 'completed']);
+        $deck->studySessions()->create([
+            'activity_type' => 'blitz',
+            'score' => 80,
+            'right_count' => 8,
+            'wrong_count' => 2,
+            'best_combo' => 4,
+        ]);
+        TeacherAiReport::create([
+            'study_deck_id' => $deck->id,
+            'status' => 'completed',
+            'summary' => 'Laporan lama.',
+        ]);
+
+        $this->postJson(route('decks.report.generate', $deck))->assertOk();
+
+        $this->getJson(route('decks.report.status', $deck))
+            ->assertJson(['status' => 'pending']);
+    }
+
     public function test_generate_teacher_report_job_creates_ai_report(): void
     {
         $deck = StudyDeck::create(['title' => 'Fizik SPM', 'source_text' => 'Nota fizik...', 'status' => 'completed']);

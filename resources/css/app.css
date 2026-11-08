@@ -9,41 +9,56 @@
     --font-display: 'Bricolage Grotesque', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
     --font-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', serif;
 
-    /* Brand tokens */
-    --color-paper: #fff7ea;
-    --color-ink: #1c1915;
-    --color-sun: #ffc83d;
-    --color-tomato: #ff6b4a;
-    --color-mint: #2ec4a0;
-    --color-sky-pop: #5aa9ff;
-    --color-bubblegum: #ff8fc7;
+    /* Brand tokens: Syed the scholar wolf (maroon robe, cream parchment, gold tassel) */
+    --color-paper: #fbf4ea;
+    --color-ink: #2a1217;
+    --color-sun: #dcb567;
+    --color-tomato: #bf4a35;
+    --color-mint: #6aa486;
+    --color-sky-pop: #86a5c8;
+    --color-bubblegum: #e3a7b0;
+    --color-maroon: #761a2d;
+    --color-gold: #c99a52;
 
-    /* Primary accent: cobalt (replaces the default indigo everywhere) */
-    --color-indigo-50: #eef3ff;
-    --color-indigo-100: #dce6ff;
-    --color-indigo-200: #b9ccff;
-    --color-indigo-300: #8aa8ff;
-    --color-indigo-400: #5a82ff;
-    --color-indigo-500: #3461fa;
-    --color-indigo-600: #2148e8;
-    --color-indigo-700: #1a39c4;
-    --color-indigo-800: #172f9c;
-    --color-indigo-900: #15297a;
-    --color-indigo-950: #0e1a4c;
+    /* Primary accent: academic maroon (replaces the default indigo everywhere) */
+    --color-indigo-50: #fcf1f2;
+    --color-indigo-100: #f7e0e3;
+    --color-indigo-200: #edc0c7;
+    --color-indigo-300: #dc94a1;
+    --color-indigo-400: #c2647a;
+    --color-indigo-500: #9a2b44;
+    --color-indigo-600: #7a1b30;
+    --color-indigo-700: #651628;
+    --color-indigo-800: #52121f;
+    --color-indigo-900: #420e1a;
+    --color-indigo-950: #2a0911;
 
-    /* Neutrals: warm ink instead of cool slate */
-    --color-slate-50: #fbf8f3;
-    --color-slate-100: #f3eee5;
-    --color-slate-200: #e7dfd2;
-    --color-slate-300: #d3c8b7;
-    --color-slate-400: #a39886;
-    --color-slate-500: #7a6f61;
-    --color-slate-600: #5c5347;
-    --color-slate-700: #433c33;
-    --color-slate-800: #2d2822;
-    --color-slate-900: #1c1915;
-    --color-slate-950: #110f0c;
+    /* Gold, used for highlights and warm tints */
+    --color-amber-50: #fbf4e4;
+    --color-amber-100: #f6e8c9;
+    --color-amber-200: #eed6a3;
+    --color-amber-300: #e3bf78;
+    --color-amber-400: #d4a956;
+    --color-amber-500: #bf9040;
+    --color-amber-600: #a07533;
+    --color-amber-700: #805c2a;
+    --color-amber-800: #634726;
+    --color-amber-900: #4d3820;
 
+    /* Neutrals: warm parchment instead of cool slate */
+    --color-slate-50: #fcf8f4;
+    --color-slate-100: #f5eee6;
+    --color-slate-200: #e9ded2;
+    --color-slate-300: #d5c6b8;
+    --color-slate-400: #a6958a;
+    --color-slate-500: #7b6a62;
+    --color-slate-600: #5d4e49;
+    --color-slate-700: #453835;
+    --color-slate-800: #302422;
+    --color-slate-900: #24171a;
+    --color-slate-950: #160d0f;
+
+    --shadow-pop-xs: 1px 1px 0 0 var(--color-ink);
     --shadow-pop-sm: 2px 2px 0 0 var(--color-ink);
     --shadow-pop: 4px 4px 0 0 var(--color-ink);
     --shadow-pop-lg: 6px 6px 0 0 var(--color-ink);
@@ -134,37 +149,166 @@
     animation: pulse-ring 3.5s ease-in-out infinite;
 }
 
-/* ---------- Mascot (landing page) ---------- */
+/* ---------- Syed, the scholar wolf mascot ---------- */
 
-.mascot svg g,
-.mascot svg path,
-.mascot svg ellipse,
-.mascot svg circle {
+.syed-float,
+.syed-shadow,
+.syed-bust,
+.syed-head,
+.syed-eye,
+.syed-ear,
+.syed-tassel,
+.syed-card,
+.syed-timer,
+.syed-pet {
+    transform-box: fill-box;
+}
+
+.syed-float {
+    animation: syed-float 6.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.syed-shadow {
+    animation: syed-shadow 6.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.syed-bust {
+    animation: syed-breathe 4.6s ease-in-out infinite;
+    transform-origin: 50% 100%;
+}
+
+.syed-head {
+    animation: syed-head-tilt 8s ease-in-out infinite;
+    transform-origin: 40% 85%;
+}
+
+.syed-eye {
+    animation: syed-blink 5.4s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.syed-ear {
+    animation: syed-ear-twitch 7s ease-in-out infinite;
+    transform-origin: 50% 100%;
+}
+
+.syed-ear--far {
+    animation-delay: -3.2s;
+}
+
+.syed-tassel {
+    animation: syed-tassel 3.8s ease-in-out infinite;
+    transform-origin: 50% 0;
+}
+
+.syed-star {
+    animation: syed-twinkle 2.8s ease-in-out infinite;
     transform-box: fill-box;
     transform-origin: center;
 }
 
-.mascot-bob {
-    animation: bob 3.2s ease-in-out infinite;
+.syed-card {
+    animation: syed-card 5.5s ease-in-out infinite;
 }
 
-.mascot-hover {
-    animation: hover-y 4.2s ease-in-out infinite;
+.syed-timer {
+    animation: syed-timer 9s linear infinite;
+    transform-origin: 0 50%;
 }
 
-.mascot-eye {
-    animation: blink 4.8s ease-in-out infinite;
+.syed-pet {
+    transform-origin: center;
 }
 
-.mascot-spark {
-    animation: twinkle 2.4s ease-in-out infinite;
+.syed-pet.is-petted {
+    animation: syed-pet 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.syed-pet.is-petted .syed-tassel {
+    animation: syed-tassel-flick 0.7s ease-out;
+}
+
+/* Small avatars stay still so they read as a logo */
+.syed-static .syed g,
+.syed-static .syed path {
+    animation: none !important;
+}
+
+@keyframes syed-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+}
+
+@keyframes syed-shadow {
+    0%, 100% { transform: scaleX(1); opacity: 0.12; }
+    50% { transform: scaleX(0.9); opacity: 0.07; }
+}
+
+@keyframes syed-breathe {
+    0%, 100% { transform: scale(1, 1); }
+    50% { transform: scale(1.008, 1.018); }
+}
+
+@keyframes syed-head-tilt {
+    0%, 100% { transform: rotate(0deg); }
+    30% { transform: rotate(-2.5deg); }
+    65% { transform: rotate(1.5deg); }
+}
+
+@keyframes syed-blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    93% { transform: scaleY(0.08); }
+    96% { transform: scaleY(1); }
+}
+
+@keyframes syed-ear-twitch {
+    0%, 78%, 100% { transform: rotate(0deg); }
+    81% { transform: rotate(-7deg); }
+    84% { transform: rotate(2deg); }
+    87% { transform: rotate(0deg); }
+}
+
+@keyframes syed-tassel {
+    0%, 100% { transform: rotate(6deg); }
+    50% { transform: rotate(-6deg); }
+}
+
+@keyframes syed-tassel-flick {
+    0% { transform: rotate(0deg); }
+    30% { transform: rotate(-28deg); }
+    60% { transform: rotate(14deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes syed-twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.65); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes syed-card {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes syed-timer {
+    0% { transform: scaleX(1); }
+    100% { transform: scaleX(0.08); }
+}
+
+@keyframes syed-pet {
+    0% { transform: scale(1) rotate(0deg); }
+    35% { transform: scale(1.05) rotate(-3deg); }
+    65% { transform: scale(0.98) rotate(2deg); }
+    100% { transform: scale(1) rotate(0deg); }
 }
 
 @layer base {
     body {
         @apply text-slate-800 antialiased min-h-screen selection:bg-sun selection:text-ink;
         background-color: var(--color-paper);
-        background-image: radial-gradient(rgba(28, 25, 21, 0.09) 1px, transparent 1px);
+        background-image: radial-gradient(rgba(42, 18, 23, 0.075) 1px, transparent 1px);
         background-size: 22px 22px;
     }
 
@@ -183,78 +327,80 @@
     }
 }
 
-/* ---------- Cards ---------- */
+@layer components {
+    /* ---------- Cards ---------- */
 
-.academic-card {
-    @apply bg-white rounded-2xl transition duration-150;
-    border: 2px solid var(--color-ink);
-    box-shadow: var(--shadow-pop);
-}
+    .academic-card {
+        @apply bg-white rounded-2xl transition duration-150;
+        border: 2px solid var(--color-ink);
+        box-shadow: var(--shadow-pop);
+    }
 
-.academic-card-hover {
-    @apply transition duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5;
-}
+    .academic-card-hover {
+        @apply transition duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5;
+    }
 
-.academic-card-hover:hover {
-    box-shadow: var(--shadow-pop-lg);
-}
+    .academic-card-hover:hover {
+        box-shadow: var(--shadow-pop-lg);
+    }
 
-.verbatim-quote {
-    @apply font-serif italic text-slate-700 bg-amber-50 px-4 py-2.5 my-2.5 rounded-r-lg text-sm leading-relaxed;
-    border-left: 4px solid var(--color-sun);
-}
+    .verbatim-quote {
+        @apply font-serif italic text-slate-700 bg-amber-50 px-4 py-2.5 my-2.5 rounded-r-lg text-sm leading-relaxed;
+        border-left: 4px solid var(--color-sun);
+    }
 
-/* Interactive tile: lifts on hover, presses on click */
-.spotlight-card {
-    position: relative;
-    border-radius: 1.25rem;
-    background: #fff;
-    border: 2px solid var(--color-ink);
-    box-shadow: var(--shadow-pop);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
+    /* Interactive tile: lifts on hover, presses on click */
+    .spotlight-card {
+        position: relative;
+        border-radius: 1.25rem;
+        background: #fff;
+        border: 2px solid var(--color-ink);
+        box-shadow: var(--shadow-pop);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
 
-a.spotlight-card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: var(--shadow-pop-lg);
-}
+    a.spotlight-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: var(--shadow-pop-lg);
+    }
 
-a.spotlight-card:active {
-    transform: translate(3px, 3px);
-    box-shadow: 1px 1px 0 0 var(--color-ink);
-}
+    a.spotlight-card:active {
+        transform: translate(3px, 3px);
+        box-shadow: 1px 1px 0 0 var(--color-ink);
+    }
 
-/* ---------- Buttons ---------- */
+    /* ---------- Buttons ---------- */
 
-.btn-pop {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition duration-100;
-    border: 2px solid var(--color-ink);
-    box-shadow: var(--shadow-pop-sm);
-}
+    .btn-pop {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition duration-100;
+        border: 2px solid var(--color-ink);
+        box-shadow: var(--shadow-pop-sm);
+    }
 
-.btn-pop:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0 0 var(--color-ink);
-}
+    .btn-pop:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 3px 0 0 var(--color-ink);
+    }
 
-.btn-pop:active {
-    transform: translate(2px, 2px);
-    box-shadow: 0 0 0 0 var(--color-ink);
-}
+    .btn-pop:active {
+        transform: translate(2px, 2px);
+        box-shadow: 0 0 0 0 var(--color-ink);
+    }
 
-/* ---------- Decorative ---------- */
+    /* ---------- Decorative ---------- */
 
-.sticker {
-    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold;
-    border: 2px solid var(--color-ink);
-    box-shadow: var(--shadow-pop-sm);
-}
+    .sticker {
+        @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold;
+        border: 2px solid var(--color-ink);
+        box-shadow: var(--shadow-pop-sm);
+    }
 
-.marker-underline {
-    background-image: linear-gradient(transparent 62%, var(--color-sun) 62%, var(--color-sun) 90%, transparent 90%);
-    padding: 0 0.05em;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
+    .marker-underline {
+        background-image: linear-gradient(transparent 62%, var(--color-sun) 62%, var(--color-sun) 90%, transparent 90%);
+        padding: 0 0.05em;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

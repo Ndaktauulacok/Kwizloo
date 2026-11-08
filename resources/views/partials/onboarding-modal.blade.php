@@ -165,14 +165,14 @@
                         <!-- Generated items pills -->
                         <div class="grid grid-cols-2 gap-2 text-xs font-bold">
                             <div class="p-2.5 rounded-xl bg-paper border border-ink flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-lg bg-tomato text-white flex items-center justify-center text-xs">⚔️</span>
+                                <span class="w-6 h-6 rounded-lg bg-tomato text-white flex items-center justify-center text-[10px] font-extrabold">B</span>
                                 <div>
                                     <div class="text-ink">Cabaran Bos</div>
                                     <div class="text-[10px] text-slate-500 font-normal">Aras pemikiran tinggi</div>
                                 </div>
                             </div>
                             <div class="p-2.5 rounded-xl bg-paper border border-ink flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-lg bg-sun text-ink flex items-center justify-center text-xs">⚡</span>
+                                <span class="w-6 h-6 rounded-lg bg-sun text-ink flex items-center justify-center text-[10px] font-extrabold">60</span>
                                 <div>
                                     <div class="text-ink">Ujian Pantas 60s</div>
                                     <div class="text-[10px] text-slate-500 font-normal">Latih refleks pantas</div>

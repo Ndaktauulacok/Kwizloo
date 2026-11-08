@@ -89,7 +89,7 @@
             @click="$dispatch('open-onboarding')"
             class="inline-flex items-center gap-1.5 text-slate-700 hover:text-ink underline decoration-2 decoration-sun underline-offset-4"
         >
-            <svg class="w-4 h-4 text-sun fill-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="#1c1915"/></svg>
+            <svg class="w-4 h-4 text-sun fill-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="#2a1217"/></svg>
             <span>Buka Panduan Langkah Demi Langkah</span>
         </button>
     </div>
@@ -210,7 +210,7 @@
                             class="px-2.5 py-1 rounded-lg bg-mint/20 hover:bg-mint/40 border border-ink text-ink transition"
                             title="Isi contoh nota Biologi"
                         >
-                            🌱 Biologi
+                            Biologi
                         </button>
                         <button
                             type="button"
@@ -218,7 +218,7 @@
                             class="px-2.5 py-1 rounded-lg bg-sun/30 hover:bg-sun/60 border border-ink text-ink transition"
                             title="Isi contoh nota Sejarah"
                         >
-                            🏛️ Sejarah
+                            Sejarah
                         </button>
                         <button
                             type="button"
@@ -226,7 +226,7 @@
                             class="px-2.5 py-1 rounded-lg bg-sky-pop/25 hover:bg-sky-pop/50 border border-ink text-ink transition"
                             title="Isi contoh nota Fizik"
                         >
-                            ⚡ Fizik
+                            Fizik
                         </button>
                     </div>
                 </div>

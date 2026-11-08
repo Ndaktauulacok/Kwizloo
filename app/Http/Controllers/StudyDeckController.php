@@ -89,14 +89,22 @@ class StudyDeckController extends Controller
 
     public function retryFallback(StudyDeck $deck): RedirectResponse
     {
+        if ($deck->status === 'completed') {
+            return redirect()->route('decks.show', $deck);
+        }
+
         $this->deckGenerator->populateFallbackContent($deck);
 
         return redirect()->route('decks.show', $deck)
             ->with('status', 'Modul pembelajaran berjaya disediakan dalam Mod Asas.');
     }
 
-    public function show(StudyDeck $deck): View
+    public function show(StudyDeck $deck): View|RedirectResponse
     {
+        if ($deck->status !== 'completed') {
+            return redirect()->route('decks.processing', $deck);
+        }
+
         $deck->load(['topics.questions', 'topics.flashcards', 'agentLogs']);
         $nextMission = $this->adaptiveAgent->determineNextMission($deck);
 
